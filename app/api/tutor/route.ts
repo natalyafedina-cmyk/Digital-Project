@@ -10,6 +10,10 @@ import {
   METHOD_LABELS,
   type TeachingMethod,
 } from "@/lib/adaptive-learning";
+import {
+  buildLearningPlan,
+  renderLearningPlan,
+} from "@/lib/learning-engine";
 
 export const runtime = "nodejs";
 
@@ -136,6 +140,10 @@ function parseModelJson(raw: string) {
       )
         ? parsed.supportSignal
         : "none",
+      topicEvidence:
+        typeof parsed.topicEvidence === "string"
+          ? parsed.topicEvidence.trim()
+          : "",
     };
   } catch {
     return {
@@ -151,6 +159,7 @@ function parseModelJson(raw: string) {
       correctness: "unknown",
       needsReview: false,
       supportSignal: "none",
+      topicEvidence: "",
     };
   }
 }
@@ -239,6 +248,12 @@ export async function POST(request: Request) {
 
     const adaptiveProfileText = renderMethodProfile(methodProfile);
     const subjectPrompt = getSubjectAdaptivePrompt(subject);
+    const learningPlan = buildLearningPlan({
+      message: userText,
+      subject,
+      previousMethod,
+      supportStage,
+    });
 
     const pedagogy = `
 ТЫ — ПЕРСОНАЛЬНЫЙ AI-РЕПЕТИТОР ЛУНИК ДЛЯ СОФЬИ, 7 КЛАСС.
@@ -312,6 +327,11 @@ export async function POST(request: Request) {
 
 ${subjectPrompt}
 
+ПЛАН ДВИЖКА ОБУЧЕНИЯ:
+${renderLearningPlan(learningPlan)}
+
+Не меняй намерение ребёнка на другое. Если выбран visualType не "none", верни visualBlock именно такого типа: точная учебная структура, а не декоративная картинка.
+
 ПРАВИЛА РОДИТЕЛЯ:
 ${
   parentRules.length
@@ -342,6 +362,7 @@ previousMethodOutcome:
   "previousMethodOutcome": null,
   "previousMethodEvidence": "коротко, на каком наблюдаемом сигнале основана оценка",
   "topic": "краткая тема",
+  "topicEvidence": "какие слова ребёнка подтверждают тему; пустая строка, если данных нет",
   "hintLevel": 0,
   "independenceScore": 0,
   "correctness": "correct|incorrect|partial|unknown",
@@ -428,6 +449,11 @@ classification, story, experiment, map_logic, character_analysis.
 
     return Response.json({
       ...parsed,
+      intent: learningPlan.intent,
+      goal: learningPlan.goal,
+      visualType: learningPlan.visualType,
+      requestedFormat: learningPlan.format,
+      methodChangeRequired: learningPlan.mustChangeMethod,
       supportStageUsed: supportStage,
       nextSupportStage,
       recognizedImageText: imageText || null,

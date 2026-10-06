@@ -1,0 +1,131 @@
+export type TeachingMethod =
+  | "visual_schema"
+  | "worked_example"
+  | "step_by_step"
+  | "analogy"
+  | "game"
+  | "dialogue"
+  | "retrieval_practice"
+  | "comparison"
+  | "oral_practice"
+  | "timeline"
+  | "cause_effect"
+  | "classification"
+  | "story"
+  | "experiment"
+  | "map_logic"
+  | "character_analysis";
+
+export const METHOD_LABELS: Record<TeachingMethod, string> = {
+  visual_schema: "схемы и визуальная запись",
+  worked_example: "разобранный пример",
+  step_by_step: "пошаговый разбор",
+  analogy: "аналогии из жизни",
+  game: "игровой формат",
+  dialogue: "диалог и вопросы",
+  retrieval_practice: "вспоминание без подсказки",
+  comparison: "сравнение примеров",
+  oral_practice: "устная практика",
+  timeline: "линия времени",
+  cause_effect: "причины и следствия",
+  classification: "классификация",
+  story: "объяснение через историю",
+  experiment: "мысленный или практический эксперимент",
+  map_logic: "карта и географические связи",
+  character_analysis: "разбор героев и мотивов",
+};
+
+export const SUBJECT_STRATEGIES = {
+  math: {
+    name: "Математика",
+    preferred: ["visual_schema", "worked_example", "step_by_step", "game", "analogy"],
+    rules: [
+      "Если вычисление можно показать столбиком, схемой или короткой записью — сначала покажи запись, затем максимум 2–3 коротких пояснения.",
+      "Если ребёнок просит 'покажи схемой', 'покажи столбиком', 'не текстом' — обязательно дай visualBlock.",
+      "Не описывай длинным абзацем то, что можно увидеть в формуле или записи.",
+      "После одного разобранного примера предложи похожий пример для самостоятельной попытки.",
+    ],
+  },
+  physics: {
+    name: "Физика",
+    preferred: ["visual_schema", "experiment", "analogy", "step_by_step", "worked_example"],
+    rules: [
+      "Сначала связывай явление с наблюдаемой ситуацией из жизни.",
+      "Формулу вводи только после смысла величин.",
+      "Для задач используй схему: дано → что найти → связь величин → один следующий шаг.",
+      "Если помогает, предлагай мысленный эксперимент: 'что изменится, если...'.",
+    ],
+  },
+  russian: {
+    name: "Русский язык",
+    preferred: ["comparison", "visual_schema", "dialogue", "game", "retrieval_practice"],
+    rules: [
+      "Правило чаще показывай через 2–3 контрастных примера, а не длинное определение.",
+      "Для разбора слова/предложения используй схему и выделение частей текстовыми метками.",
+      "Предлагай мини-игры: найди ошибку, выбери вариант, объясни отличие.",
+    ],
+  },
+  english: {
+    name: "Английский язык",
+    preferred: ["oral_practice", "dialogue", "comparison", "game", "retrieval_practice"],
+    rules: [
+      "Старайся быстро переходить от объяснения к короткой практике.",
+      "Используй мини-диалоги и ситуации из жизни.",
+      "Предлагай произнести короткую фразу вслух, когда это уместно.",
+      "Грамматику объясняй на 2–3 примерах, затем проси ребёнка построить свой.",
+    ],
+  },
+  history: {
+    name: "История",
+    preferred: ["story", "timeline", "cause_effect", "dialogue", "comparison"],
+    rules: [
+      "Не превращай урок в перечень дат.",
+      "Сначала дай сюжет или конфликт эпохи, затем временную линию и причины/следствия.",
+      "Задавай вопросы 'почему это произошло' и 'что изменилось после'.",
+    ],
+  },
+  geography: {
+    name: "География",
+    preferred: ["map_logic", "cause_effect", "visual_schema", "comparison", "game"],
+    rules: [
+      "Связывай место → климат/рельеф → жизнь людей/хозяйство.",
+      "Если карты в интерфейсе нет, делай простую текстовую схему направления и связей.",
+      "Используй сравнение стран, регионов и природных зон.",
+    ],
+  },
+  biology: {
+    name: "Биология",
+    preferred: ["visual_schema", "classification", "analogy", "cause_effect", "game"],
+    rules: [
+      "Процессы показывай цепочкой или схемой.",
+      "Строение объясняй через функцию: часть → что делает → почему важна.",
+      "Используй классификации и вопросы 'что будет, если...'.",
+    ],
+  },
+  literature: {
+    name: "Литература",
+    preferred: ["character_analysis", "dialogue", "comparison", "story", "retrieval_practice"],
+    rules: [
+      "Не подменяй чтение готовым пересказом.",
+      "Обсуждай мотивы героя, конфликт, выбор и последствия.",
+      "Проси ребёнка подтверждать мнение эпизодом или деталью текста, если текст известен.",
+    ],
+  },
+} as const;
+
+export function getSubjectAdaptivePrompt(subject: string) {
+  const strategy =
+    SUBJECT_STRATEGIES[subject as keyof typeof SUBJECT_STRATEGIES];
+
+  if (!strategy) return "";
+
+  return `
+ПРЕДМЕТНАЯ МЕТОДИКА: ${strategy.name}
+Предпочтительные способы: ${strategy.preferred
+    .map((m) => METHOD_LABELS[m as TeachingMethod])
+    .join(", ")}.
+
+Правила предмета:
+${strategy.rules.map((rule, index) => `${index + 1}. ${rule}`).join("\n")}
+`;
+}

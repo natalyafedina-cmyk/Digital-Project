@@ -1,0 +1,448 @@
+import {
+  SUBJECTS,
+  STUDY_MODES,
+  buildTutorInstructions,
+  type SubjectSlug,
+  type StudyModeSlug,
+} from "@/lib/tutor-config";
+import {
+  getSubjectAdaptivePrompt,
+  METHOD_LABELS,
+  type TeachingMethod,
+} from "@/lib/adaptive-learning";
+
+export const runtime = "nodejs";
+
+type HistoryItem = { role: "user" | "assistant"; text: string };
+
+type MethodSummary = {
+  method: string;
+  attempts: number;
+  avgOutcome: number;
+};
+
+function requireEnv() {
+  const apiKey = process.env.YANDEX_API_KEY;
+  const folderId = process.env.YANDEX_FOLDER_ID;
+
+  if (!apiKey) throw new Error("YANDEX_API_KEY не найден в .env.local");
+  if (!folderId) throw new Error("YANDEX_FOLDER_ID не найден в .env.local");
+
+  return { apiKey, folderId };
+}
+
+function dataUrlToBase64(dataUrl: string) {
+  const match = dataUrl.match(/^data:([^;]+);base64,(.+)$/);
+  if (!match) throw new Error("Не удалось прочитать изображение.");
+  return { mimeType: match[1], base64: match[2] };
+}
+
+async function recognizeImage(
+  imageDataUrl: string,
+  apiKey: string,
+  folderId: string
+) {
+  const { mimeType, base64 } = dataUrlToBase64(imageDataUrl);
+
+  const response = await fetch(
+    "https://ocr.api.cloud.yandex.net/ocr/v1/recognizeText",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Api-Key ${apiKey}`,
+        "x-folder-id": folderId,
+        "x-data-logging-enabled": "false",
+      },
+      body: JSON.stringify({
+        mimeType,
+        languageCodes: ["ru", "en"],
+        model: "page",
+        content: base64,
+      }),
+    }
+  );
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(
+      data?.message ||
+        data?.error?.message ||
+        "Yandex Vision не смог распознать изображение."
+    );
+  }
+
+  return data?.result?.textAnnotation?.fullText?.trim() || "";
+}
+
+function parseModelJson(raw: string) {
+  const cleaned = raw
+    .trim()
+    .replace(/^```json\s*/i, "")
+    .replace(/^```\s*/i, "")
+    .replace(/\s*```$/, "");
+
+  try {
+    const parsed = JSON.parse(cleaned);
+    const previousMethodOutcome =
+      parsed.previousMethodOutcome === null ||
+      parsed.previousMethodOutcome === undefined
+        ? null
+        : Math.max(0, Math.min(100, Number(parsed.previousMethodOutcome)));
+
+    const teachingMethod =
+      typeof parsed.teachingMethod === "string"
+        ? parsed.teachingMethod
+        : "dialogue";
+
+    return {
+      answer:
+        typeof parsed.answer === "string"
+          ? parsed.answer.trim()
+          : "Давай попробуем ещё раз.",
+      visualBlock:
+        typeof parsed.visualBlock === "string" && parsed.visualBlock.trim()
+          ? parsed.visualBlock.trim()
+          : null,
+      visualLabel:
+        typeof parsed.visualLabel === "string" && parsed.visualLabel.trim()
+          ? parsed.visualLabel.trim()
+          : null,
+      teachingMethod,
+      previousMethodOutcome:
+        Number.isFinite(previousMethodOutcome as number)
+          ? previousMethodOutcome
+          : null,
+      previousMethodEvidence:
+        typeof parsed.previousMethodEvidence === "string"
+          ? parsed.previousMethodEvidence.trim()
+          : "",
+      topic: typeof parsed.topic === "string" ? parsed.topic.trim() : "",
+      hintLevel: Number.isFinite(Number(parsed.hintLevel))
+        ? Math.max(0, Math.min(4, Number(parsed.hintLevel)))
+        : 0,
+      independenceScore: Number.isFinite(Number(parsed.independenceScore))
+        ? Math.max(0, Math.min(100, Number(parsed.independenceScore)))
+        : 70,
+      correctness: ["correct", "incorrect", "partial", "unknown"].includes(
+        parsed.correctness
+      )
+        ? parsed.correctness
+        : "unknown",
+      needsReview: Boolean(parsed.needsReview),
+      supportSignal: ["none", "struggling", "progress", "solved"].includes(
+        parsed.supportSignal
+      )
+        ? parsed.supportSignal
+        : "none",
+    };
+  } catch {
+    return {
+      answer: raw.trim() || "Давай попробуем ещё раз.",
+      visualBlock: null,
+      visualLabel: null,
+      teachingMethod: "dialogue",
+      previousMethodOutcome: null,
+      previousMethodEvidence: "",
+      topic: "",
+      hintLevel: 0,
+      independenceScore: 70,
+      correctness: "unknown",
+      needsReview: false,
+      supportSignal: "none",
+    };
+  }
+}
+
+function renderMethodProfile(methods: MethodSummary[]) {
+  if (!methods.length) {
+    return "Данных об эффективности методов пока недостаточно. Не делай выводов о стиле обучения ребёнка как о факте.";
+  }
+
+  const enough = methods.filter((item) => item.attempts >= 2);
+
+  if (!enough.length) {
+    return "Есть первые наблюдения, но ни один метод ещё не проверен хотя бы дважды. Не называй предпочтения ребёнка установленными.";
+  }
+
+  const sorted = [...enough].sort((a, b) => b.avgOutcome - a.avgOutcome);
+  return sorted
+    .map((item) => {
+      const label =
+        METHOD_LABELS[item.method as TeachingMethod] || item.method;
+      return `- ${label}: ${item.attempts} наблюдений, средний результат ${Math.round(
+        item.avgOutcome
+      )}/100`;
+    })
+    .join("\n");
+}
+
+export async function POST(request: Request) {
+  try {
+    const { apiKey, folderId } = requireEnv();
+    const body = await request.json();
+
+    const subject = body.subject as SubjectSlug;
+    const mode = body.mode as StudyModeSlug;
+    const message =
+      typeof body.message === "string" ? body.message.trim() : "";
+    const imageDataUrl =
+      typeof body.imageDataUrl === "string" ? body.imageDataUrl : null;
+
+    const history: HistoryItem[] = Array.isArray(body.history)
+      ? body.history.slice(-18)
+      : [];
+
+    const parentRules: string[] = Array.isArray(body.parentRules)
+      ? body.parentRules.filter((x: unknown) => typeof x === "string").slice(0, 20)
+      : [];
+
+    const methodProfile: MethodSummary[] = Array.isArray(body.methodProfile)
+      ? body.methodProfile.slice(0, 20)
+      : [];
+
+    const previousMethod =
+      typeof body.previousMethod === "string" ? body.previousMethod : null;
+
+    const supportStage = Number.isFinite(Number(body.supportStage))
+      ? Math.max(0, Math.min(4, Number(body.supportStage)))
+      : 0;
+
+    if (!(subject in SUBJECTS) || !(mode in STUDY_MODES)) {
+      return Response.json(
+        { error: "Неизвестный предмет или режим занятия." },
+        { status: 400 }
+      );
+    }
+
+    if (!message && !imageDataUrl) {
+      return Response.json(
+        { error: "Нужно отправить текст или изображение." },
+        { status: 400 }
+      );
+    }
+
+    let imageText = "";
+    if (imageDataUrl) {
+      imageText = await recognizeImage(imageDataUrl, apiKey, folderId);
+    }
+
+    const userText = [
+      message || "Помоги мне разобраться с прикреплённым заданием.",
+      imageText
+        ? `\nТекст, распознанный на изображении:\n---\n${imageText}\n---`
+        : "",
+    ]
+      .join("")
+      .trim();
+
+    const adaptiveProfileText = renderMethodProfile(methodProfile);
+    const subjectPrompt = getSubjectAdaptivePrompt(subject);
+
+    const pedagogy = `
+ТЫ — ПЕРСОНАЛЬНЫЙ AI-РЕПЕТИТОР ЛУНИК ДЛЯ СОФЬИ, 7 КЛАСС.
+
+ТВОЯ ЦЕЛЬ:
+1. Помочь понять материал.
+2. Сохранять самостоятельность ребёнка.
+3. Заинтересовывать, а не читать лекцию.
+4. Менять способ объяснения, если предыдущий не помог.
+5. Постепенно адаптироваться только по реальным данным занятий.
+
+ЖЁСТКАЯ ЛЕСТНИЦА ПОМОЩИ:
+Текущий уровень помощи = ${supportStage}. НЕЛЬЗЯ перескакивать через уровни.
+
+Уровень 0 — самопроверка:
+- если ребёнок ошибся, НЕ давай вычислений, подсказок, частичных произведений или ответа;
+- попроси проверить конкретное место: знак, перенос, порядок действий, разряд;
+- можно задать ОДИН направляющий вопрос, но без числовой подсказки.
+
+Уровень 1 — маленькая подсказка:
+- укажи только, ЧТО нужно проверить или с чего начать;
+- не вычисляй за ребёнка;
+- если нужна визуализация, показывай ТОЛЬКО каркас с пустыми местами.
+
+Уровень 2 — конкретная подсказка:
+- можно показать один принцип или один микро-шаг;
+- нельзя показывать весь ход решения и финальный ответ;
+- для столбика по математике допускается только каркас и одна заполненная операция максимум.
+
+Уровень 3 — один шаг вместе:
+- реши ровно один подшаг;
+- оставь следующие строки/ответ пустыми;
+- попроси ребёнка продолжить самому.
+
+Уровень 4 — полный разбор:
+- полный разбор разрешён только после нескольких предыдущих попыток;
+- даже здесь сначала объясни структуру, а потом решение.
+
+СТИЛЬ:
+- По умолчанию ответ короткий: обычно 2–5 предложений.
+- Не повторяй длинными словами то, что можно показать схемой.
+- Если ребёнок просит "покажи", "схемой", "столбиком", "таблицей", "не текстом" — обязательно используй visualBlock.
+- Если visualBlock используется на уровнях 0–2, он НЕ должен содержать финальный ответ.
+- Если visualBlock используется на уровнях 0–1, он не должен содержать вычисленные промежуточные результаты.
+- Не говори "я не могу изобразить", если это можно показать текстовой схемой.
+- Если предыдущий способ не помог, выбери ДРУГОЙ teachingMethod.
+- Не делай выводов о характере, эмоциях или "типе обучения" ребёнка по 1–2 сообщениям.
+- Не используй LaTeX: $, $$, \\times, \\frac, \\sqrt.
+- Математика: ×, ÷, =, +, −, %, √, x², x³, 3/4.
+
+ОСОБЕННО ДЛЯ УМНОЖЕНИЯ В СТОЛБИК:
+- выравнивай числа ПО ПРАВОМУ КРАЮ;
+- используй моноширинную запись с пробелами;
+- второй частичный результат показывай ПОЛНЫМ числом с нулём, а не "135 со сдвигом";
+- правильный полный вид, когда полный разбор уже разрешён:
+     45
+  ×  36
+  -----
+    270
+   1350
+  -----
+   1620
+- на уровнях 0–2 вместо готовых чисел используй подчёркивания:
+     45
+  ×  36
+  -----
+    ___
+   ____
+  -----
+   ____
+
+${subjectPrompt}
+
+ПРАВИЛА РОДИТЕЛЯ:
+${
+  parentRules.length
+    ? parentRules.map((rule, i) => `${i + 1}. ${rule}`).join("\n")
+    : "Дополнительных правил нет."
+}
+
+НАБЛЮДАЕМАЯ ЭФФЕКТИВНОСТЬ МЕТОДОВ:
+${adaptiveProfileText}
+
+ПРЕДЫДУЩИЙ МЕТОД:
+${previousMethod || "нет"}
+
+Если previousMethod есть, оцени по НОВОМУ сообщению ребёнка, помог ли именно предыдущий способ объяснения.
+previousMethodOutcome:
+- 80–100: ребёнок понял/продвинулся после метода;
+- 55–79: помог частично;
+- 0–54: метод не помог или ребёнок всё ещё явно не понимает;
+- null: данных недостаточно.
+Не выдавай оценку как факт, если по сообщению нельзя понять результат.
+
+НУЖЕН СТРОГО JSON БЕЗ MARKDOWN:
+{
+  "answer": "короткий ответ Софье",
+  "visualBlock": "наглядная схема или пустая строка",
+  "visualLabel": "короткая подпись к схеме или пустая строка",
+  "teachingMethod": "один метод",
+  "previousMethodOutcome": null,
+  "previousMethodEvidence": "коротко, на каком наблюдаемом сигнале основана оценка",
+  "topic": "краткая тема",
+  "hintLevel": 0,
+  "independenceScore": 0,
+  "correctness": "correct|incorrect|partial|unknown",
+  "needsReview": false,
+  "supportSignal": "none|struggling|progress|solved"
+}
+
+Допустимые teachingMethod:
+visual_schema, worked_example, step_by_step, analogy, game, dialogue,
+retrieval_practice, comparison, oral_practice, timeline, cause_effect,
+classification, story, experiment, map_logic, character_analysis.
+`;
+
+    const messages = [
+      {
+        role: "system",
+        text:
+          buildTutorInstructions(subject, mode) +
+          "\n\n" +
+          pedagogy,
+      },
+      ...history.map((item) => ({
+        role: item.role,
+        text: item.text,
+      })),
+      { role: "user", text: userText },
+    ];
+
+    const response = await fetch(
+      "https://ai.api.cloud.yandex.net/foundationModels/v1/completion",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Api-Key ${apiKey}`,
+          "x-folder-id": folderId,
+          "x-data-logging-enabled": "false",
+        },
+        body: JSON.stringify({
+          modelUri: `gpt://${folderId}/yandexgpt/latest`,
+          completionOptions: {
+            stream: false,
+            temperature: 0.35,
+            maxTokens: "1300",
+            reasoningOptions: { mode: "ENABLED_HIDDEN" },
+          },
+          messages,
+        }),
+      }
+    );
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(
+        data?.message ||
+          data?.error?.message ||
+          "YandexGPT не смог сформировать ответ."
+      );
+    }
+
+    const raw =
+      data?.result?.alternatives?.[0]?.message?.text?.trim() || "";
+
+    const parsed = parseModelJson(raw);
+
+    const difficultyPhrase =
+      /не понимаю|не получается|не знаю|помоги|объясни ещё|не выходит|запутал/i.test(
+        userText
+      );
+
+    let nextSupportStage = supportStage;
+
+    if (parsed.correctness === "correct" || parsed.supportSignal === "solved") {
+      nextSupportStage = 0;
+    } else if (
+      parsed.correctness === "incorrect" ||
+      parsed.correctness === "partial" ||
+      parsed.supportSignal === "struggling" ||
+      difficultyPhrase
+    ) {
+      nextSupportStage = Math.min(4, supportStage + 1);
+    }
+
+    return Response.json({
+      ...parsed,
+      supportStageUsed: supportStage,
+      nextSupportStage,
+      recognizedImageText: imageText || null,
+    });
+  } catch (error) {
+    console.error("Tutor API error:", error);
+
+    return Response.json(
+      {
+        error:
+          error instanceof Error
+            ? error.message
+            : "Не удалось получить ответ Луника.",
+      },
+      { status: 500 }
+    );
+  }
+}

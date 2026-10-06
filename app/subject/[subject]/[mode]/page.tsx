@@ -36,6 +36,10 @@ type TutorResult = {
   independenceScore: number;
   correctness: "correct" | "incorrect" | "partial" | "unknown";
   needsReview: boolean;
+  intent?: string;
+  goal?: string;
+  visualType?: string;
+  topicEvidence?: string;
   supportStageUsed: number;
   nextSupportStage: number;
 };
@@ -579,6 +583,9 @@ export default function StudyModePage() {
             visualBlock: result.visualBlock,
             visualLabel: result.visualLabel,
             teachingMethod: result.teachingMethod,
+            intent: result.intent || null,
+            goal: result.goal || null,
+            visualType: result.visualType || "none",
             supportStage: result.nextSupportStage,
           },
         },
@@ -623,6 +630,19 @@ export default function StudyModePage() {
       independence_score: result.independenceScore,
       correctness: result.correctness,
       needs_review: result.needsReview,
+    });
+
+    await supabase.from("learning_observations").insert({
+      child_id: childId,
+      session_id: sessionId,
+      subject: subjectKey,
+      topic: result.topic || null,
+      intent: result.intent || "unknown",
+      goal: result.goal || "Учебная цель пока уточняется",
+      method: result.teachingMethod,
+      visual_type: result.visualType || "none",
+      support_stage: result.supportStageUsed,
+      evidence: result.topicEvidence || null,
     });
 
     const { data: analytics } = await supabase
@@ -772,6 +792,12 @@ export default function StudyModePage() {
         independenceScore: Number(data.independenceScore ?? 70),
         correctness: data.correctness || "unknown",
         needsReview: Boolean(data.needsReview),
+        intent: typeof data.intent === "string" ? data.intent : "unknown",
+        goal: typeof data.goal === "string" ? data.goal : "",
+        visualType:
+          typeof data.visualType === "string" ? data.visualType : "none",
+        topicEvidence:
+          typeof data.topicEvidence === "string" ? data.topicEvidence : "",
         supportStageUsed: Number(data.supportStageUsed ?? supportStage),
         nextSupportStage: Number(data.nextSupportStage ?? supportStage),
       };

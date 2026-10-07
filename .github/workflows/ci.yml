@@ -32,6 +32,9 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Dependency audit (informational)
+        run: npm audit --json || true
+
       - name: Unit tests
         run: npm test
 

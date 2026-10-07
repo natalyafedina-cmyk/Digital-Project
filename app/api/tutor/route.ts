@@ -11,8 +11,10 @@ import {
   type TeachingMethod,
 } from "@/lib/adaptive-learning";
 import {
+  LEARNING_INTENTS,
   buildLearningPlan,
   renderLearningPlan,
+  type LearningIntent,
 } from "@/lib/learning-engine";
 
 export const runtime = "nodejs";
@@ -164,6 +166,69 @@ function parseModelJson(raw: string) {
   }
 }
 
+function extractNumbers(text: string) {
+  return text.match(/\d+(?:[.,]\d+)?/g) || [];
+}
+
+function violatesSupportStage(
+  result: ReturnType<typeof parseModelJson>,
+  stage: number,
+  context: string
+) {
+  if (stage >= 3) return false;
+
+  const combined = [result.answer, result.visualBlock || ""].join("\n");
+  const allowedNumbers = new Set(extractNumbers(context));
+  const introducedNumbers = extractNumbers(combined).filter(
+    (value) => !allowedNumbers.has(value)
+  );
+
+  if (stage <= 1 && introducedNumbers.length > 0) return true;
+
+  if (
+    stage === 0 &&
+    /(?:готов(?:ый|ое)\s+ответ|ответ\s*[:=]|получ(?:ается|ится|им)|итог\s*[:=]|равно\s+\d|=\s*\d)/i.test(
+      combined
+    )
+  ) {
+    return true;
+  }
+
+  if (
+    stage <= 2 &&
+    /(?:ответ|итог)\s*[:=\-]?\s*\d/i.test(combined)
+  ) {
+    return true;
+  }
+
+  return false;
+}
+
+function safeSupportFallback(
+  result: ReturnType<typeof parseModelJson>,
+  stage: number,
+  wantsVisual: boolean
+) {
+  const answer =
+    stage === 0
+      ? wantsVisual
+        ? "Покажу только структуру, без решения. Сначала назови, какой шаг ты сделаешь первым."
+        : "Сначала проверь свой ход сама: какой шаг ты сделала первым и почему?"
+      : stage === 1
+      ? "Дам маленькую подсказку: назови только первый шаг, который нужно сделать. Я проверю его."
+      : "Разберём один микро-шаг вместе, а дальше продолжишь сама.";
+
+  return {
+    ...result,
+    answer,
+    visualBlock: null,
+    visualLabel: null,
+    hintLevel: stage,
+    correctness: "unknown" as const,
+    supportSignal: "struggling" as const,
+  };
+}
+
 function renderMethodProfile(methods: MethodSummary[]) {
   if (!methods.length) {
     return "Данных об эффективности методов пока недостаточно. Не делай выводов о стиле обучения ребёнка как о факте.";
@@ -214,6 +279,17 @@ export async function POST(request: Request) {
     const previousMethod =
       typeof body.previousMethod === "string" ? body.previousMethod : null;
 
+    const currentIntent =
+      typeof body.currentIntent === "string" &&
+      LEARNING_INTENTS.includes(body.currentIntent as LearningIntent)
+        ? (body.currentIntent as LearningIntent)
+        : null;
+
+    const currentGoal =
+      typeof body.currentGoal === "string" && body.currentGoal.trim()
+        ? body.currentGoal.trim()
+        : null;
+
     const supportStage = Number.isFinite(Number(body.supportStage))
       ? Math.max(0, Math.min(4, Number(body.supportStage)))
       : 0;
@@ -252,6 +328,8 @@ export async function POST(request: Request) {
       message: userText,
       subject,
       previousMethod,
+      currentIntent,
+      currentGoal,
       supportStage,
     });
 
@@ -424,10 +502,67 @@ classification, story, experiment, map_logic, character_analysis.
       );
     }
 
-    const raw =
+    let raw =
       data?.result?.alternatives?.[0]?.message?.text?.trim() || "";
 
-    const parsed = parseModelJson(raw);
+    let parsed = parseModelJson(raw);
+    const supportContext = [
+      ...history.map((item) => item.text),
+      userText,
+    ].join("\n");
+
+    if (violatesSupportStage(parsed, supportStage, supportContext)) {
+      const retryMessages = messages.map((item, index) =>
+        index === 0
+          ? {
+              ...item,
+              text:
+                item.text +
+                "\n\nКРИТИЧЕСКАЯ ПРОВЕРКА: предыдущая генерация нарушила текущую ступень помощи. Перегенерируй ответ строго в пределах уровня " +
+                supportStage +
+                ". Не добавляй вычислений, промежуточных результатов или готового ответа, которые ещё не разрешены этим уровнем.",
+            }
+          : item
+      );
+
+      const retryResponse = await fetch(
+        "https://ai.api.cloud.yandex.net/foundationModels/v1/completion",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Api-Key ${apiKey}`,
+            "x-folder-id": folderId,
+            "x-data-logging-enabled": "false",
+          },
+          body: JSON.stringify({
+            modelUri: `gpt://${folderId}/yandexgpt/latest`,
+            completionOptions: {
+              stream: false,
+              temperature: 0.2,
+              maxTokens: "1100",
+              reasoningOptions: { mode: "ENABLED_HIDDEN" },
+            },
+            messages: retryMessages,
+          }),
+        }
+      );
+
+      const retryData = await retryResponse.json();
+      if (retryResponse.ok) {
+        raw =
+          retryData?.result?.alternatives?.[0]?.message?.text?.trim() || raw;
+        parsed = parseModelJson(raw);
+      }
+
+      if (violatesSupportStage(parsed, supportStage, supportContext)) {
+        parsed = safeSupportFallback(
+          parsed,
+          supportStage,
+          learningPlan.visualType !== "none"
+        );
+      }
+    }
 
     const difficultyPhrase =
       /не понимаю|не получается|не знаю|помоги|объясни ещё|не выходит|запутал/i.test(

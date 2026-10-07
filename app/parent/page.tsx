@@ -40,6 +40,18 @@ type TopicProgress = {
   needs_review: boolean;
 };
 
+type LearningObservation = {
+  subject: string;
+  topic: string | null;
+  intent: string;
+  goal: string;
+  method: string;
+  visual_type: string;
+  support_stage: number;
+  evidence: string | null;
+  created_at: string;
+};
+
 type ParentMessage = {
   role: "user" | "assistant";
   text: string;
@@ -66,6 +78,7 @@ export default function ParentPage() {
   const [rules, setRules] = useState<Rule[]>([]);
   const [methodEvents, setMethodEvents] = useState<MethodEvent[]>([]);
   const [topicProgress, setTopicProgress] = useState<TopicProgress[]>([]);
+  const [learningObservations, setLearningObservations] = useState<LearningObservation[]>([]);
   const [chat, setChat] = useState<ParentMessage[]>([]);
   const [chatText, setChatText] = useState("");
   const [chatLoading, setChatLoading] = useState(false);
@@ -129,6 +142,7 @@ export default function ParentPage() {
         chatRes,
         methodsRes,
         topicsRes,
+        observationsRes,
       ] = await Promise.all([
         supabase
           .from("study_sessions")
@@ -166,6 +180,15 @@ export default function ParentPage() {
           .eq("child_id", child.id)
           .order("last_seen_at", { ascending: false })
           .limit(100),
+        supabase
+          .from("learning_observations")
+          .select(
+            "subject,topic,intent,goal,method,visual_type,support_stage,evidence,created_at"
+          )
+          .eq("child_id", child.id)
+          .not("evidence", "is", null)
+          .order("created_at", { ascending: false })
+          .limit(100),
       ]);
 
       if (sessionsRes.error) throw sessionsRes.error;
@@ -173,11 +196,15 @@ export default function ParentPage() {
       if (chatRes.error) throw chatRes.error;
       if (methodsRes.error) throw methodsRes.error;
       if (topicsRes.error) throw topicsRes.error;
+      if (observationsRes.error) throw observationsRes.error;
 
       setSessions((sessionsRes.data || []) as Session[]);
       setRules((rulesRes.data || []) as Rule[]);
       setMethodEvents((methodsRes.data || []) as MethodEvent[]);
       setTopicProgress((topicsRes.data || []) as TopicProgress[]);
+      setLearningObservations(
+        (observationsRes.data || []) as LearningObservation[]
+      );
       setChat(
         (chatRes.data || []).map((item) => ({
           role: item.role as "user" | "assistant",
@@ -449,10 +476,24 @@ export default function ParentPage() {
         attempts: item.attempts,
         averageOutcome: item.avg,
       })),
+      observationCount: learningObservations.length,
+      recentObservations: learningObservations.slice(0, 20).map((item) => ({
+        subject: item.subject,
+        topic: item.topic,
+        intent: item.intent,
+        goal: item.goal,
+        method: item.method,
+        visualType: item.visual_type,
+        supportStage: item.support_stage,
+        evidence: item.evidence,
+        createdAt: item.created_at,
+      })),
       dataConfidence:
-        sessions.length >= 5 && methodEvents.length >= 6
+        sessions.length >= 5 &&
+        methodEvents.length >= 6 &&
+        learningObservations.length >= 3
           ? "enough_for_initial_patterns"
-          : sessions.length >= 2
+          : sessions.length >= 2 || learningObservations.length >= 2
           ? "early"
           : "insufficient",
     }),
@@ -463,6 +504,7 @@ export default function ParentPage() {
       weakTopics,
       methodStats,
       methodEvents.length,
+      learningObservations,
     ]
   );
 

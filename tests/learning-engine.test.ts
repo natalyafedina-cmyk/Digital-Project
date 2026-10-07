@@ -42,4 +42,39 @@ describe("adaptive learning engine", () => {
     expect(plan.mustChangeMethod).toBe(false);
     expect(plan.methodHint).toBe("dialogue");
   });
+
+  it("changes method after a plain struggle signal", () => {
+    const plan = buildLearningPlan({
+      message: "Я не понимаю",
+      subject: "math",
+      previousMethod: "step_by_step",
+      supportStage: 1,
+    });
+    expect(plan.mustChangeMethod).toBe(true);
+  });
+
+  it("keeps the original learning goal while the child is still struggling", () => {
+    const plan = buildLearningPlan({
+      message: "Я всё равно не понимаю",
+      subject: "history",
+      previousMethod: "story",
+      currentIntent: "short_answer",
+      currentGoal: "сформулировать короткий точный ответ",
+      supportStage: 2,
+    });
+    expect(plan.intent).toBe("short_answer");
+    expect(plan.goal).toBe("сформулировать короткий точный ответ");
+  });
+
+  it("allows an explicit new request to replace the previous goal", () => {
+    const plan = buildLearningPlan({
+      message: "Покажи это на карте",
+      subject: "geography",
+      currentIntent: "explain",
+      currentGoal: "понять тему своими словами",
+      supportStage: 1,
+    });
+    expect(plan.intent).toBe("visualize");
+    expect(plan.visualType).toBe("map");
+  });
 });

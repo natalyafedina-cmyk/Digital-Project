@@ -35,6 +35,8 @@ type PlanningInput = {
   subject: string;
   previousMethod?: string | null;
   previousOutcome?: number | null;
+  currentIntent?: LearningIntent | null;
+  currentGoal?: string | null;
   supportStage: number;
 };
 
@@ -93,15 +95,26 @@ function pickMethod(intent: LearningIntent, visualType: VisualType): TeachingMet
 }
 
 export function buildLearningPlan(input: PlanningInput): LearningPlan {
-  const intent = detectLearningIntent(input.message);
+  const detectedIntent = detectLearningIntent(input.message);
+  const text = input.message.toLowerCase();
+  const struggleFollowUp = has(
+    text,
+    /не понимаю|не получается|не выходит|запутал|запуталась|не знаю как|всё равно не понимаю/
+  );
+  const intent =
+    input.currentIntent && struggleFollowUp
+      ? input.currentIntent
+      : detectedIntent;
   const visualType = detectVisualType(input.message, input.subject);
   const previousDidNotHelp =
     typeof input.previousOutcome === "number" && input.previousOutcome < 55;
   const asksForAnotherWay = has(
-    input.message.toLowerCase(),
+    text,
     /по[- ]другому|иначе|другим способом|всё равно не понимаю/
   );
-  const mustChangeMethod = Boolean(input.previousMethod) && (previousDidNotHelp || asksForAnotherWay);
+  const mustChangeMethod =
+    Boolean(input.previousMethod) &&
+    (previousDidNotHelp || asksForAnotherWay || struggleFollowUp);
 
   const format =
     visualType !== "none"
@@ -128,7 +141,10 @@ export function buildLearningPlan(input: PlanningInput): LearningPlan {
 
   return {
     intent,
-    goal: goals[intent],
+    goal:
+      input.currentGoal && struggleFollowUp
+        ? input.currentGoal
+        : goals[intent],
     visualType,
     format,
     mustChangeMethod,

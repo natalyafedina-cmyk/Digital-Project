@@ -35,9 +35,12 @@ export async function POST(request: Request) {
     params.set("text", text);
     params.set("format", "mp3");
     params.set("speed", String(speed));
-    params.set("voice", "jane");
 
-    if (subject !== "english") {
+    if (subject === "english") {
+      params.set("voice", "john");
+      params.set("lang", "en-US");
+    } else {
+      params.set("voice", "jane");
       params.set("lang", "ru-RU");
 
       if (preset === "warm") params.set("emotion", "good");

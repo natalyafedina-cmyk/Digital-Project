@@ -15,6 +15,8 @@ type ChatMessage = {
   text: string;
   visualBlock?: string | null;
   teachingMethod?: string | null;
+  intent?: string | null;
+  goal?: string | null;
   supportStage?: number;
 };
 
@@ -159,6 +161,8 @@ export default function StudyModePage() {
   const [parentRules, setParentRules] = useState<string[]>([]);
   const [methodProfile, setMethodProfile] = useState<MethodSummary[]>([]);
   const [previousMethod, setPreviousMethod] = useState<string | null>(null);
+  const [activeIntent, setActiveIntent] = useState<string | null>(null);
+  const [activeGoal, setActiveGoal] = useState<string | null>(null);
   const [supportStage, setSupportStage] = useState(0);
   const [voiceSettings, setVoiceSettings] =
     useState<VoiceSettings>(DEFAULT_VOICE);
@@ -331,6 +335,14 @@ export default function StudyModePage() {
             typeof metadata.teachingMethod === "string"
               ? metadata.teachingMethod
               : null,
+          intent:
+            typeof metadata.intent === "string"
+              ? metadata.intent
+              : null,
+          goal:
+            typeof metadata.goal === "string"
+              ? metadata.goal
+              : null,
           supportStage:
             typeof metadata.supportStage === "number"
               ? metadata.supportStage
@@ -345,6 +357,8 @@ export default function StudyModePage() {
         .find((item) => item.role === "assistant" && item.teachingMethod);
 
       setPreviousMethod(lastAssistant?.teachingMethod || null);
+      setActiveIntent(lastAssistant?.intent || null);
+      setActiveGoal(lastAssistant?.goal || null);
       setSupportStage(lastAssistant?.supportStage || 0);
 
       if ((storedMessages || []).length) {
@@ -370,6 +384,8 @@ export default function StudyModePage() {
     setActiveSessionId(null);
     setMessages([]);
     setPreviousMethod(null);
+    setActiveIntent(null);
+    setActiveGoal(null);
     setSupportStage(0);
     setNotice("Новое занятие начато.");
   }
@@ -632,18 +648,31 @@ export default function StudyModePage() {
       needs_review: result.needsReview,
     });
 
-    await supabase.from("learning_observations").insert({
-      child_id: childId,
-      session_id: sessionId,
-      subject: subjectKey,
-      topic: result.topic || null,
-      intent: result.intent || "unknown",
-      goal: result.goal || "Учебная цель пока уточняется",
-      method: result.teachingMethod,
-      visual_type: result.visualType || "none",
-      support_stage: result.supportStageUsed,
-      evidence: result.topicEvidence || null,
-    });
+    const observationEvidence = result.topicEvidence?.trim() || "";
+    const shouldSaveObservation =
+      Boolean(result.topic?.trim()) &&
+      Boolean(observationEvidence) &&
+      Boolean(result.intent) &&
+      result.intent !== "unknown";
+
+    if (shouldSaveObservation) {
+      const { error: observationError } = await supabase
+        .from("learning_observations")
+        .insert({
+          child_id: childId,
+          session_id: sessionId,
+          subject: subjectKey,
+          topic: result.topic || null,
+          intent: result.intent || "unknown",
+          goal: result.goal || "Учебная цель пока уточняется",
+          method: result.teachingMethod,
+          visual_type: result.visualType || "none",
+          support_stage: result.supportStageUsed,
+          evidence: observationEvidence,
+        });
+
+      if (observationError) throw observationError;
+    }
 
     const { data: analytics } = await supabase
       .from("turn_analytics")
@@ -759,6 +788,8 @@ export default function StudyModePage() {
           parentRules,
           methodProfile,
           previousMethod,
+          currentIntent: activeIntent,
+          currentGoal: activeGoal,
           supportStage,
         }),
       });
@@ -809,10 +840,15 @@ export default function StudyModePage() {
           text: result.answer,
           visualBlock: result.visualBlock,
           teachingMethod: result.teachingMethod,
+          intent: result.intent || null,
+          goal: result.goal || null,
           supportStage: result.nextSupportStage,
         },
       ]);
 
+      setPreviousMethod(result.teachingMethod);
+      setActiveIntent(result.intent || null);
+      setActiveGoal(result.goal || null);
       setSupportStage(result.nextSupportStage);
 
       if (sessionId) {

@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 
@@ -106,7 +107,7 @@ export default function HomeInsights() {
             <p className="text-sm font-bold mb-1">Твой прогресс</p>
             <p className="text-[9px] text-slate-400">Войди, чтобы видеть реальные данные</p>
           </div>
-        </a>
+        </Link>
         <div className="bg-white/90 rounded-[18px] shadow-sm px-4 py-2.5">
           <p className="text-sm font-bold mb-1">Что повторить</p>
           <p className="text-[9px] text-slate-400">Появится после занятий</p>
@@ -121,7 +122,7 @@ export default function HomeInsights() {
 
   return (
     <section className="relative z-30 hidden xl:grid shrink-0 h-[88px] mt-2 grid-cols-[1.05fr_1.35fr_1fr] gap-2">
-      <a
+      <Link
         href="/section/achievements"
         className="relative z-40 bg-white/90 rounded-[18px] shadow-sm px-4 py-2.5 flex items-center gap-3 hover:shadow-md transition cursor-pointer"
       >
@@ -134,9 +135,9 @@ export default function HomeInsights() {
             {independence === null ? "—" : `${independence}%`}
           </div>
         </div>
-      </a>
+      </Link>
 
-      <a
+      <Link
         href="/section/goals"
         className="relative z-40 bg-white/90 rounded-[18px] shadow-sm px-4 py-2.5 hover:shadow-md transition cursor-pointer"
       >
@@ -153,9 +154,9 @@ export default function HomeInsights() {
             <div>Пока нет слабых тем ✨</div>
           )}
         </div>
-      </a>
+      </Link>
 
-      <a
+      <Link
         href="/section/achievements"
         className="relative z-40 bg-white/90 rounded-[18px] shadow-sm px-4 py-2.5 hover:shadow-md transition cursor-pointer"
       >
@@ -166,7 +167,7 @@ export default function HomeInsights() {
             <p className="text-[9px] text-slate-400">реальная серия занятий</p>
           </div>
         </div>
-      </a>
+      </Link>
     </section>
   );
 }

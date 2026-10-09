@@ -9,7 +9,9 @@ import {
   type StudyModeSlug,
 } from "@/lib/tutor-config";
 import { createClient } from "@/lib/supabase/client";
-import StructuredMathVisual from "@/components/StructuredMathVisual";
+import StructuredMathVisual, {
+  extractColumnMultiplication,
+} from "@/components/StructuredMathVisual";
 
 type ChatMessage = {
   role: "user" | "assistant";
@@ -727,8 +729,8 @@ export default function StudyModePage() {
     await loadMethodProfile(childId);
   }
 
-  async function sendMessage() {
-    const cleanText = text.trim();
+  async function sendMessage(overrideText?: string) {
+    const cleanText = (overrideText ?? text).trim();
 
     if (!cleanText && !imageFile) {
       setError(
@@ -742,9 +744,10 @@ export default function StudyModePage() {
     setNotice("");
 
     try {
-      const imageDataUrl = imageFile
-        ? await fileToDataUrl(imageFile)
-        : null;
+      const imageDataUrl =
+        overrideText === undefined && imageFile
+          ? await fileToDataUrl(imageFile)
+          : null;
 
       const userText =
         cleanText ||
@@ -757,8 +760,10 @@ export default function StudyModePage() {
         { role: "user", text: userText },
       ]);
 
-      setText("");
-      removeImage();
+      if (overrideText === undefined) {
+        setText("");
+        removeImage();
+      }
 
       let sessionId = activeSessionId;
 
@@ -875,6 +880,25 @@ export default function StudyModePage() {
       setIsSending(false);
     }
   }
+
+  const latestInteractiveStructuredMathIndex = messages.reduce(
+    (latest, message, index) => {
+      if (
+        message.role !== "assistant" ||
+        message.visualType !== "structured_math" ||
+        !message.visualBlock
+      ) {
+        return latest;
+      }
+
+      const source = [message.visualBlock, message.text]
+        .filter(Boolean)
+        .join("\n");
+
+      return extractColumnMultiplication(source) ? index : latest;
+    },
+    -1
+  );
 
   if (!currentSubject || !currentMode) {
     return (
@@ -997,6 +1021,11 @@ export default function StudyModePage() {
                           <StructuredMathVisual
                             content={message.visualBlock}
                             answer={message.text}
+                            interactive={
+                              index === latestInteractiveStructuredMathIndex
+                            }
+                            disabled={isSending || isTranscribing}
+                            onSubmit={(response) => sendMessage(response)}
                           />
                         ) : (
                           <pre className="mt-3 overflow-x-auto rounded-2xl border border-violet-200 bg-white px-4 py-3 font-mono text-[15px] leading-7 text-slate-900 whitespace-pre">
@@ -1099,7 +1128,7 @@ export default function StudyModePage() {
               )}
 
               <button
-                onClick={sendMessage}
+                onClick={() => void sendMessage()}
                 disabled={isSending || isTranscribing}
                 className="ml-auto rounded-2xl bg-violet-600 px-6 py-3 text-sm font-bold text-white shadow hover:bg-violet-700 disabled:opacity-50"
               >

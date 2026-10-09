@@ -1,9 +1,16 @@
+"use client";
+
+import { useState } from "react";
+
 type StructuredMathVisualProps = {
   content: string;
   answer?: string;
+  interactive?: boolean;
+  disabled?: boolean;
+  onSubmit?: (response: string) => void | Promise<void>;
 };
 
-function extractColumnMultiplication(content: string) {
+export function extractColumnMultiplication(content: string) {
   const direct = content.match(/(\d+)\s*[×xX*]\s*(\d+)/);
   if (direct) {
     return { top: direct[1], bottom: direct[2] };
@@ -64,14 +71,30 @@ function extractShownResults(content: string, top: string, bottom: string) {
   return values.slice(0, 3);
 }
 
+function isOnlyBlankScaffold(content: string) {
+  const stripped = content
+    .replace(/[\s_\-—–×xX*+÷=|]/g, "")
+    .trim();
+
+  return stripped.length === 0;
+}
+
 export default function StructuredMathVisual({
   content,
   answer = "",
+  interactive = false,
+  disabled = false,
+  onSubmit,
 }: StructuredMathVisualProps) {
   const source = [content, answer].filter(Boolean).join("\n");
   const multiplication = extractColumnMultiplication(source);
+  const [partialOne, setPartialOne] = useState("");
+  const [partialTwo, setPartialTwo] = useState("");
+  const [finalAnswer, setFinalAnswer] = useState("");
 
   if (!multiplication) {
+    if (isOnlyBlankScaffold(content)) return null;
+
     return (
       <pre className="mt-3 overflow-x-auto rounded-2xl border border-violet-200 bg-white px-4 py-3 font-mono text-[15px] leading-7 text-slate-900 whitespace-pre">
         {content}
@@ -88,6 +111,9 @@ export default function StructuredMathVisual({
     top.length + bottom.length,
     ...shownResults.map((value) => value.length)
   );
+
+  const sanitizeDigits = (value: string) =>
+    value.replace(/\D/g, "").slice(0, maxDigits);
 
   const renderNumber = (value: string, prefix = "") => {
     const cells = value.padStart(maxDigits, " ").split("");
@@ -109,17 +135,51 @@ export default function StructuredMathVisual({
     );
   };
 
-  const renderBlankRow = (key: string) => (
+  const renderEntryRow = (
+    key: string,
+    value: string,
+    onChange: (value: string) => void,
+    label: string,
+    emphasis = false
+  ) => (
     <>
       <div />
-      {Array.from({ length: maxDigits }).map((_, index) => (
-        <div
-          key={`${key}-${index}`}
-          className="mx-0.5 h-9 min-w-9 rounded-md border-2 border-dashed border-violet-200 bg-white"
-        />
-      ))}
+      <input
+        key={key}
+        value={value}
+        onChange={(event) => onChange(sanitizeDigits(event.target.value))}
+        inputMode="numeric"
+        pattern="[0-9]*"
+        aria-label={label}
+        placeholder={"_".repeat(Math.min(maxDigits, 5))}
+        disabled={disabled}
+        className={`h-10 rounded-lg border px-3 text-right font-mono text-xl font-semibold tabular-nums outline-none transition ${
+          emphasis
+            ? "border-violet-400 bg-white focus:ring-4 focus:ring-violet-100"
+            : "border-violet-200 bg-white/90 focus:border-violet-400 focus:ring-4 focus:ring-violet-100"
+        } disabled:opacity-60`}
+        style={{ gridColumn: `2 / span ${maxDigits}` }}
+      />
     </>
   );
+
+  const hasAnyEntry = Boolean(partialOne || partialTwo || finalAnswer);
+
+  async function submitWork() {
+    if (!onSubmit || !hasAnyEntry || disabled) return;
+
+    const parts = [
+      partialOne ? `первая строка ${partialOne}` : "",
+      partialTwo ? `вторая строка ${partialTwo}` : "",
+      finalAnswer ? `итог ${finalAnswer}` : "",
+    ].filter(Boolean);
+
+    await onSubmit(
+      `Мой ответ для примера ${top} × ${bottom} столбиком: ${parts.join(
+        "; "
+      )}.`
+    );
+  }
 
   return (
     <div className="mt-3 rounded-2xl border border-violet-200 bg-white p-4">
@@ -127,9 +187,9 @@ export default function StructuredMathVisual({
         Умножение столбиком
       </div>
 
-      <div className="mx-auto w-fit rounded-2xl bg-violet-50/60 p-4">
+      <div className="mx-auto w-fit max-w-full rounded-2xl bg-violet-50/60 p-4">
         <div
-          className="grid items-center gap-x-1"
+          className="grid items-center gap-x-1 gap-y-1"
           style={{
             gridTemplateColumns: `28px repeat(${maxDigits}, minmax(36px, 42px))`,
           }}
@@ -143,32 +203,66 @@ export default function StructuredMathVisual({
             style={{ gridColumn: `2 / span ${maxDigits}` }}
           />
 
-          {shownResults.length > 0
-            ? shownResults.slice(0, 2).map((value) => renderNumber(value))
-            : (
-              <>
-                {renderBlankRow("partial-1")}
-                {renderBlankRow("partial-2")}
-              </>
-            )}
+          {interactive && shownResults.length === 0 ? (
+            <>
+              {renderEntryRow(
+                "partial-1",
+                partialOne,
+                setPartialOne,
+                "Первый промежуточный результат"
+              )}
+              {renderEntryRow(
+                "partial-2",
+                partialTwo,
+                setPartialTwo,
+                "Второй промежуточный результат"
+              )}
 
-          <div />
-          <div
-            className="my-1 h-0.5 bg-slate-500"
-            style={{ gridColumn: `2 / span ${maxDigits}` }}
-          />
+              <div />
+              <div
+                className="my-1 h-0.5 bg-slate-500"
+                style={{ gridColumn: `2 / span ${maxDigits}` }}
+              />
 
-          {shownResults.length >= 3
-            ? renderNumber(shownResults[2])
-            : renderBlankRow("final")}
+              {renderEntryRow(
+                "final",
+                finalAnswer,
+                setFinalAnswer,
+                "Итоговый ответ",
+                true
+              )}
+            </>
+          ) : (
+            <>
+              {shownResults.slice(0, 2).map((value) => renderNumber(value))}
+
+              <div />
+              <div
+                className="my-1 h-0.5 bg-slate-500"
+                style={{ gridColumn: `2 / span ${maxDigits}` }}
+              />
+
+              {shownResults.length >= 3 ? renderNumber(shownResults[2]) : null}
+            </>
+          )}
         </div>
       </div>
 
-      {shownResults.length === 0 && (
-        <p className="mt-3 text-xs text-slate-500">
-          Заполняй строки по шагам — готовый ответ здесь специально не показан.
-        </p>
-      )}
+      {interactive && shownResults.length === 0 ? (
+        <div className="mt-3 flex flex-wrap items-center justify-between gap-3">
+          <p className="text-xs text-slate-500">
+            Можно заполнить промежуточные строки или только итоговый ответ.
+          </p>
+          <button
+            type="button"
+            onClick={() => void submitWork()}
+            disabled={!hasAnyEntry || disabled}
+            className="rounded-xl bg-violet-600 px-4 py-2 text-sm font-bold text-white shadow-sm hover:bg-violet-700 disabled:cursor-not-allowed disabled:opacity-40"
+          >
+            {disabled ? "Луник проверяет..." : "Проверить у Луника"}
+          </button>
+        </div>
+      ) : null}
     </div>
   );
 }

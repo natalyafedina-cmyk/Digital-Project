@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { useParams } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
@@ -183,20 +184,20 @@ export default function SubjectPage() {
     <main className="min-h-screen bg-[#f7f8ff] text-slate-900">
       <div className="max-w-[1450px] mx-auto p-4 md:p-6">
         <header className="flex items-center justify-between gap-3 mb-4">
-          <a
+          <Link
             href="/"
             className="rounded-2xl bg-white px-4 py-2.5 text-sm font-semibold text-violet-700 shadow-sm"
           >
             ← На главную
-          </a>
+          </Link>
 
           <div className="flex items-center gap-3">
-            <a
+            <Link
               href="/parent"
               className="rounded-2xl bg-white px-4 py-2.5 text-sm font-semibold text-violet-700 shadow-sm"
             >
               Родителю
-            </a>
+            </Link>
             <div className="h-10 w-10 rounded-full bg-violet-600 text-white grid place-items-center font-bold">
               С
             </div>
@@ -249,7 +250,7 @@ export default function SubjectPage() {
 
           <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-3 mt-4">
             {MODES.map((mode) => (
-              <a
+              <Link
                 key={mode.key}
                 href={`/subject/${subjectKey}/${mode.key}`}
                 className="rounded-[24px] bg-white p-4 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition"
@@ -263,7 +264,7 @@ export default function SubjectPage() {
                     <p className="text-sm text-slate-500 mt-1">{mode.text}</p>
                   </div>
                 </div>
-              </a>
+              </Link>
             ))}
           </div>
         </section>
@@ -315,7 +316,7 @@ export default function SubjectPage() {
             {reviewTopics.length ? (
               <div className="space-y-3 mt-4">
                 {reviewTopics.map((item) => (
-                  <a
+                  <Link
                     key={item.topic}
                     href={`/subject/${subjectKey}/weak`}
                     className="block rounded-2xl bg-amber-50 p-4 hover:bg-amber-100/70 transition"
@@ -324,7 +325,7 @@ export default function SubjectPage() {
                     <p className="text-xs text-slate-500 mt-1">
                       Отмечено по результатам реальных занятий
                     </p>
-                  </a>
+                  </Link>
                 ))}
               </div>
             ) : (
@@ -340,7 +341,7 @@ export default function SubjectPage() {
             {recentSessions.length ? (
               <div className="space-y-3 mt-4">
                 {recentSessions.map((item) => (
-                  <a
+                  <Link
                     key={item.id}
                     href={`/subject/${subjectKey}/${item.mode}`}
                     className="block rounded-2xl border border-violet-100 p-4 hover:bg-violet-50/40 transition"
@@ -356,7 +357,7 @@ export default function SubjectPage() {
                     <p className="text-xs text-violet-500 mt-2">
                       Продолжить режим →
                     </p>
-                  </a>
+                  </Link>
                 ))}
               </div>
             ) : (

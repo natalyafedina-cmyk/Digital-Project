@@ -11,6 +11,7 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
+  const [recoveryLoading, setRecoveryLoading] = useState(false);
 
   async function submit(event: FormEvent) {
     event.preventDefault();
@@ -46,6 +47,37 @@ export default function LoginPage() {
       );
     } finally {
       setLoading(false);
+    }
+  }
+
+  async function recoverPassword() {
+    if (!email) {
+      setMessage("Сначала введите email, для которого нужно восстановить пароль.");
+      return;
+    }
+
+    setRecoveryLoading(true);
+    setMessage("");
+
+    try {
+      const redirectTo = `${window.location.origin}/reset-password`;
+      const { error } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo,
+      });
+
+      if (error) throw error;
+
+      setMessage(
+        "Письмо для восстановления пароля отправлено. Откройте его и перейдите по ссылке."
+      );
+    } catch (error) {
+      setMessage(
+        error instanceof Error
+          ? error.message
+          : "Не удалось отправить письмо для восстановления пароля."
+      );
+    } finally {
+      setRecoveryLoading(false);
     }
   }
 
@@ -98,6 +130,17 @@ export default function LoginPage() {
               : "Создать аккаунт"}
           </button>
         </form>
+
+        {mode === "login" && (
+          <button
+            type="button"
+            onClick={recoverPassword}
+            disabled={recoveryLoading}
+            className="mt-3 text-sm font-semibold text-violet-700 disabled:opacity-50"
+          >
+            {recoveryLoading ? "Отправляем письмо..." : "Забыли пароль?"}
+          </button>
+        )}
 
         {message && (
           <div className="mt-4 rounded-2xl bg-violet-50 p-3 text-sm text-slate-600">

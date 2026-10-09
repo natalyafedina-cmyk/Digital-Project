@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import HomeInsights from "@/components/HomeInsights";
 
 type IconName =
@@ -239,7 +240,7 @@ export default function Home() {
       <div className="relative z-10 flex min-h-screen lg:h-screen">
         {/* ЛЕВАЯ ПАНЕЛЬ */}
         <aside className="relative z-20 hidden lg:flex w-[220px] shrink-0 bg-[#eef0ff]/90 backdrop-blur-xl border-r border-white/70 px-4 py-4 flex-col">
-          <a
+          <Link
             href="/section/chat"
             className="relative z-30 flex items-center gap-3 mb-5 rounded-xl hover:bg-white/60 transition"
           >
@@ -264,11 +265,11 @@ export default function Home() {
                 твой AI-репетитор
               </p>
             </div>
-          </a>
+          </Link>
 
           <nav className="relative z-30 space-y-1">
             {menuItems.map((item, index) => (
-              <a
+              <Link
                 key={item.name}
                 href={item.href}
                 className={`relative z-30 w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-left text-sm transition cursor-pointer ${
@@ -284,11 +285,11 @@ export default function Home() {
                 <span className="pointer-events-none">
                   {item.name}
                 </span>
-              </a>
+              </Link>
             ))}
           </nav>
 
-          <a
+          <Link
             href="/section/achievements"
             className="relative z-30 flex-1 mt-4 min-h-0 rounded-[24px] overflow-hidden shadow-sm hover:shadow-lg transition cursor-pointer"
           >
@@ -300,44 +301,44 @@ export default function Home() {
               quality={55}
               className="pointer-events-none object-cover"
             />
-          </a>
+          </Link>
         </aside>
 
         {/* ОСНОВНАЯ ЧАСТЬ */}
         <section className="relative z-20 flex-1 min-w-0 p-3 lg:p-4 flex flex-col">
           {/* ВЕРХНЯЯ ПАНЕЛЬ */}
           <div className="relative z-30 h-11 shrink-0 flex items-center gap-3 mb-3">
-            <a
+            <Link
               href="/section/chat"
               className="relative z-30 h-full flex-1 bg-white/90 border border-white rounded-2xl shadow-sm px-4 flex items-center text-sm text-slate-400 hover:shadow-md transition cursor-pointer"
             >
               <span className="pointer-events-none">
                 🔎&nbsp;&nbsp; Спроси Луника объяснить что угодно...
               </span>
-            </a>
+            </Link>
 
-            <a
+            <Link
               href="/parent"
               className="relative z-30 hidden sm:flex h-11 px-4 shrink-0 rounded-2xl bg-white/90 text-violet-700 font-semibold shadow-sm items-center justify-center hover:shadow-md transition cursor-pointer"
             >
               Родителю
-            </a>
+            </Link>
 
-            <a
+            <Link
               href="/section/profile"
               className="relative z-30 h-11 w-11 shrink-0 rounded-full bg-gradient-to-br from-violet-500 to-purple-600 text-white font-bold shadow flex items-center justify-center hover:scale-105 transition cursor-pointer"
             >
               <span className="pointer-events-none">
                 С
               </span>
-            </a>
+            </Link>
 
-            <a
+            <Link
               href="/section/profile"
               className="relative z-30 hidden md:block font-semibold pr-2 hover:text-violet-700 cursor-pointer"
             >
               Софья
-            </a>
+            </Link>
           </div>
 
           {/* HERO */}
@@ -372,7 +373,7 @@ export default function Home() {
 
               <div className="relative z-40 flex gap-2 mt-auto max-w-[650px]">
                 {quickActions.map((item) => (
-                  <a
+                  <Link
                     key={item.name}
                     href={item.href}
                     className="relative z-40 h-[36px] px-3 rounded-xl bg-white/95 text-violet-900 shadow-sm flex-1 flex items-center justify-center gap-1.5 text-[10px] xl:text-[11px] font-semibold hover:bg-white hover:-translate-y-0.5 transition cursor-pointer"
@@ -384,7 +385,7 @@ export default function Home() {
                     <span className="pointer-events-none">
                       {item.name}
                     </span>
-                  </a>
+                  </Link>
                 ))}
               </div>
             </div>
@@ -393,30 +394,30 @@ export default function Home() {
           {/* ЗАГОЛОВОК */}
           <div className="relative z-30 shrink-0 h-10 flex items-center justify-between">
             <div className="flex items-baseline gap-2">
-              <a
+              <Link
                 href="/section/subjects"
                 className="relative z-30 text-xl xl:text-2xl font-bold hover:text-violet-700 cursor-pointer"
               >
                 Твои предметы
-              </a>
+              </Link>
 
               <span className="pointer-events-none text-xs text-violet-400">
                 8 предметов
               </span>
             </div>
 
-            <a
+            <Link
               href="/section/order"
               className="relative z-30 text-xs text-violet-500 hover:text-violet-700 cursor-pointer"
             >
               ✨ Настроить порядок
-            </a>
+            </Link>
           </div>
 
           {/* КАРТОЧКИ ПРЕДМЕТОВ */}
           <section className="relative z-30 flex-1 min-h-0 grid grid-cols-2 xl:grid-cols-4 grid-rows-4 xl:grid-rows-2 gap-2.5">
             {subjects.map((subject) => (
-              <a
+              <Link
                 key={subject.name}
                 href={subject.href}
                 className="relative z-40 group min-h-0 bg-white rounded-[18px] overflow-hidden shadow-sm hover:shadow-lg hover:-translate-y-0.5 transition flex flex-col cursor-pointer"
@@ -459,7 +460,7 @@ export default function Home() {
                     {subject.action2}
                   </span>
                 </div>
-              </a>
+              </Link>
             ))}
           </section>
 

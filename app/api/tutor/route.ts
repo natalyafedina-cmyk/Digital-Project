@@ -13,6 +13,8 @@ import {
 import {
   LEARNING_INTENTS,
   buildLearningPlan,
+  computeNextSupportStage,
+  isLearnerAttemptMessage,
   renderLearningPlan,
   type LearningIntent,
 } from "@/lib/learning-engine";
@@ -232,6 +234,27 @@ function safeSupportFallback(
   };
 }
 
+function safeIncorrectAttemptFallback(
+  result: ReturnType<typeof parseModelJson>,
+  subject: SubjectSlug
+) {
+  const answer =
+    subject === "history"
+      ? "Проверь свою версию ещё раз. Вспомни, что именно было предметом спора между сторонами, и попробуй назвать одну конкретную причину сама."
+      : subject === "literature"
+      ? "Проверь свою версию ещё раз: вернись к поступку, мотиву или детали текста, на которой строился вопрос, и попробуй сформулировать ответ сама."
+      : "Проверь свою версию ещё раз. Вернись к ключевой связи из объяснения и попробуй назвать один конкретный шаг или факт сама.";
+
+  return {
+    ...result,
+    answer,
+    visualBlock: null,
+    visualLabel: null,
+    hintLevel: 0,
+    supportSignal: "struggling" as const,
+  };
+}
+
 function renderMethodProfile(methods: MethodSummary[]) {
   if (!methods.length) {
     return "Данных об эффективности методов пока недостаточно. Не делай выводов о стиле обучения ребёнка как о факте.";
@@ -375,6 +398,10 @@ export async function POST(request: Request) {
 
 СТИЛЬ:
 - По умолчанию ответ короткий: обычно 2–5 предложений.
+- Если ребёнок просит объяснить тему, сначала ДАЙ понятное объяснение по существу, а не заменяй его наводящим вопросом.
+- Сначала используй конкретные факты и простые слова; учебный термин вводи после смысла и сразу коротко расшифровывай.
+- Не начинай ответы по шаблону фразами "Давай подумаем", "Представим ситуацию", "Как ты думаешь". Особенно не повторяй одну и ту же вводную в соседних ответах.
+- Если ребёнок сказал "не понял/не поняла" или "объясни по-другому", измени ПРЕДСТАВЛЕНИЕ материала: например текст → мини-сюжет, причины/следствия, сравнение, схема или временная линия. Не просто переписывай прежний абзац другими словами.
 - Не повторяй длинными словами то, что можно показать схемой.
 - Если ребёнок просит "покажи", "схемой", "столбиком", "таблицей", "не текстом" — обязательно используй visualBlock.
 - Если visualBlock используется на уровнях 0–2, он НЕ должен содержать финальный ответ.
@@ -583,23 +610,21 @@ classification, story, experiment, map_logic, character_analysis.
       }
     }
 
-    const difficultyPhrase =
-      /не понимаю|не получается|не знаю|помоги|объясни ещё|не выходит|запутал/i.test(
-        userText
-      );
-
-    let nextSupportStage = supportStage;
-
-    if (parsed.correctness === "correct" || parsed.supportSignal === "solved") {
-      nextSupportStage = 0;
-    } else if (
-      parsed.correctness === "incorrect" ||
-      parsed.correctness === "partial" ||
-      parsed.supportSignal === "struggling" ||
-      difficultyPhrase
+    // На первой ошибке защищаем самостоятельность ребёнка детерминированно:
+    // модель не должна случайно раскрыть правильный ответ в гуманитарном предмете.
+    if (
+      supportStage === 0 &&
+      (parsed.correctness === "incorrect" || parsed.correctness === "partial") &&
+      isLearnerAttemptMessage(userText)
     ) {
-      nextSupportStage = Math.min(4, supportStage + 1);
+      parsed = safeIncorrectAttemptFallback(parsed, subject);
     }
+
+    const nextSupportStage = computeNextSupportStage({
+      currentStage: supportStage,
+      message: userText,
+      correctness: parsed.correctness,
+    });
 
     return Response.json({
       ...parsed,

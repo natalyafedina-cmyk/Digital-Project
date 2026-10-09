@@ -48,10 +48,26 @@ export type LearningPlan = {
   mustChangeMethod: boolean;
   allowedHelpLevel: number;
   methodHint: TeachingMethod;
+  taskGeneration: boolean;
 };
 
 function has(text: string, expression: RegExp) {
   return expression.test(text);
+}
+
+export function isTaskGenerationRequest(message: string) {
+  const text = message.toLowerCase();
+
+  const asksForTask = has(
+    text,
+    /(?:дай|давай|задай|задавай|придумай|предложи|хочу|можно).{0,45}(?:пример|задач|упражнен|вопрос|тест)/
+  );
+  const practiceWithTask = has(
+    text,
+    /(?:тренир|практик|потренир).{0,60}(?:пример|задач|упражнен|вопрос|тест)/
+  );
+
+  return asksForTask || practiceWithTask;
 }
 
 export function detectLearningIntent(message: string): LearningIntent {
@@ -60,10 +76,16 @@ export function detectLearningIntent(message: string): LearningIntent {
   if (has(text, /проверь.*домаш|домаш.*проверь|провер.*дз/)) return "check_homework";
   if (has(text, /контрольн|самостоятельн|экзамен|подготов/)) return "exam_prep";
   if (has(text, /запомн|выуч|мнемон|карточк/)) return "memorize";
+
+  // Запрос "дай/задай пример" — это начало практики. Слова "столбиком",
+  // "схемой" и т. п. описывают формат задания, а не заменяют намерение.
+  if (isTaskGenerationRequest(message) || has(text, /тренир|практик|упражнен|проверь меня|тест/)) {
+    return "practice";
+  }
+
   if (has(text, /покажи|схем|таблиц|карт[ауе]|диаграм|график|временн.*лини|столбик/)) return "visualize";
   if (has(text, /реши|задач|пример|уравнен|вычисл/)) return "solve";
   if (has(text, /кратк|коротк|одним предложен|ответь.*кратко/)) return "short_answer";
-  if (has(text, /тренир|практик|упражнен|проверь меня|тест/)) return "practice";
   if (has(text, /объясн|не понимаю|помоги понять|что такое|как работает|почему/)) return "explain";
 
   return "unknown";
@@ -101,6 +123,7 @@ export function buildLearningPlan(input: PlanningInput): LearningPlan {
     text,
     /не понимаю|не получается|не выходит|запутал|запуталась|не знаю как|всё равно не понимаю/
   );
+  const taskGeneration = isTaskGenerationRequest(input.message);
   const intent =
     input.currentIntent && struggleFollowUp
       ? input.currentIntent
@@ -150,6 +173,7 @@ export function buildLearningPlan(input: PlanningInput): LearningPlan {
     mustChangeMethod,
     allowedHelpLevel: Math.max(0, Math.min(4, input.supportStage)),
     methodHint: pickMethod(intent, visualType),
+    taskGeneration,
   };
 }
 
@@ -160,6 +184,9 @@ export function renderLearningPlan(plan: LearningPlan) {
     `Формат ответа: ${plan.format}.`,
     `Визуальное представление: ${plan.visualType}.`,
     `Базовый метод: ${plan.methodHint}.`,
+    plan.taskGeneration
+      ? "Ребёнок просит НОВОЕ тренировочное задание: выдай само условие/пример сразу в этом же ответе. Лестница помощи ограничивает подсказки и решение, но не запрещает числа, необходимые для постановки нового задания."
+      : "Это не запрос на генерацию нового задания: не добавляй лишние числовые шаги сверх разрешённой ступени помощи.",
     plan.mustChangeMethod
       ? "Предыдущий способ не помог: обязательно выбери другой метод, а не удлиняй прежнее объяснение."
       : "Сначала удерживай цель ребёнка; не меняй тему без запроса.",

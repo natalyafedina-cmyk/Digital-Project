@@ -9,6 +9,7 @@ import {
   type StudyModeSlug,
 } from "@/lib/tutor-config";
 import { createClient } from "@/lib/supabase/client";
+import StructuredMathVisual from "@/components/StructuredMathVisual";
 
 type ChatMessage = {
   role: "user" | "assistant";
@@ -17,6 +18,7 @@ type ChatMessage = {
   teachingMethod?: string | null;
   intent?: string | null;
   goal?: string | null;
+  visualType?: string | null;
   supportStage?: number;
 };
 
@@ -342,6 +344,10 @@ export default function StudyModePage() {
           goal:
             typeof metadata.goal === "string"
               ? metadata.goal
+              : null,
+          visualType:
+            typeof metadata.visualType === "string"
+              ? metadata.visualType
               : null,
           supportStage:
             typeof metadata.supportStage === "number"
@@ -842,6 +848,7 @@ export default function StudyModePage() {
           teachingMethod: result.teachingMethod,
           intent: result.intent || null,
           goal: result.goal || null,
+          visualType: result.visualType || null,
           supportStage: result.nextSupportStage,
         },
       ]);
@@ -985,11 +992,17 @@ export default function StudyModePage() {
                       <div>{message.text}</div>
 
                       {message.role === "assistant" &&
-                        message.visualBlock && (
+                        message.visualBlock &&
+                        (message.visualType === "structured_math" ? (
+                          <StructuredMathVisual
+                            content={message.visualBlock}
+                            answer={message.text}
+                          />
+                        ) : (
                           <pre className="mt-3 overflow-x-auto rounded-2xl border border-violet-200 bg-white px-4 py-3 font-mono text-[15px] leading-7 text-slate-900 whitespace-pre">
                             {message.visualBlock}
                           </pre>
-                        )}
+                        ))}
                     </div>
                   </div>
                 ))}

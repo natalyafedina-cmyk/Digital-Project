@@ -70,6 +70,46 @@ export function isTaskGenerationRequest(message: string) {
   return asksForTask || practiceWithTask;
 }
 
+
+export function isLearnerAttemptMessage(message: string) {
+  const text = message.toLowerCase().trim();
+
+  if (!text) return false;
+
+  const conversationManagement = /(?:объясн|покаж|задай|дай\s+(?:мне\s+)?(?:пример|задач|вопрос|упражнен)|проверь.*(?:понял|поняла|меня)|не\s+(?:понимаю|поняла|понял)|по[- ]другому|иначе|что\s+такое|почему|помоги|подскажи|дай\s+подсказ)/;
+
+  return !conversationManagement.test(text);
+}
+
+export function computeNextSupportStage(input: {
+  currentStage: number;
+  message: string;
+  correctness: "correct" | "incorrect" | "partial" | "unknown";
+}) {
+  const stage = Math.max(0, Math.min(4, input.currentStage));
+  const text = input.message.toLowerCase();
+
+  if (input.correctness === "correct") return 0;
+
+  const explicitHintRequest =
+    /(?:дай\s+подсказ|подскажи|помоги\s+(?:с\s+)?(?:первым|следующим)\s+шагом)/.test(
+      text
+    );
+
+  if (explicitHintRequest) {
+    return Math.min(4, stage + 1);
+  }
+
+  if (
+    (input.correctness === "incorrect" || input.correctness === "partial") &&
+    isLearnerAttemptMessage(input.message)
+  ) {
+    return Math.min(4, stage + 1);
+  }
+
+  return stage;
+}
+
 export function detectLearningIntent(message: string): LearningIntent {
   const text = message.toLowerCase();
 

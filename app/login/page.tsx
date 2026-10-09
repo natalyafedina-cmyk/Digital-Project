@@ -2,9 +2,11 @@
 
 import { FormEvent, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
+import { createRecoveryClient } from "@/lib/supabase/recovery-client";
 
 export default function LoginPage() {
   const supabase = createClient();
+  const recoverySupabase = createRecoveryClient();
   const [mode, setMode] = useState<"login" | "signup">("login");
   const [name, setName] = useState("Наталья");
   const [email, setEmail] = useState("");
@@ -61,14 +63,14 @@ export default function LoginPage() {
 
     try {
       const redirectTo = `${window.location.origin}/reset-password`;
-      const { error } = await supabase.auth.resetPasswordForEmail(email, {
+      const { error } = await recoverySupabase.auth.resetPasswordForEmail(email, {
         redirectTo,
       });
 
       if (error) throw error;
 
       setMessage(
-        "Письмо для восстановления пароля отправлено. Откройте его и перейдите по ссылке."
+        "Письмо для восстановления пароля отправлено. Ссылку можно открыть на этом или другом устройстве."
       );
     } catch (error) {
       setMessage(

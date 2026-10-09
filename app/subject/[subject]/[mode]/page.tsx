@@ -844,6 +844,12 @@ export default function StudyModePage() {
         nextSupportStage: Number(data.nextSupportStage ?? supportStage),
       };
 
+      // Запускаем синтез речи сразу, как только готов текст ответа.
+      // Сохранение аналитики в Supabase не должно задерживать начало озвучивания.
+      const speechPromise = voiceSettings.enabled
+        ? speakAnswer(result.answer)
+        : null;
+
       setMessages((previous) => [
         ...previous,
         {
@@ -863,12 +869,16 @@ export default function StudyModePage() {
       setActiveGoal(result.goal || null);
       setSupportStage(result.nextSupportStage);
 
-      if (sessionId) {
-        await saveExchange(sessionId, userText, result);
-      }
+      const persistencePromise = sessionId
+        ? saveExchange(sessionId, userText, result)
+        : null;
 
-      if (voiceSettings.enabled) {
-        await speakAnswer(result.answer);
+      if (persistencePromise && speechPromise) {
+        await Promise.all([persistencePromise, speechPromise]);
+      } else if (persistencePromise) {
+        await persistencePromise;
+      } else if (speechPromise) {
+        await speechPromise;
       }
     } catch (err) {
       setError(

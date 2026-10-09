@@ -1,12 +1,70 @@
 import { describe, expect, it } from "vitest";
 import {
   buildLearningPlan,
+  computeNextSupportStage,
   detectLearningIntent,
   detectVisualType,
+  isLearnerAttemptMessage,
   isTaskGenerationRequest,
 } from "@/lib/learning-engine";
 
 describe("adaptive learning engine", () => {
+
+  it("does not escalate support for an ordinary explanation request", () => {
+    expect(
+      computeNextSupportStage({
+        currentStage: 0,
+        message: "Объясни мне коротко, почему началась Столетняя война.",
+        correctness: "unknown",
+      })
+    ).toBe(0);
+  });
+
+  it("changes explanation method without escalating the help ladder", () => {
+    expect(isLearnerAttemptMessage("Я не поняла. Объясни по-другому.")).toBe(false);
+
+    expect(
+      computeNextSupportStage({
+        currentStage: 0,
+        message: "Я не поняла. Объясни по-другому.",
+        correctness: "unknown",
+      })
+    ).toBe(0);
+  });
+
+  it("does not escalate support when the child asks to be checked", () => {
+    expect(
+      computeNextSupportStage({
+        currentStage: 0,
+        message: "Теперь проверь, поняла ли я. Задай мне один вопрос.",
+        correctness: "unknown",
+      })
+    ).toBe(0);
+  });
+
+  it("increments support by exactly one after a real incorrect attempt", () => {
+    const answer = "Королю Англии не нравился король Франции.";
+
+    expect(isLearnerAttemptMessage(answer)).toBe(true);
+    expect(
+      computeNextSupportStage({
+        currentStage: 0,
+        message: answer,
+        correctness: "incorrect",
+      })
+    ).toBe(1);
+  });
+
+  it("resets support after a correct learner attempt", () => {
+    expect(
+      computeNextSupportStage({
+        currentStage: 2,
+        message: "Они спорили о французском престоле и землях.",
+        correctness: "correct",
+      })
+    ).toBe(0);
+  });
+
 
   it("treats a request for a fresh example as practice even when a visual format is named", () => {
     const message = "Давай потренируем умножение столбиком. Дай мне пример.";

@@ -844,12 +844,6 @@ export default function StudyModePage() {
         nextSupportStage: Number(data.nextSupportStage ?? supportStage),
       };
 
-      // Запускаем синтез речи сразу, как только готов текст ответа.
-      // Сохранение аналитики в Supabase не должно задерживать начало озвучивания.
-      const speechPromise = voiceSettings.enabled
-        ? speakAnswer(result.answer)
-        : null;
-
       setMessages((previous) => [
         ...previous,
         {
@@ -869,16 +863,19 @@ export default function StudyModePage() {
       setActiveGoal(result.goal || null);
       setSupportStage(result.nextSupportStage);
 
-      const persistencePromise = sessionId
-        ? saveExchange(sessionId, userText, result)
-        : null;
+      // Не держим UI открытым на ожидании Supabase/TTS.
+      // Текст должен отрисоваться сразу, а голос и сохранение идут независимо.
+      if (voiceSettings.enabled) {
+        window.setTimeout(() => {
+          void speakAnswer(result.answer);
+        }, 0);
+      }
 
-      if (persistencePromise && speechPromise) {
-        await Promise.all([persistencePromise, speechPromise]);
-      } else if (persistencePromise) {
-        await persistencePromise;
-      } else if (speechPromise) {
-        await speechPromise;
+      if (sessionId) {
+        void saveExchange(sessionId, userText, result).catch((saveError) => {
+          console.error("Save exchange error:", saveError);
+          setError("Ответ показан, но не все данные занятия удалось сохранить.");
+        });
       }
     } catch (err) {
       setError(

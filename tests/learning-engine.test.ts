@@ -3,9 +3,29 @@ import {
   buildLearningPlan,
   detectLearningIntent,
   detectVisualType,
+  isTaskGenerationRequest,
 } from "@/lib/learning-engine";
 
 describe("adaptive learning engine", () => {
+
+  it("treats a request for a fresh example as practice even when a visual format is named", () => {
+    const message = "Давай потренируем умножение столбиком. Дай мне пример.";
+
+    expect(isTaskGenerationRequest(message)).toBe(true);
+    expect(detectLearningIntent(message)).toBe("practice");
+
+    const plan = buildLearningPlan({
+      message,
+      subject: "math",
+      supportStage: 0,
+    });
+
+    expect(plan.taskGeneration).toBe(true);
+    expect(plan.intent).toBe("practice");
+    expect(plan.visualType).toBe("structured_math");
+    expect(plan.allowedHelpLevel).toBe(0);
+  });
+
   it("recognises a request to show rather than treating it as generic text", () => {
     expect(detectLearningIntent("Покажи это столбиком, без длинного текста")).toBe("visualize");
     expect(detectVisualType("Покажи это столбиком", "math")).toBe("structured_math");

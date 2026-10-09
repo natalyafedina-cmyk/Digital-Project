@@ -102,7 +102,7 @@ export default function HomeInsights() {
   if (!signedIn) {
     return (
       <section className="relative z-30 hidden xl:grid shrink-0 h-[88px] mt-2 grid-cols-[1.05fr_1.35fr_1fr] gap-2">
-        <a href="/login" className="bg-white/90 rounded-[18px] shadow-sm px-4 py-2.5 flex items-center">
+        <Link href="/login" className="bg-white/90 rounded-[18px] shadow-sm px-4 py-2.5 flex items-center">
           <div>
             <p className="text-sm font-bold mb-1">Твой прогресс</p>
             <p className="text-[9px] text-slate-400">Войди, чтобы видеть реальные данные</p>

@@ -1,10 +1,10 @@
 "use client";
 
 import { FormEvent, useEffect, useState } from "react";
-import { createClient } from "@/lib/supabase/client";
+import { createRecoveryClient } from "@/lib/supabase/recovery-client";
 
 export default function ResetPasswordPage() {
-  const supabase = createClient();
+  const supabase = createRecoveryClient();
   const [ready, setReady] = useState(false);
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -17,9 +17,29 @@ export default function ResetPasswordPage() {
     async function prepareRecoverySession() {
       try {
         const url = new URL(window.location.href);
+        const hash = new URLSearchParams(
+          url.hash.startsWith("#") ? url.hash.slice(1) : url.hash
+        );
+
+        const hashError = hash.get("error_description");
+        if (hashError) {
+          throw new Error(hashError);
+        }
+
+        const accessToken = hash.get("access_token");
+        const refreshToken = hash.get("refresh_token");
         const code = url.searchParams.get("code");
 
-        if (code) {
+        if (accessToken && refreshToken) {
+          const { error } = await supabase.auth.setSession({
+            access_token: accessToken,
+            refresh_token: refreshToken,
+          });
+          if (error) throw error;
+
+          window.history.replaceState({}, "", url.pathname);
+        } else if (code) {
+          // Поддержка старых писем, запрошенных через PKCE на том же устройстве.
           const { error } = await supabase.auth.exchangeCodeForSession(code);
           if (error) throw error;
 
@@ -77,6 +97,8 @@ export default function ResetPasswordPage() {
     try {
       const { error } = await supabase.auth.updateUser({ password });
       if (error) throw error;
+
+      await supabase.auth.signOut();
 
       setMessage("Пароль обновлён. Сейчас можно войти с новым паролем.");
       setReady(false);

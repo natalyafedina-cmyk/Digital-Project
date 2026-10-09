@@ -15,7 +15,7 @@ export function createRecoveryClient() {
   recoveryClient = createSupabaseClient(url, key, {
     auth: {
       flowType: "implicit",
-      detectSessionInUrl: true,
+      detectSessionInUrl: false,
       persistSession: true,
       autoRefreshToken: true,
       storageKey: "lunik-password-recovery",

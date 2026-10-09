@@ -1,3 +1,4 @@
+import Image from "next/image";
 import HomeInsights from "@/components/HomeInsights";
 
 type IconName =
@@ -242,14 +243,17 @@ export default function Home() {
             href="/section/chat"
             className="relative z-30 flex items-center gap-3 mb-5 rounded-xl hover:bg-white/60 transition"
           >
-            <div
-              className="pointer-events-none h-11 w-11 rounded-2xl bg-cover bg-no-repeat shadow-md ring-2 ring-white"
-              style={{
-                backgroundImage: "url('/images/lunik-hero-final.png')",
-                backgroundSize: "340%",
-                backgroundPosition: "83% 42%",
-              }}
-            />
+            <div className="pointer-events-none relative h-11 w-11 overflow-hidden rounded-2xl shadow-md ring-2 ring-white">
+              <Image
+                src="/images/lunik-hero-final.png"
+                alt=""
+                fill
+                sizes="44px"
+                quality={55}
+                className="object-cover"
+                style={{ objectPosition: "83% 42%", transform: "scale(3.4)" }}
+              />
+            </div>
 
             <div className="pointer-events-none">
               <h2 className="text-xl font-bold leading-none text-[#21185c]">
@@ -288,11 +292,13 @@ export default function Home() {
             href="/section/achievements"
             className="relative z-30 flex-1 mt-4 min-h-0 rounded-[24px] overflow-hidden shadow-sm hover:shadow-lg transition cursor-pointer"
           >
-            <div
-              className="pointer-events-none absolute inset-0 bg-cover bg-center"
-              style={{
-                backgroundImage: "url('/images/dreams-side-final.png')",
-              }}
+            <Image
+              src="/images/dreams-side-final.png"
+              alt=""
+              fill
+              sizes="220px"
+              quality={55}
+              className="pointer-events-none object-cover"
             />
           </a>
         </aside>
@@ -335,12 +341,16 @@ export default function Home() {
           </div>
 
           {/* HERO */}
-          <section
-            className="relative z-20 shrink-0 h-[200px] rounded-[26px] overflow-hidden shadow-lg bg-cover bg-center"
-            style={{
-              backgroundImage: "url('/images/lunik-hero-final.png')",
-            }}
-          >
+          <section className="relative z-20 shrink-0 h-[200px] rounded-[26px] overflow-hidden shadow-lg">
+            <Image
+              src="/images/lunik-hero-final.png"
+              alt=""
+              fill
+              priority
+              sizes="(min-width: 1024px) calc(100vw - 220px), 100vw"
+              quality={60}
+              className="object-cover"
+            />
             <div className="pointer-events-none absolute inset-0 z-0 bg-gradient-to-r from-[#11164d]/94 via-[#24235d]/38 to-transparent" />
 
             <div className="relative z-10 h-full max-w-[700px] px-6 py-4 flex flex-col">
@@ -412,11 +422,13 @@ export default function Home() {
                 className="relative z-40 group min-h-0 bg-white rounded-[18px] overflow-hidden shadow-sm hover:shadow-lg hover:-translate-y-0.5 transition flex flex-col cursor-pointer"
               >
                 <div className="pointer-events-none relative flex-1 min-h-[94px]">
-                  <div
-                    className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-[1.03]"
-                    style={{
-                      backgroundImage: `url('${subject.image}')`,
-                    }}
+                  <Image
+                    src={subject.image}
+                    alt=""
+                    fill
+                    sizes="(min-width: 1280px) 25vw, 50vw"
+                    quality={55}
+                    className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
                   />
 
                   <div className="absolute inset-0 bg-gradient-to-t from-[#11143f]/88 via-[#11143f]/10 to-transparent" />

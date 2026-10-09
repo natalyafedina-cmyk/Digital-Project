@@ -173,7 +173,8 @@ function extractNumbers(text: string) {
 function violatesSupportStage(
   result: ReturnType<typeof parseModelJson>,
   stage: number,
-  context: string
+  context: string,
+  taskGeneration = false
 ) {
   if (stage >= 3) return false;
 
@@ -183,7 +184,9 @@ function violatesSupportStage(
     (value) => !allowedNumbers.has(value)
   );
 
-  if (stage <= 1 && introducedNumbers.length > 0) return true;
+  // Новое тренировочное задание может содержать новые числа уже на уровне 0:
+  // лестница помощи ограничивает решение, а не само условие задачи.
+  if (!taskGeneration && stage <= 1 && introducedNumbers.length > 0) return true;
 
   if (
     stage === 0 &&
@@ -376,6 +379,7 @@ export async function POST(request: Request) {
 - Если ребёнок просит "покажи", "схемой", "столбиком", "таблицей", "не текстом" — обязательно используй visualBlock.
 - Если visualBlock используется на уровнях 0–2, он НЕ должен содержать финальный ответ.
 - Если visualBlock используется на уровнях 0–1, он не должен содержать вычисленные промежуточные результаты.
+- ВАЖНО: если ребёнок просит "дай/задай пример", сразу дай новое задание в этом же ответе. Не заставляй ребёнка сначала описывать шаги. Числа самого НОВОГО задания разрешены на любом уровне помощи; запрещены только подсказки-вычисления и готовое решение.
 - Не говори "я не могу изобразить", если это можно показать текстовой схемой.
 - Если предыдущий способ не помог, выбери ДРУГОЙ teachingMethod.
 - Не делай выводов о характере, эмоциях или "типе обучения" ребёнка по 1–2 сообщениям.
@@ -409,6 +413,7 @@ ${subjectPrompt}
 ${renderLearningPlan(learningPlan)}
 
 Не меняй намерение ребёнка на другое. Если выбран visualType не "none", верни visualBlock именно такого типа: точная учебная структура, а не декоративная картинка.
+Если taskGeneration=true, ответ обязан содержать само новое задание сразу, без предварительных просьб "назови первый шаг".
 
 ПРАВИЛА РОДИТЕЛЯ:
 ${
@@ -511,7 +516,14 @@ classification, story, experiment, map_logic, character_analysis.
       userText,
     ].join("\n");
 
-    if (violatesSupportStage(parsed, supportStage, supportContext)) {
+    if (
+      violatesSupportStage(
+        parsed,
+        supportStage,
+        supportContext,
+        learningPlan.taskGeneration
+      )
+    ) {
       const retryMessages = messages.map((item, index) =>
         index === 0
           ? {
@@ -555,7 +567,14 @@ classification, story, experiment, map_logic, character_analysis.
         parsed = parseModelJson(raw);
       }
 
-      if (violatesSupportStage(parsed, supportStage, supportContext)) {
+      if (
+        violatesSupportStage(
+          parsed,
+          supportStage,
+          supportContext,
+          learningPlan.taskGeneration
+        )
+      ) {
         parsed = safeSupportFallback(
           parsed,
           supportStage,

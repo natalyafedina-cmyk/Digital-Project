@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useMemo, useState } from "react";
 import { useParams } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
@@ -203,10 +204,16 @@ export default function SubjectPage() {
           </div>
         </header>
 
-        <section
-          className="relative overflow-hidden rounded-[30px] min-h-[250px] bg-cover bg-center shadow-lg"
-          style={{ backgroundImage: `url('${subject.image}')` }}
-        >
+        <section className="relative overflow-hidden rounded-[30px] min-h-[250px] shadow-lg">
+          <Image
+            src={subject.image}
+            alt=""
+            fill
+            priority
+            sizes="(min-width: 1450px) 1450px, 100vw"
+            quality={60}
+            className="object-cover"
+          />
           <div className="absolute inset-0 bg-gradient-to-r from-[#14164f]/95 via-[#2b2768]/70 to-[#1d1645]/15" />
 
           <div className="relative z-10 p-7 md:p-9 text-white max-w-[760px]">

@@ -62,7 +62,7 @@ export async function POST(request: Request) {
     const url = new URL(
       "https://stt.api.cloud.yandex.net/speech/v1/stt:recognize"
     );
-    url.searchParams.set("topic", "general");
+    url.searchParams.set("topic", lang === "en-US" ? "general:rc" : "general");
     url.searchParams.set("lang", lang);
     url.searchParams.set("format", "lpcm");
     url.searchParams.set("sampleRateHertz", String(sampleRate));

@@ -25,4 +25,12 @@ describe("first incorrect attempt feedback", () => {
     expect(hint).toContain("по-английски");
     expect(hint.toLowerCase()).not.toContain("went");
   });
+  it("targets the read-form error after I like without giving the answer", () => {
+    const hint = buildFirstIncorrectAttemptHint("english", "I like read books.");
+
+    expect(hint).toContain("read");
+    expect(hint).toContain("I like");
+    expect(hint.toLowerCase()).not.toContain("reading");
+  });
+
 });

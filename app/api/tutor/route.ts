@@ -10,6 +10,7 @@ import {
   METHOD_LABELS,
   type TeachingMethod,
 } from "@/lib/adaptive-learning";
+import { buildFirstIncorrectAttemptHint } from "@/lib/first-attempt-feedback";
 import {
   LEARNING_INTENTS,
   buildLearningPlan,
@@ -236,18 +237,12 @@ function safeSupportFallback(
 
 function safeIncorrectAttemptFallback(
   result: ReturnType<typeof parseModelJson>,
-  subject: SubjectSlug
+  subject: SubjectSlug,
+  userText: string
 ) {
-  const answer =
-    subject === "history"
-      ? "Проверь свою версию ещё раз. Вспомни, что именно было предметом спора между сторонами, и попробуй назвать одну конкретную причину сама."
-      : subject === "literature"
-      ? "Проверь свою версию ещё раз: вернись к поступку, мотиву или детали текста, на которой строился вопрос, и попробуй сформулировать ответ сама."
-      : "Проверь свою версию ещё раз. Вернись к ключевой связи из объяснения и попробуй назвать один конкретный шаг или факт сама.";
-
   return {
     ...result,
-    answer,
+    answer: buildFirstIncorrectAttemptHint(subject, userText),
     visualBlock: null,
     visualLabel: null,
     hintLevel: 0,
@@ -617,7 +612,7 @@ classification, story, experiment, map_logic, character_analysis.
       (parsed.correctness === "incorrect" || parsed.correctness === "partial") &&
       isLearnerAttemptMessage(userText)
     ) {
-      parsed = safeIncorrectAttemptFallback(parsed, subject);
+      parsed = safeIncorrectAttemptFallback(parsed, subject, userText);
     }
 
     const nextSupportStage = computeNextSupportStage({

@@ -250,6 +250,52 @@ function safeIncorrectAttemptFallback(
   };
 }
 
+function isBeginnerEnglishScaffoldRequest(
+  subject: SubjectSlug,
+  mode: StudyModeSlug,
+  userText: string
+) {
+  if (subject !== "english" || mode !== "practice") return false;
+
+  const text = userText.toLowerCase();
+  const asksForSupport =
+    /не\s+знаю.*(?:по[- ]английски|как\s+ответить)|хочу\s+сказать|как\s+сказать.*по[- ]английски/.test(
+      text
+    );
+
+  return asksForSupport && /[а-яё]/i.test(userText);
+}
+
+function containsFullEnglishSentence(answer: string) {
+  const latinRuns =
+    answer.match(/[A-Za-z]+(?:['’][A-Za-z]+)?(?:\s+[A-Za-z]+(?:['’][A-Za-z]+)?){3,}/g) ||
+    [];
+
+  return latinRuns.some((run) => run.trim().split(/\s+/).length >= 4);
+}
+
+function safeBeginnerEnglishScaffold(
+  result: ReturnType<typeof parseModelJson>,
+  userText: string
+) {
+  const lower = userText.toLowerCase();
+
+  const answer =
+    /я\s+люблю|мне\s+нравится/.test(lower)
+      ? "Не будем сразу переводить всю фразу. Начнём с опоры: **I like …** Попробуй сама добавить, что именно тебе нравится делать. Если не знаешь нужное слово, напиши по-русски только это слово — я подскажу его."
+      : "Не будем сразу переводить всю фразу. Попробуй назвать по-английски хотя бы первые 1–2 слова. Если не знаешь ни одного, напиши по-русски только ключевое слово — я дам короткую английскую опору.";
+
+  return {
+    ...result,
+    answer,
+    visualBlock: null,
+    visualLabel: null,
+    hintLevel: 0,
+    correctness: "unknown" as const,
+    supportSignal: "struggling" as const,
+  };
+}
+
 function renderMethodProfile(methods: MethodSummary[]) {
   if (!methods.length) {
     return "Данных об эффективности методов пока недостаточно. Не делай выводов о стиле обучения ребёнка как о факте.";
@@ -603,6 +649,16 @@ classification, story, experiment, map_logic, character_analysis.
           learningPlan.visualType !== "none"
         );
       }
+    }
+
+    // В разговорном английском для начинающего ребёнок получает русскую опору,
+    // но не готовый перевод всей фразы на первой просьбе о помощи.
+    if (
+      supportStage <= 1 &&
+      isBeginnerEnglishScaffoldRequest(subject, mode, userText) &&
+      containsFullEnglishSentence(parsed.answer)
+    ) {
+      parsed = safeBeginnerEnglishScaffold(parsed, userText);
     }
 
     // На первой ошибке защищаем самостоятельность ребёнка детерминированно:

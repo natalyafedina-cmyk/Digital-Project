@@ -188,6 +188,7 @@ export default function StudyModePage() {
 
   const [replyAudioUrl, setReplyAudioUrl] = useState<string | null>(null);
   const chatEndRef = useRef<HTMLDivElement | null>(null);
+  const messageInputRef = useRef<HTMLTextAreaElement | null>(null);
 
   useEffect(() => {
     void initializePersistence();
@@ -437,11 +438,21 @@ export default function StudyModePage() {
       }
 
       if (data.text) {
+        const recognizedText = String(data.text).trim();
+
         setText((previous) =>
           previous.trim()
-            ? `${previous.trim()}\n${data.text}`
-            : data.text
+            ? `${previous.trim()}\n${recognizedText}`
+            : recognizedText
         );
+
+        window.requestAnimationFrame(() => {
+          const input = messageInputRef.current;
+          if (!input) return;
+          input.focus();
+          input.scrollTop = input.scrollHeight;
+          input.setSelectionRange(input.value.length, input.value.length);
+        });
       }
     } catch (err) {
       setError(
@@ -1047,6 +1058,7 @@ export default function StudyModePage() {
             )}
 
             <textarea
+              ref={messageInputRef}
               value={text}
               onChange={(event) => setText(event.target.value)}
               onKeyDown={(event) => {
@@ -1065,7 +1077,11 @@ export default function StudyModePage() {
               className="w-full min-h-[150px] resize-none rounded-[22px] border border-violet-100 bg-[#fafaff] p-5 outline-none focus:border-violet-400 focus:ring-4 focus:ring-violet-100"
             />
             <p className="mt-1 px-2 text-[11px] text-slate-400">
-              Enter — отправить · Shift + Enter — новая строка
+              {isTranscribing
+                ? "Распознаю голос — дождитесь текста в поле выше."
+                : audioUrl && text.trim()
+                ? "Голос распознан. Проверьте текст в поле выше и при необходимости исправьте его перед отправкой."
+                : "Enter — отправить · Shift + Enter — новая строка"}
             </p>
 
             {imagePreview && (
@@ -1089,7 +1105,9 @@ export default function StudyModePage() {
                 <p className="text-xs text-slate-500 mb-2">
                   {isTranscribing
                     ? "Распознаю голос..."
-                    : "Голосовое распознано и добавлено в сообщение."}
+                    : text.trim()
+                    ? "Голосовое распознано. Текст показан в поле выше — его можно проверить и исправить."
+                    : "Голосовое записано, но текст пока не распознан."}
                 </p>
                 <audio controls src={audioUrl} className="w-full" />
               </div>

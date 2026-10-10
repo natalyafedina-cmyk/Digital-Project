@@ -100,6 +100,13 @@ export function computeNextSupportStage(input: {
     return Math.min(4, stage + 1);
   }
 
+  const shortNoIdea =
+    /^(?:я\s+)?не\s+знаю[.!?]*$/i.test(input.message.trim());
+
+  if (stage > 0 && shortNoIdea) {
+    return Math.min(4, stage + 1);
+  }
+
   if (
     (input.correctness === "incorrect" || input.correctness === "partial") &&
     isLearnerAttemptMessage(input.message)

@@ -1,3 +1,5 @@
+import { normalizeEnglishTranscript } from "@/lib/stt-normalization";
+
 export const runtime = "nodejs";
 
 function requireApiKey() {
@@ -87,7 +89,11 @@ export async function POST(request: Request) {
       );
     }
 
-    return Response.json({ text: data?.result?.trim() || "" });
+    const rawText = data?.result?.trim() || "";
+    const text =
+      lang === "en-US" ? normalizeEnglishTranscript(rawText) : rawText;
+
+    return Response.json({ text, rawText });
   } catch (error) {
     console.error("Transcription error:", error);
     return Response.json(

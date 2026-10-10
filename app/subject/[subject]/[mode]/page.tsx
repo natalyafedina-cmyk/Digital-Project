@@ -285,13 +285,21 @@ export default function StudyModePage() {
 
       const { data: rules } = await supabase
         .from("tutor_rules")
-        .select("rule_text")
+        .select("rule_text,subject")
         .eq("parent_id", user.id)
         .eq("active", true)
         .or(`child_id.is.null,child_id.eq.${child.id}`)
         .order("created_at", { ascending: true });
 
-      setParentRules((rules || []).map((item) => item.rule_text));
+      setParentRules(
+        (rules || [])
+          .filter(
+            (item) =>
+              !item.subject ||
+              item.subject === subjectKey
+          )
+          .map((item) => item.rule_text)
+      );
 
       const cutoff = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
 

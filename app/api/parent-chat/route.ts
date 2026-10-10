@@ -1,3 +1,8 @@
+import {
+  buildEvidenceOnlyParentAnalysis,
+  getParentDataConfidence,
+} from "@/lib/parent-analytics";
+
 export const runtime = "nodejs";
 
 function requireEnv() {
@@ -124,9 +129,11 @@ ${JSON.stringify(evidence, null, 2)}
 ${JSON.stringify(activeRules, null, 2)}
 
 КАК ОБСУЖДАТЬ МЕТОДИКУ:
-- Если метод имеет меньше 2 наблюдений, называй это только ранним наблюдением.
-- Если метод проверен 2+ раза, можно говорить о предварительной тенденции.
-- Уверенный вывод требует нескольких занятий и повторяющегося результата.
+- Если метод имеет меньше 5 наблюдений, НЕ сравнивай его эффективность с другими методами.
+- Предварительное сравнение методов допустимо только если хотя бы два разных метода имеют по 5+ наблюдений.
+- Даже при достаточном количестве событий это только предварительный учебный паттерн, а не характеристика личности ребёнка.
+- Нельзя выводить интерес, мотивацию, способности или "сильные стороны" из числа занятий, технических баллов, частоты ответов или одного успешного примера.
+- Если в данных нет прямого подтверждения интереса или мотивации, не употребляй формулировки "проявляет интерес", "мотивирована", "успешно справляется", "сильная сторона".
 - Не называй числовую метрику "оценкой ребёнка". Это технический сигнал для адаптации.
 - Если правило родителя похоже на метод, который стабильно не помогает, можно предложить изменить правило.
 - Не отключай и не меняй правило самостоятельно.
@@ -207,7 +214,31 @@ pedagogy, motivation, format, voice, subject, general.
     const raw =
       data?.result?.alternatives?.[0]?.message?.text?.trim() || "";
 
-    return Response.json(parseJson(raw));
+    const parsed = parseJson(raw);
+    const confidence = getParentDataConfidence(evidence);
+    const asksForAnalysis =
+      /анализ|прогресс|как\s+заним|сильн|слаб|что\s+получа|как\s+учится/i.test(
+        message
+      );
+    const containsUnsupportedTraitClaim =
+      /проявля(?:ет|ла)\s+интерес|мотивир|сильн(?:ая|ые)\s+сторон|успешно\s+справ/i.test(
+        parsed.answer
+      );
+
+    if (
+      (asksForAnalysis && confidence !== "enough_for_initial_patterns") ||
+      containsUnsupportedTraitClaim
+    ) {
+      return Response.json({
+        ...parsed,
+        answer: buildEvidenceOnlyParentAnalysis(childName, evidence),
+        suggestedRule: null,
+        ruleAction: "none",
+        targetRuleId: null,
+      });
+    }
+
+    return Response.json(parsed);
   } catch (error) {
     return Response.json(
       {

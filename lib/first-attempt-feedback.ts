@@ -7,14 +7,14 @@ export function buildFirstIncorrectAttemptHint(
     const lower = text.toLowerCase();
 
     if (/\byesterday\b.*\bgo\b/.test(lower)) {
-      return 'Look at “yesterday” and the verb “go”. Do they show the same time? Try the sentence again.';
+      return 'Хорошо, смысл понятен. Посмотри на слово “yesterday” и глагол “go”: они должны говорить об одном времени. Попробуй сама изменить только глагол и снова сказать всё предложение по-английски.';
     }
 
     if (/\bmy\s+favou?rite\s+hobby\s+is\s+read\b/.test(lower)) {
-      return 'Look at “is read”. Does that verb form fit after “My favorite hobby is …”? Try that part again.';
+      return 'Смысл понятен. Теперь посмотрим на часть “is read”. После “My favorite hobby is …” нам нужно назвать занятие. Попробуй сама изменить только слово “read” и снова сказать всю фразу по-английски.';
     }
 
-    return 'Check one verb phrase in your sentence. Does its form match what you want to say? Try once more.';
+    return 'Смысл понятен. Проверь один глагол в своей английской фразе: подходит ли его форма к тому, что ты хочешь сказать? Попробуй исправить только этот фрагмент и снова ответить по-английски.';
   }
 
   if (subject === "history") {

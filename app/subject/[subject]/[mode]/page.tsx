@@ -531,13 +531,24 @@ export default function StudyModePage() {
 
     if (context) await context.close();
 
+    const recordedSampleCount = recordedChunksRef.current.reduce(
+      (sum, chunk) => sum + chunk.length,
+      0
+    );
+    const durationSeconds = recordedSampleCount / inputSampleRate;
+    const useHighQualityEnglish =
+      subjectKey === "english" &&
+      inputSampleRate === 48000 &&
+      durationSeconds <= 9;
+
+    const outputSampleRate = useHighQualityEnglish ? 48000 : 16000;
     const samples = mergeAndDownsample(
       recordedChunksRef.current,
       inputSampleRate,
-      16000
+      outputSampleRate
     );
 
-    const wavBlob = encodeWav(samples, 16000);
+    const wavBlob = encodeWav(samples, outputSampleRate);
 
     if (audioUrl) URL.revokeObjectURL(audioUrl);
     setAudioUrl(URL.createObjectURL(wavBlob));

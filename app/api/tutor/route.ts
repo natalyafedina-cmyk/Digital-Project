@@ -266,14 +266,6 @@ function isBeginnerEnglishScaffoldRequest(
   return asksForSupport && /[а-яё]/i.test(userText);
 }
 
-function containsFullEnglishSentence(answer: string) {
-  const latinRuns =
-    answer.match(/[A-Za-z]+(?:['’][A-Za-z]+)?(?:\s+[A-Za-z]+(?:['’][A-Za-z]+)?){3,}/g) ||
-    [];
-
-  return latinRuns.some((run) => run.trim().split(/\s+/).length >= 4);
-}
-
 function safeBeginnerEnglishScaffold(
   result: ReturnType<typeof parseModelJson>,
   userText: string
@@ -281,8 +273,10 @@ function safeBeginnerEnglishScaffold(
   const lower = userText.toLowerCase();
 
   const answer =
-    /я\s+люблю|мне\s+нравится/.test(lower)
-      ? "Не будем сразу переводить всю фразу. Начнём с опоры: **I like …** Попробуй сама добавить, что именно тебе нравится делать. Если не знаешь нужное слово, напиши по-русски только это слово — я подскажу его."
+    /я\s+люблю\s+читать|люблю\s+читать/.test(lower)
+      ? "Не будем переводить всю фразу за тебя. Начало уже есть: **I like …** Слово «читать» — **read**. Попробуй сама собрать английскую фразу. Если не получится, дам ещё одну маленькую подсказку."
+      : /я\s+люблю|мне\s+нравится/.test(lower)
+      ? "Не будем переводить всю фразу за тебя. Начало: **I like …** Назови по-русски только то действие или предмет, которого тебе не хватает, — я подскажу одно английское слово."
       : "Не будем сразу переводить всю фразу. Попробуй назвать по-английски хотя бы первые 1–2 слова. Если не знаешь ни одного, напиши по-русски только ключевое слово — я дам короткую английскую опору.";
 
   return {
@@ -655,8 +649,7 @@ classification, story, experiment, map_logic, character_analysis.
     // но не готовый перевод всей фразы на первой просьбе о помощи.
     if (
       supportStage <= 1 &&
-      isBeginnerEnglishScaffoldRequest(subject, mode, userText) &&
-      containsFullEnglishSentence(parsed.answer)
+      isBeginnerEnglishScaffoldRequest(subject, mode, userText)
     ) {
       parsed = safeBeginnerEnglishScaffold(parsed, userText);
     }

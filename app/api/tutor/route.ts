@@ -213,10 +213,19 @@ function violatesSupportStage(
 function safeSupportFallback(
   result: ReturnType<typeof parseModelJson>,
   stage: number,
-  wantsVisual: boolean
+  wantsVisual: boolean,
+  subject?: SubjectSlug,
+  userText?: string
 ) {
+  const englishAttempt =
+    subject === "english" &&
+    stage === 0 &&
+    Boolean(userText?.toLowerCase().includes("i like read"));
+
   const answer =
-    stage === 0
+    englishAttempt
+      ? buildFirstIncorrectAttemptHint("english", userText || "")
+      : stage === 0
       ? wantsVisual
         ? "Покажу только структуру, без решения. Сначала назови, какой шаг ты сделаешь первым."
         : "Сначала проверь свой ход сама: какой шаг ты сделала первым и почему?"
@@ -640,7 +649,9 @@ classification, story, experiment, map_logic, character_analysis.
         parsed = safeSupportFallback(
           parsed,
           supportStage,
-          learningPlan.visualType !== "none"
+          learningPlan.visualType !== "none",
+          subject,
+          userText
         );
       }
     }

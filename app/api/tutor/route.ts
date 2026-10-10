@@ -11,6 +11,7 @@ import {
   type TeachingMethod,
 } from "@/lib/adaptive-learning";
 import { buildFirstIncorrectAttemptHint } from "@/lib/first-attempt-feedback";
+import { applyParentRuleToTutorResult } from "@/lib/parent-rule-engine";
 import {
   LEARNING_INTENTS,
   buildLearningPlan,
@@ -679,6 +680,12 @@ classification, story, experiment, map_logic, character_analysis.
       currentStage: supportStage,
       message: userText,
       correctness: parsed.correctness,
+    });
+
+    parsed = applyParentRuleToTutorResult(parsed, {
+      subject,
+      parentRules,
+      taskGeneration: learningPlan.taskGeneration,
     });
 
     return Response.json({

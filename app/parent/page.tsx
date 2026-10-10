@@ -6,6 +6,10 @@ import {
   METHOD_LABELS,
   type TeachingMethod,
 } from "@/lib/adaptive-learning";
+import {
+  comparableMethodStats,
+  getParentDataConfidence,
+} from "@/lib/parent-analytics";
 
 type Session = {
   id: string;
@@ -458,6 +462,11 @@ export default function ParentPage() {
     [topicProgress]
   );
 
+  const comparableMethods = useMemo(
+    () => comparableMethodStats(methodStats),
+    [methodStats]
+  );
+
   const evidenceSummary = useMemo(
     () => ({
       sessionsCount: sessions.length,
@@ -488,14 +497,15 @@ export default function ParentPage() {
         evidence: item.evidence,
         createdAt: item.created_at,
       })),
-      dataConfidence:
-        sessions.length >= 5 &&
-        methodEvents.length >= 6 &&
-        learningObservations.length >= 3
-          ? "enough_for_initial_patterns"
-          : sessions.length >= 2 || learningObservations.length >= 2
-          ? "early"
-          : "insufficient",
+      dataConfidence: getParentDataConfidence({
+        sessionsCount: sessions.length,
+        observationCount: learningObservations.length,
+        methodStats: methodStats.map((item) => ({
+          method: item.method,
+          attempts: item.attempts,
+          averageOutcome: item.avg,
+        })),
+      }),
     }),
     [
       sessions.length,
@@ -503,7 +513,6 @@ export default function ParentPage() {
       bySubject,
       weakTopics,
       methodStats,
-      methodEvents.length,
       learningObservations,
     ]
   );
@@ -561,7 +570,7 @@ export default function ParentPage() {
               averageIndependence === null
                 ? "—"
                 : `${averageIndependence}%`,
-              "самостоятельность",
+              "технический сигнал самостоятельности",
             ],
             [String(sessions.length), "занятий сохранено"],
           ].map(([value, label]) => (
@@ -715,25 +724,30 @@ export default function ParentPage() {
                 Адаптивная аналитика
               </p>
               <h2 className="text-2xl font-bold mt-1">
-                Как Софье сейчас легче учиться
+                {evidenceSummary.dataConfidence === "enough_for_initial_patterns"
+                  ? "Что начинает повторяться в обучении"
+                  : "Что мы пока наблюдаем"}
               </h2>
             </div>
             <div className="rounded-2xl bg-white/10 px-4 py-3 text-sm">
               {evidenceSummary.dataConfidence === "enough_for_initial_patterns"
-                ? "Есть первые устойчивые наблюдения"
+                ? "Есть данные для предварительного сравнения"
                 : evidenceSummary.dataConfidence === "early"
-                ? "Пока только ранние наблюдения"
+                ? "Выводы пока предварительные"
                 : "Данных пока недостаточно"}
             </div>
           </div>
 
           <div className="grid md:grid-cols-3 gap-3 mt-5">
             <div className="rounded-2xl bg-white/10 p-4">
-              <p className="text-sm font-bold">Лучше срабатывает</p>
-              {methodStats.filter((item) => item.attempts >= 2).length ? (
+              <p className="text-sm font-bold">
+                {comparableMethods.length >= 2
+                  ? "Предварительное сравнение методов"
+                  : "Данные по методам"}
+              </p>
+              {comparableMethods.length >= 2 ? (
                 <div className="space-y-2 mt-3 text-sm">
-                  {methodStats
-                    .filter((item) => item.attempts >= 2)
+                  {comparableMethods
                     .slice(0, 3)
                     .map((item) => (
                       <div key={item.method}>
@@ -748,7 +762,8 @@ export default function ParentPage() {
                 </div>
               ) : (
                 <p className="text-sm text-violet-200 mt-3">
-                  Нужно ещё несколько занятий, чтобы сравнивать методы.
+                  Пока рано говорить, какой метод работает лучше. Для сравнения
+                  нужно минимум по 5 наблюдений хотя бы для двух разных методов.
                 </p>
               )}
             </div>

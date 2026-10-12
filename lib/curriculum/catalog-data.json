@@ -1,0 +1,2927 @@
+{
+  "academic_years": [
+    {
+      "id": "2026-27",
+      "label": "2026/27",
+      "starts_on": "2026-09-01",
+      "ends_on": "2027-08-31"
+    }
+  ],
+  "curriculum_programs": [
+    {
+      "id": "ru.fgos_ooo.base",
+      "name": "Базовый профиль ФГОС ООО",
+      "country_code": "RU",
+      "standard": "ФГОС ООО",
+      "version": null,
+      "active": true,
+      "metadata": {
+        "default_profile": true,
+        "school_program_confirmed": false
+      }
+    }
+  ],
+  "subjects": [
+    {
+      "id": "math",
+      "display_name": "Математика",
+      "sort_order": 1,
+      "active": true
+    },
+    {
+      "id": "russian",
+      "display_name": "Русский язык",
+      "sort_order": 2,
+      "active": true
+    },
+    {
+      "id": "english",
+      "display_name": "Английский язык",
+      "sort_order": 3,
+      "active": true
+    },
+    {
+      "id": "literature",
+      "display_name": "Литература",
+      "sort_order": 4,
+      "active": true
+    },
+    {
+      "id": "physics",
+      "display_name": "Физика",
+      "sort_order": 5,
+      "active": true
+    },
+    {
+      "id": "biology",
+      "display_name": "Биология",
+      "sort_order": 6,
+      "active": true
+    },
+    {
+      "id": "geography",
+      "display_name": "География",
+      "sort_order": 7,
+      "active": true
+    },
+    {
+      "id": "history",
+      "display_name": "История",
+      "sort_order": 8,
+      "active": true
+    },
+    {
+      "id": "informatics",
+      "display_name": "Информатика",
+      "sort_order": 9,
+      "active": true
+    }
+  ],
+  "courses": [
+    {
+      "id": "math.algebra",
+      "subject_id": "math",
+      "display_name": "Алгебра",
+      "grade_from": null,
+      "grade_to": null,
+      "sort_order": 1,
+      "active": true,
+      "metadata": {}
+    },
+    {
+      "id": "math.geometry",
+      "subject_id": "math",
+      "display_name": "Геометрия",
+      "grade_from": null,
+      "grade_to": null,
+      "sort_order": 2,
+      "active": true,
+      "metadata": {}
+    },
+    {
+      "id": "math.probability_statistics",
+      "subject_id": "math",
+      "display_name": "Вероятность и статистика",
+      "grade_from": null,
+      "grade_to": null,
+      "sort_order": 3,
+      "active": true,
+      "metadata": {}
+    },
+    {
+      "id": "russian.language",
+      "subject_id": "russian",
+      "display_name": "Русский язык",
+      "grade_from": null,
+      "grade_to": null,
+      "sort_order": 4,
+      "active": true,
+      "metadata": {}
+    },
+    {
+      "id": "english.language",
+      "subject_id": "english",
+      "display_name": "Английский язык",
+      "grade_from": null,
+      "grade_to": null,
+      "sort_order": 5,
+      "active": true,
+      "metadata": {}
+    },
+    {
+      "id": "literature.general",
+      "subject_id": "literature",
+      "display_name": "Литература",
+      "grade_from": null,
+      "grade_to": null,
+      "sort_order": 6,
+      "active": true,
+      "metadata": {}
+    },
+    {
+      "id": "physics.general",
+      "subject_id": "physics",
+      "display_name": "Физика",
+      "grade_from": null,
+      "grade_to": null,
+      "sort_order": 7,
+      "active": true,
+      "metadata": {}
+    },
+    {
+      "id": "biology.general",
+      "subject_id": "biology",
+      "display_name": "Биология",
+      "grade_from": null,
+      "grade_to": null,
+      "sort_order": 8,
+      "active": true,
+      "metadata": {}
+    },
+    {
+      "id": "geography.general",
+      "subject_id": "geography",
+      "display_name": "География",
+      "grade_from": null,
+      "grade_to": null,
+      "sort_order": 9,
+      "active": true,
+      "metadata": {}
+    },
+    {
+      "id": "history.russia",
+      "subject_id": "history",
+      "display_name": "История России",
+      "grade_from": null,
+      "grade_to": null,
+      "sort_order": 10,
+      "active": true,
+      "metadata": {}
+    },
+    {
+      "id": "history.world",
+      "subject_id": "history",
+      "display_name": "Всеобщая история",
+      "grade_from": null,
+      "grade_to": null,
+      "sort_order": 11,
+      "active": true,
+      "metadata": {}
+    },
+    {
+      "id": "history.moscow_region",
+      "subject_id": "history",
+      "display_name": "История Московской области",
+      "grade_from": null,
+      "grade_to": null,
+      "sort_order": 12,
+      "active": true,
+      "metadata": {}
+    },
+    {
+      "id": "informatics.general",
+      "subject_id": "informatics",
+      "display_name": "Информатика",
+      "grade_from": null,
+      "grade_to": null,
+      "sort_order": 13,
+      "active": true,
+      "metadata": {}
+    }
+  ],
+  "curriculum_program_courses": [
+    {
+      "program_id": "ru.fgos_ooo.base",
+      "grade": 7,
+      "course_id": "math.algebra",
+      "classification": "federal",
+      "metadata": {
+        "default_profile": true
+      }
+    },
+    {
+      "program_id": "ru.fgos_ooo.base",
+      "grade": 7,
+      "course_id": "math.geometry",
+      "classification": "federal",
+      "metadata": {
+        "default_profile": true
+      }
+    },
+    {
+      "program_id": "ru.fgos_ooo.base",
+      "grade": 7,
+      "course_id": "math.probability_statistics",
+      "classification": "federal",
+      "metadata": {
+        "default_profile": true
+      }
+    },
+    {
+      "program_id": "ru.fgos_ooo.base",
+      "grade": 7,
+      "course_id": "russian.language",
+      "classification": "federal",
+      "metadata": {
+        "default_profile": true
+      }
+    },
+    {
+      "program_id": "ru.fgos_ooo.base",
+      "grade": 7,
+      "course_id": "english.language",
+      "classification": "federal",
+      "metadata": {
+        "default_profile": true
+      }
+    },
+    {
+      "program_id": "ru.fgos_ooo.base",
+      "grade": 7,
+      "course_id": "literature.general",
+      "classification": "federal",
+      "metadata": {
+        "default_profile": true
+      }
+    },
+    {
+      "program_id": "ru.fgos_ooo.base",
+      "grade": 7,
+      "course_id": "physics.general",
+      "classification": "federal",
+      "metadata": {
+        "default_profile": true
+      }
+    },
+    {
+      "program_id": "ru.fgos_ooo.base",
+      "grade": 7,
+      "course_id": "biology.general",
+      "classification": "federal",
+      "metadata": {
+        "default_profile": true
+      }
+    },
+    {
+      "program_id": "ru.fgos_ooo.base",
+      "grade": 7,
+      "course_id": "geography.general",
+      "classification": "federal",
+      "metadata": {
+        "default_profile": true
+      }
+    },
+    {
+      "program_id": "ru.fgos_ooo.base",
+      "grade": 7,
+      "course_id": "history.russia",
+      "classification": "federal",
+      "metadata": {
+        "default_profile": true
+      }
+    },
+    {
+      "program_id": "ru.fgos_ooo.base",
+      "grade": 7,
+      "course_id": "history.world",
+      "classification": "federal",
+      "metadata": {
+        "default_profile": true
+      }
+    },
+    {
+      "program_id": "ru.fgos_ooo.base",
+      "grade": 7,
+      "course_id": "history.moscow_region",
+      "classification": "regional",
+      "metadata": {
+        "default_profile": true
+      }
+    },
+    {
+      "program_id": "ru.fgos_ooo.base",
+      "grade": 7,
+      "course_id": "informatics.general",
+      "classification": "federal",
+      "metadata": {
+        "default_profile": true
+      }
+    }
+  ],
+  "textbook_editions": [
+    {
+      "id": "tb.math.algebra.makarychev.7.2023",
+      "course_id": "math.algebra",
+      "title": "Математика. Алгебра. 7 класс. Базовый уровень",
+      "authors": [
+        "Ю. Н. Макарычев",
+        "Н. Г. Миндюк",
+        "К. И. Нешков",
+        "С. Б. Суворова"
+      ],
+      "publisher": "Просвещение",
+      "publication_year": 2023,
+      "series": null,
+      "isbn": null,
+      "part_count": null,
+      "grade_from": 7,
+      "grade_to": 7,
+      "metadata": {
+        "editor": [
+          "С. А. Теляковский"
+        ]
+      }
+    },
+    {
+      "id": "tb.math.geometry.atanasyan.7_9.2025",
+      "course_id": "math.geometry",
+      "title": "Математика. Геометрия. 7–9 классы. Базовый уровень",
+      "authors": [
+        "Л. С. Атанасян",
+        "В. Ф. Бутузов",
+        "С. Б. Кадомцев",
+        "Э. Г. Позняк",
+        "И. И. Юдина"
+      ],
+      "publisher": "Просвещение",
+      "publication_year": 2025,
+      "series": null,
+      "isbn": null,
+      "part_count": null,
+      "grade_from": 7,
+      "grade_to": 9,
+      "metadata": {}
+    },
+    {
+      "id": "tb.math.probability_statistics.vysotsky_yashchenko.7_9.2024",
+      "course_id": "math.probability_statistics",
+      "title": "Математика. Вероятность и статистика. 7–9 классы. Базовый уровень",
+      "authors": [
+        "И. Р. Высоцкий",
+        "И. В. Ященко"
+      ],
+      "publisher": "Просвещение",
+      "publication_year": 2024,
+      "series": null,
+      "isbn": null,
+      "part_count": 2,
+      "grade_from": 7,
+      "grade_to": 9,
+      "metadata": {}
+    },
+    {
+      "id": "tb.russian.baranov_ladyzhenskaya.7.2023",
+      "course_id": "russian.language",
+      "title": "Русский язык. 7 класс",
+      "authors": [
+        "М. Т. Баранов",
+        "Т. А. Ладыженская",
+        "Л. А. Тростенцова",
+        "и др."
+      ],
+      "publisher": "Просвещение",
+      "publication_year": 2023,
+      "series": null,
+      "isbn": null,
+      "part_count": 2,
+      "grade_from": 7,
+      "grade_to": 7,
+      "metadata": {}
+    },
+    {
+      "id": "tb.literature.korovina.7.2024",
+      "course_id": "literature.general",
+      "title": "Литература. 7 класс",
+      "authors": [
+        "В. Я. Коровина",
+        "В. П. Журавлёв",
+        "В. И. Коровин"
+      ],
+      "publisher": "Просвещение",
+      "publication_year": 2024,
+      "series": null,
+      "isbn": null,
+      "part_count": 2,
+      "grade_from": 7,
+      "grade_to": 7,
+      "metadata": {}
+    },
+    {
+      "id": "tb.english.spotlight.7.2025",
+      "course_id": "english.language",
+      "title": "Английский язык. 7 класс",
+      "authors": [
+        "Ю. Е. Ваулина",
+        "Дж. Дули",
+        "О. Е. Подоляко",
+        "В. Эванс"
+      ],
+      "publisher": "Просвещение / Express Publishing",
+      "publication_year": 2025,
+      "series": "Английский в фокусе / Spotlight",
+      "isbn": null,
+      "part_count": null,
+      "grade_from": 7,
+      "grade_to": 7,
+      "metadata": {}
+    },
+    {
+      "id": "tb.physics.peryshkin_ivanov.7.2023",
+      "course_id": "physics.general",
+      "title": "Физика. 7 класс. Базовый уровень",
+      "authors": [
+        "И. М. Перышкин",
+        "А. И. Иванов"
+      ],
+      "publisher": "Просвещение",
+      "publication_year": 2023,
+      "series": null,
+      "isbn": null,
+      "part_count": null,
+      "grade_from": 7,
+      "grade_to": 7,
+      "metadata": {}
+    },
+    {
+      "id": "tb.biology.pasechnik.7.2024",
+      "course_id": "biology.general",
+      "title": "Биология. 7 класс. Базовый уровень",
+      "authors": [
+        "В. В. Пасечник",
+        "С. В. Суматохин",
+        "З. Г. Гапонюк",
+        "Г. Г. Швецов"
+      ],
+      "publisher": "Просвещение",
+      "publication_year": 2024,
+      "series": null,
+      "isbn": null,
+      "part_count": null,
+      "grade_from": 7,
+      "grade_to": 7,
+      "metadata": {}
+    },
+    {
+      "id": "tb.geography.polyarnaya_zvezda.7.2025",
+      "course_id": "geography.general",
+      "title": "География. 7 класс",
+      "authors": [
+        "А. И. Алексеев",
+        "и др."
+      ],
+      "publisher": "Просвещение",
+      "publication_year": 2025,
+      "series": "Полярная звезда",
+      "isbn": null,
+      "part_count": null,
+      "grade_from": 7,
+      "grade_to": 7,
+      "metadata": {}
+    },
+    {
+      "id": "tb.informatics.bosova.7.2025",
+      "course_id": "informatics.general",
+      "title": "Информатика. 7 класс. Базовый уровень",
+      "authors": [
+        "Л. Л. Босова",
+        "А. Ю. Босова"
+      ],
+      "publisher": "Просвещение",
+      "publication_year": 2025,
+      "series": null,
+      "isbn": null,
+      "part_count": null,
+      "grade_from": 7,
+      "grade_to": 7,
+      "metadata": {}
+    },
+    {
+      "id": "tb.history.russia.medinsky_torkunov.7.2025",
+      "course_id": "history.russia",
+      "title": "История. История России. XVI–XVII вв. 7 класс",
+      "authors": [
+        "В. Р. Мединский",
+        "А. В. Торкунов"
+      ],
+      "publisher": "Просвещение",
+      "publication_year": 2025,
+      "series": null,
+      "isbn": null,
+      "part_count": null,
+      "grade_from": 7,
+      "grade_to": 7,
+      "metadata": {}
+    },
+    {
+      "id": "tb.history.world.medinsky_chubaryan.7.2025",
+      "course_id": "history.world",
+      "title": "История. Всеобщая история. История Нового времени, конец XV–XVII вв. 7 класс",
+      "authors": [
+        "В. Р. Мединский",
+        "А. О. Чубарьян"
+      ],
+      "publisher": "Просвещение",
+      "publication_year": 2025,
+      "series": null,
+      "isbn": null,
+      "part_count": null,
+      "grade_from": 7,
+      "grade_to": 7,
+      "metadata": {}
+    },
+    {
+      "id": "tb.history.moscow_region.sukhov.6_7.2026",
+      "course_id": "history.moscow_region",
+      "title": "История нашего края. Московская область. 6–7 классы",
+      "authors": [
+        "В. В. Сухов",
+        "А. С. Клемешов",
+        "Е. Г. Жигирёва",
+        "и др."
+      ],
+      "publisher": "Просвещение",
+      "publication_year": 2026,
+      "series": null,
+      "isbn": null,
+      "part_count": null,
+      "grade_from": 6,
+      "grade_to": 7,
+      "metadata": {}
+    }
+  ],
+  "curriculum_units": [
+    {
+      "id": "ru.fgos_ooo.base.math.algebra.7.unit1",
+      "program_id": "ru.fgos_ooo.base",
+      "course_id": "math.algebra",
+      "grade": 7,
+      "parent_id": null,
+      "unit_type": "unit",
+      "title": "Выражения, тождества, уравнения",
+      "order_index": 1,
+      "metadata": {}
+    },
+    {
+      "id": "ru.fgos_ooo.base.math.algebra.7.unit2",
+      "program_id": "ru.fgos_ooo.base",
+      "course_id": "math.algebra",
+      "grade": 7,
+      "parent_id": null,
+      "unit_type": "unit",
+      "title": "Функции и их графики",
+      "order_index": 2,
+      "metadata": {}
+    },
+    {
+      "id": "ru.fgos_ooo.base.math.algebra.7.unit3",
+      "program_id": "ru.fgos_ooo.base",
+      "course_id": "math.algebra",
+      "grade": 7,
+      "parent_id": null,
+      "unit_type": "unit",
+      "title": "Степень с натуральным показателем",
+      "order_index": 3,
+      "metadata": {}
+    },
+    {
+      "id": "ru.fgos_ooo.base.math.algebra.7.unit4",
+      "program_id": "ru.fgos_ooo.base",
+      "course_id": "math.algebra",
+      "grade": 7,
+      "parent_id": null,
+      "unit_type": "unit",
+      "title": "Многочлены",
+      "order_index": 4,
+      "metadata": {}
+    },
+    {
+      "id": "ru.fgos_ooo.base.math.algebra.7.unit5",
+      "program_id": "ru.fgos_ooo.base",
+      "course_id": "math.algebra",
+      "grade": 7,
+      "parent_id": null,
+      "unit_type": "unit",
+      "title": "Формулы сокращённого умножения",
+      "order_index": 5,
+      "metadata": {}
+    },
+    {
+      "id": "ru.fgos_ooo.base.math.algebra.7.unit6",
+      "program_id": "ru.fgos_ooo.base",
+      "course_id": "math.algebra",
+      "grade": 7,
+      "parent_id": null,
+      "unit_type": "unit",
+      "title": "Системы линейных уравнений",
+      "order_index": 6,
+      "metadata": {}
+    },
+    {
+      "id": "ru.fgos_ooo.base.math.geometry.7.unit1",
+      "program_id": "ru.fgos_ooo.base",
+      "course_id": "math.geometry",
+      "grade": 7,
+      "parent_id": null,
+      "unit_type": "unit",
+      "title": "Начальные геометрические сведения",
+      "order_index": 1,
+      "metadata": {}
+    },
+    {
+      "id": "ru.fgos_ooo.base.math.geometry.7.unit2",
+      "program_id": "ru.fgos_ooo.base",
+      "course_id": "math.geometry",
+      "grade": 7,
+      "parent_id": null,
+      "unit_type": "unit",
+      "title": "Треугольники",
+      "order_index": 2,
+      "metadata": {}
+    },
+    {
+      "id": "ru.fgos_ooo.base.math.geometry.7.unit3",
+      "program_id": "ru.fgos_ooo.base",
+      "course_id": "math.geometry",
+      "grade": 7,
+      "parent_id": null,
+      "unit_type": "unit",
+      "title": "Параллельные прямые",
+      "order_index": 3,
+      "metadata": {}
+    },
+    {
+      "id": "ru.fgos_ooo.base.math.geometry.7.unit4",
+      "program_id": "ru.fgos_ooo.base",
+      "course_id": "math.geometry",
+      "grade": 7,
+      "parent_id": null,
+      "unit_type": "unit",
+      "title": "Соотношения между сторонами и углами треугольника",
+      "order_index": 4,
+      "metadata": {}
+    },
+    {
+      "id": "ru.fgos_ooo.base.math.probability_statistics.7.unit1",
+      "program_id": "ru.fgos_ooo.base",
+      "course_id": "math.probability_statistics",
+      "grade": 7,
+      "parent_id": null,
+      "unit_type": "unit",
+      "title": "Представление данных",
+      "order_index": 1,
+      "metadata": {}
+    },
+    {
+      "id": "ru.fgos_ooo.base.math.probability_statistics.7.unit2",
+      "program_id": "ru.fgos_ooo.base",
+      "course_id": "math.probability_statistics",
+      "grade": 7,
+      "parent_id": null,
+      "unit_type": "unit",
+      "title": "Описательная статистика",
+      "order_index": 2,
+      "metadata": {}
+    },
+    {
+      "id": "ru.fgos_ooo.base.math.probability_statistics.7.unit3",
+      "program_id": "ru.fgos_ooo.base",
+      "course_id": "math.probability_statistics",
+      "grade": 7,
+      "parent_id": null,
+      "unit_type": "unit",
+      "title": "Случайная изменчивость",
+      "order_index": 3,
+      "metadata": {}
+    },
+    {
+      "id": "ru.fgos_ooo.base.math.probability_statistics.7.unit4",
+      "program_id": "ru.fgos_ooo.base",
+      "course_id": "math.probability_statistics",
+      "grade": 7,
+      "parent_id": null,
+      "unit_type": "unit",
+      "title": "Графы",
+      "order_index": 4,
+      "metadata": {}
+    },
+    {
+      "id": "ru.fgos_ooo.base.math.probability_statistics.7.unit5",
+      "program_id": "ru.fgos_ooo.base",
+      "course_id": "math.probability_statistics",
+      "grade": 7,
+      "parent_id": null,
+      "unit_type": "unit",
+      "title": "Логические утверждения и высказывания",
+      "order_index": 5,
+      "metadata": {}
+    },
+    {
+      "id": "ru.fgos_ooo.base.math.probability_statistics.7.unit6",
+      "program_id": "ru.fgos_ooo.base",
+      "course_id": "math.probability_statistics",
+      "grade": 7,
+      "parent_id": null,
+      "unit_type": "unit",
+      "title": "Случайные опыты и случайные события",
+      "order_index": 6,
+      "metadata": {}
+    },
+    {
+      "id": "ru.fgos_ooo.base.math.probability_statistics.7.unit7",
+      "program_id": "ru.fgos_ooo.base",
+      "course_id": "math.probability_statistics",
+      "grade": 7,
+      "parent_id": null,
+      "unit_type": "unit",
+      "title": "Множества",
+      "order_index": 7,
+      "metadata": {}
+    },
+    {
+      "id": "ru.fgos_ooo.base.math.probability_statistics.7.unit8",
+      "program_id": "ru.fgos_ooo.base",
+      "course_id": "math.probability_statistics",
+      "grade": 7,
+      "parent_id": null,
+      "unit_type": "unit",
+      "title": "Математическое описание случайных явлений",
+      "order_index": 8,
+      "metadata": {}
+    },
+    {
+      "id": "ru.fgos_ooo.base.russian.language.7.unit1",
+      "program_id": "ru.fgos_ooo.base",
+      "course_id": "russian.language",
+      "grade": 7,
+      "parent_id": null,
+      "unit_type": "unit",
+      "title": "Общие сведения о языке",
+      "order_index": 1,
+      "metadata": {}
+    },
+    {
+      "id": "ru.fgos_ooo.base.russian.language.7.unit2",
+      "program_id": "ru.fgos_ooo.base",
+      "course_id": "russian.language",
+      "grade": 7,
+      "parent_id": null,
+      "unit_type": "unit",
+      "title": "Причастие",
+      "order_index": 2,
+      "metadata": {}
+    },
+    {
+      "id": "ru.fgos_ooo.base.russian.language.7.unit3",
+      "program_id": "ru.fgos_ooo.base",
+      "course_id": "russian.language",
+      "grade": 7,
+      "parent_id": null,
+      "unit_type": "unit",
+      "title": "Деепричастие",
+      "order_index": 3,
+      "metadata": {}
+    },
+    {
+      "id": "ru.fgos_ooo.base.russian.language.7.unit4",
+      "program_id": "ru.fgos_ooo.base",
+      "course_id": "russian.language",
+      "grade": 7,
+      "parent_id": null,
+      "unit_type": "unit",
+      "title": "Наречие",
+      "order_index": 4,
+      "metadata": {}
+    },
+    {
+      "id": "ru.fgos_ooo.base.russian.language.7.unit5",
+      "program_id": "ru.fgos_ooo.base",
+      "course_id": "russian.language",
+      "grade": 7,
+      "parent_id": null,
+      "unit_type": "unit",
+      "title": "Предлог",
+      "order_index": 5,
+      "metadata": {}
+    },
+    {
+      "id": "ru.fgos_ooo.base.russian.language.7.unit6",
+      "program_id": "ru.fgos_ooo.base",
+      "course_id": "russian.language",
+      "grade": 7,
+      "parent_id": null,
+      "unit_type": "unit",
+      "title": "Союз",
+      "order_index": 6,
+      "metadata": {}
+    },
+    {
+      "id": "ru.fgos_ooo.base.russian.language.7.unit7",
+      "program_id": "ru.fgos_ooo.base",
+      "course_id": "russian.language",
+      "grade": 7,
+      "parent_id": null,
+      "unit_type": "unit",
+      "title": "Частица",
+      "order_index": 7,
+      "metadata": {}
+    },
+    {
+      "id": "ru.fgos_ooo.base.russian.language.7.unit8",
+      "program_id": "ru.fgos_ooo.base",
+      "course_id": "russian.language",
+      "grade": 7,
+      "parent_id": null,
+      "unit_type": "unit",
+      "title": "Междометие",
+      "order_index": 8,
+      "metadata": {}
+    },
+    {
+      "id": "ru.fgos_ooo.base.russian.language.7.unit9",
+      "program_id": "ru.fgos_ooo.base",
+      "course_id": "russian.language",
+      "grade": 7,
+      "parent_id": null,
+      "unit_type": "unit",
+      "title": "Повторение и систематизация",
+      "order_index": 9,
+      "metadata": {}
+    },
+    {
+      "id": "ru.fgos_ooo.base.physics.general.7.unit1",
+      "program_id": "ru.fgos_ooo.base",
+      "course_id": "physics.general",
+      "grade": 7,
+      "parent_id": null,
+      "unit_type": "unit",
+      "title": "Физика и её роль в познании окружающего мира",
+      "order_index": 1,
+      "metadata": {}
+    },
+    {
+      "id": "ru.fgos_ooo.base.physics.general.7.unit2",
+      "program_id": "ru.fgos_ooo.base",
+      "course_id": "physics.general",
+      "grade": 7,
+      "parent_id": null,
+      "unit_type": "unit",
+      "title": "Первоначальные сведения о строении вещества",
+      "order_index": 2,
+      "metadata": {}
+    },
+    {
+      "id": "ru.fgos_ooo.base.physics.general.7.unit3",
+      "program_id": "ru.fgos_ooo.base",
+      "course_id": "physics.general",
+      "grade": 7,
+      "parent_id": null,
+      "unit_type": "unit",
+      "title": "Взаимодействие тел",
+      "order_index": 3,
+      "metadata": {}
+    },
+    {
+      "id": "ru.fgos_ooo.base.physics.general.7.unit4",
+      "program_id": "ru.fgos_ooo.base",
+      "course_id": "physics.general",
+      "grade": 7,
+      "parent_id": null,
+      "unit_type": "unit",
+      "title": "Давление твёрдых тел, жидкостей и газов",
+      "order_index": 4,
+      "metadata": {}
+    },
+    {
+      "id": "ru.fgos_ooo.base.physics.general.7.unit5",
+      "program_id": "ru.fgos_ooo.base",
+      "course_id": "physics.general",
+      "grade": 7,
+      "parent_id": null,
+      "unit_type": "unit",
+      "title": "Работа и мощность. Энергия",
+      "order_index": 5,
+      "metadata": {}
+    },
+    {
+      "id": "ru.fgos_ooo.base.biology.general.7.unit1",
+      "program_id": "ru.fgos_ooo.base",
+      "course_id": "biology.general",
+      "grade": 7,
+      "parent_id": null,
+      "unit_type": "unit",
+      "title": "Многообразие растительного мира",
+      "order_index": 1,
+      "metadata": {}
+    },
+    {
+      "id": "ru.fgos_ooo.base.biology.general.7.unit2",
+      "program_id": "ru.fgos_ooo.base",
+      "course_id": "biology.general",
+      "grade": 7,
+      "parent_id": null,
+      "unit_type": "unit",
+      "title": "Классификация покрытосеменных растений",
+      "order_index": 2,
+      "metadata": {}
+    },
+    {
+      "id": "ru.fgos_ooo.base.biology.general.7.unit3",
+      "program_id": "ru.fgos_ooo.base",
+      "course_id": "biology.general",
+      "grade": 7,
+      "parent_id": null,
+      "unit_type": "unit",
+      "title": "Растения и среда обитания",
+      "order_index": 3,
+      "metadata": {}
+    },
+    {
+      "id": "ru.fgos_ooo.base.biology.general.7.unit4",
+      "program_id": "ru.fgos_ooo.base",
+      "course_id": "biology.general",
+      "grade": 7,
+      "parent_id": null,
+      "unit_type": "unit",
+      "title": "Бактерии",
+      "order_index": 4,
+      "metadata": {}
+    },
+    {
+      "id": "ru.fgos_ooo.base.biology.general.7.unit5",
+      "program_id": "ru.fgos_ooo.base",
+      "course_id": "biology.general",
+      "grade": 7,
+      "parent_id": null,
+      "unit_type": "unit",
+      "title": "Грибы",
+      "order_index": 5,
+      "metadata": {}
+    },
+    {
+      "id": "ru.fgos_ooo.base.geography.general.7.unit1",
+      "program_id": "ru.fgos_ooo.base",
+      "course_id": "geography.general",
+      "grade": 7,
+      "parent_id": null,
+      "unit_type": "unit",
+      "title": "Введение",
+      "order_index": 1,
+      "metadata": {}
+    },
+    {
+      "id": "ru.fgos_ooo.base.geography.general.7.unit2",
+      "program_id": "ru.fgos_ooo.base",
+      "course_id": "geography.general",
+      "grade": 7,
+      "parent_id": null,
+      "unit_type": "unit",
+      "title": "Человек на Земле",
+      "order_index": 2,
+      "metadata": {}
+    },
+    {
+      "id": "ru.fgos_ooo.base.geography.general.7.unit3",
+      "program_id": "ru.fgos_ooo.base",
+      "course_id": "geography.general",
+      "grade": 7,
+      "parent_id": null,
+      "unit_type": "unit",
+      "title": "Природа Земли",
+      "order_index": 3,
+      "metadata": {}
+    },
+    {
+      "id": "ru.fgos_ooo.base.geography.general.7.unit4",
+      "program_id": "ru.fgos_ooo.base",
+      "course_id": "geography.general",
+      "grade": 7,
+      "parent_id": null,
+      "unit_type": "unit",
+      "title": "Природные комплексы и регионы",
+      "order_index": 4,
+      "metadata": {}
+    },
+    {
+      "id": "ru.fgos_ooo.base.geography.general.7.unit5",
+      "program_id": "ru.fgos_ooo.base",
+      "course_id": "geography.general",
+      "grade": 7,
+      "parent_id": null,
+      "unit_type": "unit",
+      "title": "Материки и страны",
+      "order_index": 5,
+      "metadata": {}
+    },
+    {
+      "id": "ru.fgos_ooo.base.geography.general.7.unit6",
+      "program_id": "ru.fgos_ooo.base",
+      "course_id": "geography.general",
+      "grade": 7,
+      "parent_id": null,
+      "unit_type": "unit",
+      "title": "Глобальные проблемы человечества",
+      "order_index": 6,
+      "metadata": {}
+    },
+    {
+      "id": "ru.fgos_ooo.base.informatics.general.7.unit1",
+      "program_id": "ru.fgos_ooo.base",
+      "course_id": "informatics.general",
+      "grade": 7,
+      "parent_id": null,
+      "unit_type": "unit",
+      "title": "Информация и информационные процессы",
+      "order_index": 1,
+      "metadata": {}
+    },
+    {
+      "id": "ru.fgos_ooo.base.informatics.general.7.unit2",
+      "program_id": "ru.fgos_ooo.base",
+      "course_id": "informatics.general",
+      "grade": 7,
+      "parent_id": null,
+      "unit_type": "unit",
+      "title": "Компьютер — универсальное устройство обработки данных",
+      "order_index": 2,
+      "metadata": {}
+    },
+    {
+      "id": "ru.fgos_ooo.base.informatics.general.7.unit3",
+      "program_id": "ru.fgos_ooo.base",
+      "course_id": "informatics.general",
+      "grade": 7,
+      "parent_id": null,
+      "unit_type": "unit",
+      "title": "Обработка текстовой информации",
+      "order_index": 3,
+      "metadata": {}
+    },
+    {
+      "id": "ru.fgos_ooo.base.informatics.general.7.unit4",
+      "program_id": "ru.fgos_ooo.base",
+      "course_id": "informatics.general",
+      "grade": 7,
+      "parent_id": null,
+      "unit_type": "unit",
+      "title": "Обработка графической информации",
+      "order_index": 4,
+      "metadata": {}
+    },
+    {
+      "id": "ru.fgos_ooo.base.informatics.general.7.unit5",
+      "program_id": "ru.fgos_ooo.base",
+      "course_id": "informatics.general",
+      "grade": 7,
+      "parent_id": null,
+      "unit_type": "unit",
+      "title": "Мультимедиа",
+      "order_index": 5,
+      "metadata": {}
+    },
+    {
+      "id": "ru.fgos_ooo.base.history.russia.7.unit1",
+      "program_id": "ru.fgos_ooo.base",
+      "course_id": "history.russia",
+      "grade": 7,
+      "parent_id": null,
+      "unit_type": "unit",
+      "title": "Россия в XVI в.",
+      "order_index": 1,
+      "metadata": {}
+    },
+    {
+      "id": "ru.fgos_ooo.base.history.russia.7.unit2",
+      "program_id": "ru.fgos_ooo.base",
+      "course_id": "history.russia",
+      "grade": 7,
+      "parent_id": null,
+      "unit_type": "unit",
+      "title": "Смута в России",
+      "order_index": 2,
+      "metadata": {}
+    },
+    {
+      "id": "ru.fgos_ooo.base.history.russia.7.unit3",
+      "program_id": "ru.fgos_ooo.base",
+      "course_id": "history.russia",
+      "grade": 7,
+      "parent_id": null,
+      "unit_type": "unit",
+      "title": "Россия при первых Романовых",
+      "order_index": 3,
+      "metadata": {}
+    }
+  ],
+  "skills": [
+    {
+      "id": "math.algebra.linear_equation.basic",
+      "subject_id": "math",
+      "course_id": "math.algebra",
+      "title": "Линейное уравнение",
+      "skill_type": "procedure",
+      "description": null,
+      "grade_from": null,
+      "grade_to": null,
+      "active": true,
+      "metadata": {}
+    },
+    {
+      "id": "math.algebra.function.graph_reading",
+      "subject_id": "math",
+      "course_id": "math.algebra",
+      "title": "Чтение графика функции",
+      "skill_type": "interpretation",
+      "description": null,
+      "grade_from": null,
+      "grade_to": null,
+      "active": true,
+      "metadata": {}
+    },
+    {
+      "id": "math.algebra.polynomial.operations",
+      "subject_id": "math",
+      "course_id": "math.algebra",
+      "title": "Операции с многочленами",
+      "skill_type": "procedure",
+      "description": null,
+      "grade_from": null,
+      "grade_to": null,
+      "active": true,
+      "metadata": {}
+    },
+    {
+      "id": "math.algebra.abbreviated_multiplication",
+      "subject_id": "math",
+      "course_id": "math.algebra",
+      "title": "Формулы сокращённого умножения",
+      "skill_type": "procedure",
+      "description": null,
+      "grade_from": null,
+      "grade_to": null,
+      "active": true,
+      "metadata": {}
+    },
+    {
+      "id": "math.algebra.linear_system.two_variables",
+      "subject_id": "math",
+      "course_id": "math.algebra",
+      "title": "Система линейных уравнений с двумя переменными",
+      "skill_type": "concept",
+      "description": null,
+      "grade_from": null,
+      "grade_to": null,
+      "active": true,
+      "metadata": {}
+    },
+    {
+      "id": "math.algebra.linear_system.graphical",
+      "subject_id": "math",
+      "course_id": "math.algebra",
+      "title": "Графический способ решения системы",
+      "skill_type": "procedure",
+      "description": null,
+      "grade_from": null,
+      "grade_to": null,
+      "active": true,
+      "metadata": {}
+    },
+    {
+      "id": "math.algebra.linear_system.substitution",
+      "subject_id": "math",
+      "course_id": "math.algebra",
+      "title": "Решение системы подстановкой",
+      "skill_type": "procedure",
+      "description": null,
+      "grade_from": null,
+      "grade_to": null,
+      "active": true,
+      "metadata": {}
+    },
+    {
+      "id": "math.algebra.linear_system.addition",
+      "subject_id": "math",
+      "course_id": "math.algebra",
+      "title": "Решение системы сложением",
+      "skill_type": "procedure",
+      "description": null,
+      "grade_from": null,
+      "grade_to": null,
+      "active": true,
+      "metadata": {}
+    },
+    {
+      "id": "math.algebra.linear_system.word_problem",
+      "subject_id": "math",
+      "course_id": "math.algebra",
+      "title": "Модель задачи в виде системы уравнений",
+      "skill_type": "reasoning",
+      "description": null,
+      "grade_from": null,
+      "grade_to": null,
+      "active": true,
+      "metadata": {}
+    },
+    {
+      "id": "math.geometry.basic.points_lines_segments",
+      "subject_id": "math",
+      "course_id": "math.geometry",
+      "title": "Точки, прямые и отрезки",
+      "skill_type": "concept",
+      "description": null,
+      "grade_from": null,
+      "grade_to": null,
+      "active": true,
+      "metadata": {}
+    },
+    {
+      "id": "math.geometry.angles",
+      "subject_id": "math",
+      "course_id": "math.geometry",
+      "title": "Углы",
+      "skill_type": "concept",
+      "description": null,
+      "grade_from": null,
+      "grade_to": null,
+      "active": true,
+      "metadata": {}
+    },
+    {
+      "id": "math.geometry.triangle.congruence",
+      "subject_id": "math",
+      "course_id": "math.geometry",
+      "title": "Равенство треугольников",
+      "skill_type": "reasoning",
+      "description": null,
+      "grade_from": null,
+      "grade_to": null,
+      "active": true,
+      "metadata": {}
+    },
+    {
+      "id": "math.geometry.triangle.isosceles",
+      "subject_id": "math",
+      "course_id": "math.geometry",
+      "title": "Равнобедренный треугольник",
+      "skill_type": "concept",
+      "description": null,
+      "grade_from": null,
+      "grade_to": null,
+      "active": true,
+      "metadata": {}
+    },
+    {
+      "id": "math.geometry.parallel_lines",
+      "subject_id": "math",
+      "course_id": "math.geometry",
+      "title": "Параллельные прямые",
+      "skill_type": "concept",
+      "description": null,
+      "grade_from": null,
+      "grade_to": null,
+      "active": true,
+      "metadata": {}
+    },
+    {
+      "id": "math.geometry.triangle.angle_sum",
+      "subject_id": "math",
+      "course_id": "math.geometry",
+      "title": "Сумма углов треугольника",
+      "skill_type": "reasoning",
+      "description": null,
+      "grade_from": null,
+      "grade_to": null,
+      "active": true,
+      "metadata": {}
+    },
+    {
+      "id": "math.statistics.tables_charts",
+      "subject_id": "math",
+      "course_id": "math.probability_statistics",
+      "title": "Чтение таблиц и диаграмм",
+      "skill_type": "interpretation",
+      "description": null,
+      "grade_from": null,
+      "grade_to": null,
+      "active": true,
+      "metadata": {}
+    },
+    {
+      "id": "math.statistics.mean_median_range",
+      "subject_id": "math",
+      "course_id": "math.probability_statistics",
+      "title": "Среднее, медиана и размах",
+      "skill_type": "procedure",
+      "description": null,
+      "grade_from": null,
+      "grade_to": null,
+      "active": true,
+      "metadata": {}
+    },
+    {
+      "id": "math.statistics.data_distribution",
+      "subject_id": "math",
+      "course_id": "math.probability_statistics",
+      "title": "Распределение данных",
+      "skill_type": "interpretation",
+      "description": null,
+      "grade_from": null,
+      "grade_to": null,
+      "active": true,
+      "metadata": {}
+    },
+    {
+      "id": "math.probability.elementary_event",
+      "subject_id": "math",
+      "course_id": "math.probability_statistics",
+      "title": "Элементарное случайное событие",
+      "skill_type": "concept",
+      "description": null,
+      "grade_from": null,
+      "grade_to": null,
+      "active": true,
+      "metadata": {}
+    },
+    {
+      "id": "math.sets.basic_operations",
+      "subject_id": "math",
+      "course_id": "math.probability_statistics",
+      "title": "Основные операции с множествами",
+      "skill_type": "procedure",
+      "description": null,
+      "grade_from": null,
+      "grade_to": null,
+      "active": true,
+      "metadata": {}
+    },
+    {
+      "id": "english.speaking.short_personal_answer",
+      "subject_id": "english",
+      "course_id": "english.language",
+      "title": "Короткий ответ о себе",
+      "skill_type": "communication",
+      "description": null,
+      "grade_from": null,
+      "grade_to": null,
+      "active": true,
+      "metadata": {}
+    },
+    {
+      "id": "english.listening.short_phrase",
+      "subject_id": "english",
+      "course_id": "english.language",
+      "title": "Понимание короткой фразы на слух",
+      "skill_type": "language",
+      "description": null,
+      "grade_from": null,
+      "grade_to": null,
+      "active": true,
+      "metadata": {}
+    },
+    {
+      "id": "english.grammar.past_simple",
+      "subject_id": "english",
+      "course_id": "english.language",
+      "title": "Past Simple",
+      "skill_type": "grammar",
+      "description": null,
+      "grade_from": null,
+      "grade_to": null,
+      "active": true,
+      "metadata": {}
+    },
+    {
+      "id": "english.grammar.gerund_after_like",
+      "subject_id": "english",
+      "course_id": "english.language",
+      "title": "Герундий после like",
+      "skill_type": "grammar",
+      "description": null,
+      "grade_from": null,
+      "grade_to": null,
+      "active": true,
+      "metadata": {}
+    },
+    {
+      "id": "english.reading.comprehension",
+      "subject_id": "english",
+      "course_id": "english.language",
+      "title": "Понимание прочитанного",
+      "skill_type": "language",
+      "description": null,
+      "grade_from": null,
+      "grade_to": null,
+      "active": true,
+      "metadata": {}
+    },
+    {
+      "id": "russian.grammar.participle",
+      "subject_id": "russian",
+      "course_id": "russian.language",
+      "title": "Причастие",
+      "skill_type": "grammar",
+      "description": null,
+      "grade_from": null,
+      "grade_to": null,
+      "active": true,
+      "metadata": {}
+    },
+    {
+      "id": "russian.grammar.participial_phrase",
+      "subject_id": "russian",
+      "course_id": "russian.language",
+      "title": "Причастный оборот",
+      "skill_type": "grammar",
+      "description": null,
+      "grade_from": null,
+      "grade_to": null,
+      "active": true,
+      "metadata": {}
+    },
+    {
+      "id": "russian.grammar.gerund",
+      "subject_id": "russian",
+      "course_id": "russian.language",
+      "title": "Деепричастие",
+      "skill_type": "grammar",
+      "description": null,
+      "grade_from": null,
+      "grade_to": null,
+      "active": true,
+      "metadata": {}
+    },
+    {
+      "id": "russian.grammar.adverb",
+      "subject_id": "russian",
+      "course_id": "russian.language",
+      "title": "Наречие",
+      "skill_type": "grammar",
+      "description": null,
+      "grade_from": null,
+      "grade_to": null,
+      "active": true,
+      "metadata": {}
+    },
+    {
+      "id": "russian.grammar.preposition",
+      "subject_id": "russian",
+      "course_id": "russian.language",
+      "title": "Предлог",
+      "skill_type": "grammar",
+      "description": null,
+      "grade_from": null,
+      "grade_to": null,
+      "active": true,
+      "metadata": {}
+    },
+    {
+      "id": "russian.grammar.conjunction",
+      "subject_id": "russian",
+      "course_id": "russian.language",
+      "title": "Союз",
+      "skill_type": "grammar",
+      "description": null,
+      "grade_from": null,
+      "grade_to": null,
+      "active": true,
+      "metadata": {}
+    },
+    {
+      "id": "russian.grammar.particle",
+      "subject_id": "russian",
+      "course_id": "russian.language",
+      "title": "Частица",
+      "skill_type": "grammar",
+      "description": null,
+      "grade_from": null,
+      "grade_to": null,
+      "active": true,
+      "metadata": {}
+    },
+    {
+      "id": "literature.genre.identification",
+      "subject_id": "literature",
+      "course_id": "literature.general",
+      "title": "Определение жанра",
+      "skill_type": "analysis",
+      "description": null,
+      "grade_from": null,
+      "grade_to": null,
+      "active": true,
+      "metadata": {}
+    },
+    {
+      "id": "literature.character.motivation_analysis",
+      "subject_id": "literature",
+      "course_id": "literature.general",
+      "title": "Анализ мотивов героя",
+      "skill_type": "analysis",
+      "description": null,
+      "grade_from": null,
+      "grade_to": null,
+      "active": true,
+      "metadata": {}
+    },
+    {
+      "id": "literature.text.evidence_for_opinion",
+      "subject_id": "literature",
+      "course_id": "literature.general",
+      "title": "Подтверждение мнения текстом",
+      "skill_type": "reasoning",
+      "description": null,
+      "grade_from": null,
+      "grade_to": null,
+      "active": true,
+      "metadata": {}
+    },
+    {
+      "id": "literature.theme.main_idea",
+      "subject_id": "literature",
+      "course_id": "literature.general",
+      "title": "Основная мысль произведения",
+      "skill_type": "interpretation",
+      "description": null,
+      "grade_from": null,
+      "grade_to": null,
+      "active": true,
+      "metadata": {}
+    },
+    {
+      "id": "history.chronology",
+      "subject_id": "history",
+      "course_id": null,
+      "title": "Хронология",
+      "skill_type": "factual_knowledge",
+      "description": null,
+      "grade_from": null,
+      "grade_to": null,
+      "active": true,
+      "metadata": {}
+    },
+    {
+      "id": "history.cause_effect",
+      "subject_id": "history",
+      "course_id": null,
+      "title": "Причины и следствия исторических событий",
+      "skill_type": "reasoning",
+      "description": null,
+      "grade_from": null,
+      "grade_to": null,
+      "active": true,
+      "metadata": {}
+    },
+    {
+      "id": "history.source_analysis",
+      "subject_id": "history",
+      "course_id": null,
+      "title": "Анализ исторического источника",
+      "skill_type": "analysis",
+      "description": null,
+      "grade_from": null,
+      "grade_to": null,
+      "active": true,
+      "metadata": {}
+    },
+    {
+      "id": "history.compare_processes",
+      "subject_id": "history",
+      "course_id": null,
+      "title": "Сравнение исторических процессов",
+      "skill_type": "analysis",
+      "description": null,
+      "grade_from": null,
+      "grade_to": null,
+      "active": true,
+      "metadata": {}
+    },
+    {
+      "id": "physics.measurement.physical_quantities",
+      "subject_id": "physics",
+      "course_id": "physics.general",
+      "title": "Измерение физических величин",
+      "skill_type": "procedure",
+      "description": null,
+      "grade_from": null,
+      "grade_to": null,
+      "active": true,
+      "metadata": {}
+    },
+    {
+      "id": "physics.motion.speed",
+      "subject_id": "physics",
+      "course_id": "physics.general",
+      "title": "Скорость движения",
+      "skill_type": "procedure",
+      "description": null,
+      "grade_from": null,
+      "grade_to": null,
+      "active": true,
+      "metadata": {}
+    },
+    {
+      "id": "physics.matter.density",
+      "subject_id": "physics",
+      "course_id": "physics.general",
+      "title": "Плотность вещества",
+      "skill_type": "concept",
+      "description": null,
+      "grade_from": null,
+      "grade_to": null,
+      "active": true,
+      "metadata": {}
+    },
+    {
+      "id": "physics.mechanics.inertia",
+      "subject_id": "physics",
+      "course_id": "physics.general",
+      "title": "Инерция",
+      "skill_type": "concept",
+      "description": null,
+      "grade_from": null,
+      "grade_to": null,
+      "active": true,
+      "metadata": {}
+    },
+    {
+      "id": "physics.pressure.basic",
+      "subject_id": "physics",
+      "course_id": "physics.general",
+      "title": "Давление",
+      "skill_type": "concept",
+      "description": null,
+      "grade_from": null,
+      "grade_to": null,
+      "active": true,
+      "metadata": {}
+    },
+    {
+      "id": "physics.work_power_energy.basic",
+      "subject_id": "physics",
+      "course_id": "physics.general",
+      "title": "Работа, мощность и энергия",
+      "skill_type": "concept",
+      "description": null,
+      "grade_from": null,
+      "grade_to": null,
+      "active": true,
+      "metadata": {}
+    },
+    {
+      "id": "biology.classification.basic",
+      "subject_id": "biology",
+      "course_id": "biology.general",
+      "title": "Основы классификации",
+      "skill_type": "concept",
+      "description": null,
+      "grade_from": null,
+      "grade_to": null,
+      "active": true,
+      "metadata": {}
+    },
+    {
+      "id": "biology.plants.groups",
+      "subject_id": "biology",
+      "course_id": "biology.general",
+      "title": "Группы растений",
+      "skill_type": "factual_knowledge",
+      "description": null,
+      "grade_from": null,
+      "grade_to": null,
+      "active": true,
+      "metadata": {}
+    },
+    {
+      "id": "biology.ecology.plant_environment",
+      "subject_id": "biology",
+      "course_id": "biology.general",
+      "title": "Растения и среда обитания",
+      "skill_type": "reasoning",
+      "description": null,
+      "grade_from": null,
+      "grade_to": null,
+      "active": true,
+      "metadata": {}
+    },
+    {
+      "id": "biology.bacteria.basic",
+      "subject_id": "biology",
+      "course_id": "biology.general",
+      "title": "Бактерии",
+      "skill_type": "factual_knowledge",
+      "description": null,
+      "grade_from": null,
+      "grade_to": null,
+      "active": true,
+      "metadata": {}
+    },
+    {
+      "id": "biology.fungi.basic",
+      "subject_id": "biology",
+      "course_id": "biology.general",
+      "title": "Грибы",
+      "skill_type": "factual_knowledge",
+      "description": null,
+      "grade_from": null,
+      "grade_to": null,
+      "active": true,
+      "metadata": {}
+    },
+    {
+      "id": "geography.map.reading",
+      "subject_id": "geography",
+      "course_id": "geography.general",
+      "title": "Чтение карты",
+      "skill_type": "interpretation",
+      "description": null,
+      "grade_from": null,
+      "grade_to": null,
+      "active": true,
+      "metadata": {}
+    },
+    {
+      "id": "geography.population.distribution",
+      "subject_id": "geography",
+      "course_id": "geography.general",
+      "title": "Размещение населения",
+      "skill_type": "interpretation",
+      "description": null,
+      "grade_from": null,
+      "grade_to": null,
+      "active": true,
+      "metadata": {}
+    },
+    {
+      "id": "geography.climate.basic",
+      "subject_id": "geography",
+      "course_id": "geography.general",
+      "title": "Основы климатических закономерностей",
+      "skill_type": "concept",
+      "description": null,
+      "grade_from": null,
+      "grade_to": null,
+      "active": true,
+      "metadata": {}
+    },
+    {
+      "id": "geography.world_ocean",
+      "subject_id": "geography",
+      "course_id": "geography.general",
+      "title": "Мировой океан",
+      "skill_type": "factual_knowledge",
+      "description": null,
+      "grade_from": null,
+      "grade_to": null,
+      "active": true,
+      "metadata": {}
+    },
+    {
+      "id": "geography.natural_zones",
+      "subject_id": "geography",
+      "course_id": "geography.general",
+      "title": "Природные зоны",
+      "skill_type": "concept",
+      "description": null,
+      "grade_from": null,
+      "grade_to": null,
+      "active": true,
+      "metadata": {}
+    },
+    {
+      "id": "geography.continent.profile",
+      "subject_id": "geography",
+      "course_id": "geography.general",
+      "title": "Описание материка",
+      "skill_type": "analysis",
+      "description": null,
+      "grade_from": null,
+      "grade_to": null,
+      "active": true,
+      "metadata": {}
+    },
+    {
+      "id": "informatics.information.processes",
+      "subject_id": "informatics",
+      "course_id": "informatics.general",
+      "title": "Информационные процессы",
+      "skill_type": "concept",
+      "description": null,
+      "grade_from": null,
+      "grade_to": null,
+      "active": true,
+      "metadata": {}
+    },
+    {
+      "id": "informatics.data.representation",
+      "subject_id": "informatics",
+      "course_id": "informatics.general",
+      "title": "Представление данных",
+      "skill_type": "concept",
+      "description": null,
+      "grade_from": null,
+      "grade_to": null,
+      "active": true,
+      "metadata": {}
+    },
+    {
+      "id": "informatics.files.basic",
+      "subject_id": "informatics",
+      "course_id": "informatics.general",
+      "title": "Работа с файлами",
+      "skill_type": "procedure",
+      "description": null,
+      "grade_from": null,
+      "grade_to": null,
+      "active": true,
+      "metadata": {}
+    },
+    {
+      "id": "informatics.text.processing",
+      "subject_id": "informatics",
+      "course_id": "informatics.general",
+      "title": "Обработка текстовой информации",
+      "skill_type": "procedure",
+      "description": null,
+      "grade_from": null,
+      "grade_to": null,
+      "active": true,
+      "metadata": {}
+    },
+    {
+      "id": "informatics.graphics.basic",
+      "subject_id": "informatics",
+      "course_id": "informatics.general",
+      "title": "Обработка графической информации",
+      "skill_type": "procedure",
+      "description": null,
+      "grade_from": null,
+      "grade_to": null,
+      "active": true,
+      "metadata": {}
+    },
+    {
+      "id": "informatics.presentation.basic",
+      "subject_id": "informatics",
+      "course_id": "informatics.general",
+      "title": "Основы презентаций",
+      "skill_type": "procedure",
+      "description": null,
+      "grade_from": null,
+      "grade_to": null,
+      "active": true,
+      "metadata": {}
+    }
+  ],
+  "skill_prerequisites": [
+    {
+      "skill_id": "math.algebra.linear_system.substitution",
+      "prerequisite_skill_id": "math.algebra.linear_equation.basic",
+      "relation_type": "prerequisite",
+      "priority": 1
+    },
+    {
+      "skill_id": "math.algebra.linear_system.addition",
+      "prerequisite_skill_id": "math.algebra.linear_equation.basic",
+      "relation_type": "prerequisite",
+      "priority": 1
+    },
+    {
+      "skill_id": "math.algebra.linear_system.graphical",
+      "prerequisite_skill_id": "math.algebra.function.graph_reading",
+      "relation_type": "prerequisite",
+      "priority": 1
+    },
+    {
+      "skill_id": "math.geometry.triangle.angle_sum",
+      "prerequisite_skill_id": "math.geometry.angles",
+      "relation_type": "prerequisite",
+      "priority": 1
+    },
+    {
+      "skill_id": "russian.grammar.participial_phrase",
+      "prerequisite_skill_id": "russian.grammar.participle",
+      "relation_type": "prerequisite",
+      "priority": 1
+    }
+  ],
+  "textbook_units": [
+    {
+      "id": "tb.math.algebra.makarychev.7.2023.unit1",
+      "textbook_edition_id": "tb.math.algebra.makarychev.7.2023",
+      "parent_id": null,
+      "unit_type": "unit",
+      "title": "Выражения, тождества, уравнения",
+      "part_number": null,
+      "order_index": 1,
+      "page_start": null,
+      "page_end": null,
+      "metadata": {}
+    },
+    {
+      "id": "tb.math.algebra.makarychev.7.2023.unit2",
+      "textbook_edition_id": "tb.math.algebra.makarychev.7.2023",
+      "parent_id": null,
+      "unit_type": "unit",
+      "title": "Функции и их графики",
+      "part_number": null,
+      "order_index": 2,
+      "page_start": null,
+      "page_end": null,
+      "metadata": {}
+    },
+    {
+      "id": "tb.math.algebra.makarychev.7.2023.unit3",
+      "textbook_edition_id": "tb.math.algebra.makarychev.7.2023",
+      "parent_id": null,
+      "unit_type": "unit",
+      "title": "Степень с натуральным показателем",
+      "part_number": null,
+      "order_index": 3,
+      "page_start": null,
+      "page_end": null,
+      "metadata": {}
+    },
+    {
+      "id": "tb.math.algebra.makarychev.7.2023.unit4",
+      "textbook_edition_id": "tb.math.algebra.makarychev.7.2023",
+      "parent_id": null,
+      "unit_type": "unit",
+      "title": "Многочлены",
+      "part_number": null,
+      "order_index": 4,
+      "page_start": null,
+      "page_end": null,
+      "metadata": {}
+    },
+    {
+      "id": "tb.math.algebra.makarychev.7.2023.unit5",
+      "textbook_edition_id": "tb.math.algebra.makarychev.7.2023",
+      "parent_id": null,
+      "unit_type": "unit",
+      "title": "Формулы сокращённого умножения",
+      "part_number": null,
+      "order_index": 5,
+      "page_start": null,
+      "page_end": null,
+      "metadata": {}
+    },
+    {
+      "id": "tb.math.algebra.makarychev.7.2023.unit6",
+      "textbook_edition_id": "tb.math.algebra.makarychev.7.2023",
+      "parent_id": null,
+      "unit_type": "unit",
+      "title": "Системы линейных уравнений",
+      "part_number": null,
+      "order_index": 6,
+      "page_start": null,
+      "page_end": null,
+      "metadata": {}
+    },
+    {
+      "id": "tb.math.geometry.atanasyan.7_9.2025.unit1",
+      "textbook_edition_id": "tb.math.geometry.atanasyan.7_9.2025",
+      "parent_id": null,
+      "unit_type": "unit",
+      "title": "Начальные геометрические сведения",
+      "part_number": null,
+      "order_index": 1,
+      "page_start": null,
+      "page_end": null,
+      "metadata": {}
+    },
+    {
+      "id": "tb.math.geometry.atanasyan.7_9.2025.unit2",
+      "textbook_edition_id": "tb.math.geometry.atanasyan.7_9.2025",
+      "parent_id": null,
+      "unit_type": "unit",
+      "title": "Треугольники",
+      "part_number": null,
+      "order_index": 2,
+      "page_start": null,
+      "page_end": null,
+      "metadata": {}
+    },
+    {
+      "id": "tb.math.geometry.atanasyan.7_9.2025.unit3",
+      "textbook_edition_id": "tb.math.geometry.atanasyan.7_9.2025",
+      "parent_id": null,
+      "unit_type": "unit",
+      "title": "Параллельные прямые",
+      "part_number": null,
+      "order_index": 3,
+      "page_start": null,
+      "page_end": null,
+      "metadata": {}
+    },
+    {
+      "id": "tb.math.geometry.atanasyan.7_9.2025.unit4",
+      "textbook_edition_id": "tb.math.geometry.atanasyan.7_9.2025",
+      "parent_id": null,
+      "unit_type": "unit",
+      "title": "Соотношения между сторонами и углами треугольника",
+      "part_number": null,
+      "order_index": 4,
+      "page_start": null,
+      "page_end": null,
+      "metadata": {}
+    },
+    {
+      "id": "tb.math.probability_statistics.vysotsky_yashchenko.7_9.2024.unit1",
+      "textbook_edition_id": "tb.math.probability_statistics.vysotsky_yashchenko.7_9.2024",
+      "parent_id": null,
+      "unit_type": "unit",
+      "title": "Представление данных",
+      "part_number": null,
+      "order_index": 1,
+      "page_start": null,
+      "page_end": null,
+      "metadata": {}
+    },
+    {
+      "id": "tb.math.probability_statistics.vysotsky_yashchenko.7_9.2024.unit2",
+      "textbook_edition_id": "tb.math.probability_statistics.vysotsky_yashchenko.7_9.2024",
+      "parent_id": null,
+      "unit_type": "unit",
+      "title": "Описательная статистика",
+      "part_number": null,
+      "order_index": 2,
+      "page_start": null,
+      "page_end": null,
+      "metadata": {}
+    },
+    {
+      "id": "tb.math.probability_statistics.vysotsky_yashchenko.7_9.2024.unit3",
+      "textbook_edition_id": "tb.math.probability_statistics.vysotsky_yashchenko.7_9.2024",
+      "parent_id": null,
+      "unit_type": "unit",
+      "title": "Случайная изменчивость",
+      "part_number": null,
+      "order_index": 3,
+      "page_start": null,
+      "page_end": null,
+      "metadata": {}
+    },
+    {
+      "id": "tb.math.probability_statistics.vysotsky_yashchenko.7_9.2024.unit4",
+      "textbook_edition_id": "tb.math.probability_statistics.vysotsky_yashchenko.7_9.2024",
+      "parent_id": null,
+      "unit_type": "unit",
+      "title": "Графы",
+      "part_number": null,
+      "order_index": 4,
+      "page_start": null,
+      "page_end": null,
+      "metadata": {}
+    },
+    {
+      "id": "tb.math.probability_statistics.vysotsky_yashchenko.7_9.2024.unit5",
+      "textbook_edition_id": "tb.math.probability_statistics.vysotsky_yashchenko.7_9.2024",
+      "parent_id": null,
+      "unit_type": "unit",
+      "title": "Логические утверждения и высказывания",
+      "part_number": null,
+      "order_index": 5,
+      "page_start": null,
+      "page_end": null,
+      "metadata": {}
+    },
+    {
+      "id": "tb.math.probability_statistics.vysotsky_yashchenko.7_9.2024.unit6",
+      "textbook_edition_id": "tb.math.probability_statistics.vysotsky_yashchenko.7_9.2024",
+      "parent_id": null,
+      "unit_type": "unit",
+      "title": "Случайные опыты и случайные события",
+      "part_number": null,
+      "order_index": 6,
+      "page_start": null,
+      "page_end": null,
+      "metadata": {}
+    },
+    {
+      "id": "tb.math.probability_statistics.vysotsky_yashchenko.7_9.2024.unit7",
+      "textbook_edition_id": "tb.math.probability_statistics.vysotsky_yashchenko.7_9.2024",
+      "parent_id": null,
+      "unit_type": "unit",
+      "title": "Множества",
+      "part_number": null,
+      "order_index": 7,
+      "page_start": null,
+      "page_end": null,
+      "metadata": {}
+    },
+    {
+      "id": "tb.math.probability_statistics.vysotsky_yashchenko.7_9.2024.unit8",
+      "textbook_edition_id": "tb.math.probability_statistics.vysotsky_yashchenko.7_9.2024",
+      "parent_id": null,
+      "unit_type": "unit",
+      "title": "Математическое описание случайных явлений",
+      "part_number": null,
+      "order_index": 8,
+      "page_start": null,
+      "page_end": null,
+      "metadata": {}
+    },
+    {
+      "id": "tb.russian.baranov_ladyzhenskaya.7.2023.unit1",
+      "textbook_edition_id": "tb.russian.baranov_ladyzhenskaya.7.2023",
+      "parent_id": null,
+      "unit_type": "unit",
+      "title": "Общие сведения о языке",
+      "part_number": null,
+      "order_index": 1,
+      "page_start": null,
+      "page_end": null,
+      "metadata": {}
+    },
+    {
+      "id": "tb.russian.baranov_ladyzhenskaya.7.2023.unit2",
+      "textbook_edition_id": "tb.russian.baranov_ladyzhenskaya.7.2023",
+      "parent_id": null,
+      "unit_type": "unit",
+      "title": "Причастие",
+      "part_number": null,
+      "order_index": 2,
+      "page_start": null,
+      "page_end": null,
+      "metadata": {}
+    },
+    {
+      "id": "tb.russian.baranov_ladyzhenskaya.7.2023.unit3",
+      "textbook_edition_id": "tb.russian.baranov_ladyzhenskaya.7.2023",
+      "parent_id": null,
+      "unit_type": "unit",
+      "title": "Деепричастие",
+      "part_number": null,
+      "order_index": 3,
+      "page_start": null,
+      "page_end": null,
+      "metadata": {}
+    },
+    {
+      "id": "tb.russian.baranov_ladyzhenskaya.7.2023.unit4",
+      "textbook_edition_id": "tb.russian.baranov_ladyzhenskaya.7.2023",
+      "parent_id": null,
+      "unit_type": "unit",
+      "title": "Наречие",
+      "part_number": null,
+      "order_index": 4,
+      "page_start": null,
+      "page_end": null,
+      "metadata": {}
+    },
+    {
+      "id": "tb.russian.baranov_ladyzhenskaya.7.2023.unit5",
+      "textbook_edition_id": "tb.russian.baranov_ladyzhenskaya.7.2023",
+      "parent_id": null,
+      "unit_type": "unit",
+      "title": "Предлог",
+      "part_number": null,
+      "order_index": 5,
+      "page_start": null,
+      "page_end": null,
+      "metadata": {}
+    },
+    {
+      "id": "tb.russian.baranov_ladyzhenskaya.7.2023.unit6",
+      "textbook_edition_id": "tb.russian.baranov_ladyzhenskaya.7.2023",
+      "parent_id": null,
+      "unit_type": "unit",
+      "title": "Союз",
+      "part_number": null,
+      "order_index": 6,
+      "page_start": null,
+      "page_end": null,
+      "metadata": {}
+    },
+    {
+      "id": "tb.russian.baranov_ladyzhenskaya.7.2023.unit7",
+      "textbook_edition_id": "tb.russian.baranov_ladyzhenskaya.7.2023",
+      "parent_id": null,
+      "unit_type": "unit",
+      "title": "Частица",
+      "part_number": null,
+      "order_index": 7,
+      "page_start": null,
+      "page_end": null,
+      "metadata": {}
+    },
+    {
+      "id": "tb.russian.baranov_ladyzhenskaya.7.2023.unit8",
+      "textbook_edition_id": "tb.russian.baranov_ladyzhenskaya.7.2023",
+      "parent_id": null,
+      "unit_type": "unit",
+      "title": "Междометие",
+      "part_number": null,
+      "order_index": 8,
+      "page_start": null,
+      "page_end": null,
+      "metadata": {}
+    },
+    {
+      "id": "tb.russian.baranov_ladyzhenskaya.7.2023.unit9",
+      "textbook_edition_id": "tb.russian.baranov_ladyzhenskaya.7.2023",
+      "parent_id": null,
+      "unit_type": "unit",
+      "title": "Повторение и систематизация",
+      "part_number": null,
+      "order_index": 9,
+      "page_start": null,
+      "page_end": null,
+      "metadata": {}
+    },
+    {
+      "id": "tb.physics.peryshkin_ivanov.7.2023.unit1",
+      "textbook_edition_id": "tb.physics.peryshkin_ivanov.7.2023",
+      "parent_id": null,
+      "unit_type": "unit",
+      "title": "Физика и её роль в познании окружающего мира",
+      "part_number": null,
+      "order_index": 1,
+      "page_start": null,
+      "page_end": null,
+      "metadata": {}
+    },
+    {
+      "id": "tb.physics.peryshkin_ivanov.7.2023.unit2",
+      "textbook_edition_id": "tb.physics.peryshkin_ivanov.7.2023",
+      "parent_id": null,
+      "unit_type": "unit",
+      "title": "Первоначальные сведения о строении вещества",
+      "part_number": null,
+      "order_index": 2,
+      "page_start": null,
+      "page_end": null,
+      "metadata": {}
+    },
+    {
+      "id": "tb.physics.peryshkin_ivanov.7.2023.unit3",
+      "textbook_edition_id": "tb.physics.peryshkin_ivanov.7.2023",
+      "parent_id": null,
+      "unit_type": "unit",
+      "title": "Взаимодействие тел",
+      "part_number": null,
+      "order_index": 3,
+      "page_start": null,
+      "page_end": null,
+      "metadata": {}
+    },
+    {
+      "id": "tb.physics.peryshkin_ivanov.7.2023.unit4",
+      "textbook_edition_id": "tb.physics.peryshkin_ivanov.7.2023",
+      "parent_id": null,
+      "unit_type": "unit",
+      "title": "Давление твёрдых тел, жидкостей и газов",
+      "part_number": null,
+      "order_index": 4,
+      "page_start": null,
+      "page_end": null,
+      "metadata": {}
+    },
+    {
+      "id": "tb.physics.peryshkin_ivanov.7.2023.unit5",
+      "textbook_edition_id": "tb.physics.peryshkin_ivanov.7.2023",
+      "parent_id": null,
+      "unit_type": "unit",
+      "title": "Работа и мощность. Энергия",
+      "part_number": null,
+      "order_index": 5,
+      "page_start": null,
+      "page_end": null,
+      "metadata": {}
+    },
+    {
+      "id": "tb.biology.pasechnik.7.2024.unit1",
+      "textbook_edition_id": "tb.biology.pasechnik.7.2024",
+      "parent_id": null,
+      "unit_type": "unit",
+      "title": "Многообразие растительного мира",
+      "part_number": null,
+      "order_index": 1,
+      "page_start": null,
+      "page_end": null,
+      "metadata": {}
+    },
+    {
+      "id": "tb.biology.pasechnik.7.2024.unit2",
+      "textbook_edition_id": "tb.biology.pasechnik.7.2024",
+      "parent_id": null,
+      "unit_type": "unit",
+      "title": "Классификация покрытосеменных растений",
+      "part_number": null,
+      "order_index": 2,
+      "page_start": null,
+      "page_end": null,
+      "metadata": {}
+    },
+    {
+      "id": "tb.biology.pasechnik.7.2024.unit3",
+      "textbook_edition_id": "tb.biology.pasechnik.7.2024",
+      "parent_id": null,
+      "unit_type": "unit",
+      "title": "Растения и среда обитания",
+      "part_number": null,
+      "order_index": 3,
+      "page_start": null,
+      "page_end": null,
+      "metadata": {}
+    },
+    {
+      "id": "tb.biology.pasechnik.7.2024.unit4",
+      "textbook_edition_id": "tb.biology.pasechnik.7.2024",
+      "parent_id": null,
+      "unit_type": "unit",
+      "title": "Бактерии",
+      "part_number": null,
+      "order_index": 4,
+      "page_start": null,
+      "page_end": null,
+      "metadata": {}
+    },
+    {
+      "id": "tb.biology.pasechnik.7.2024.unit5",
+      "textbook_edition_id": "tb.biology.pasechnik.7.2024",
+      "parent_id": null,
+      "unit_type": "unit",
+      "title": "Грибы",
+      "part_number": null,
+      "order_index": 5,
+      "page_start": null,
+      "page_end": null,
+      "metadata": {}
+    },
+    {
+      "id": "tb.geography.polyarnaya_zvezda.7.2025.unit1",
+      "textbook_edition_id": "tb.geography.polyarnaya_zvezda.7.2025",
+      "parent_id": null,
+      "unit_type": "unit",
+      "title": "Введение",
+      "part_number": null,
+      "order_index": 1,
+      "page_start": null,
+      "page_end": null,
+      "metadata": {}
+    },
+    {
+      "id": "tb.geography.polyarnaya_zvezda.7.2025.unit2",
+      "textbook_edition_id": "tb.geography.polyarnaya_zvezda.7.2025",
+      "parent_id": null,
+      "unit_type": "unit",
+      "title": "Человек на Земле",
+      "part_number": null,
+      "order_index": 2,
+      "page_start": null,
+      "page_end": null,
+      "metadata": {}
+    },
+    {
+      "id": "tb.geography.polyarnaya_zvezda.7.2025.unit3",
+      "textbook_edition_id": "tb.geography.polyarnaya_zvezda.7.2025",
+      "parent_id": null,
+      "unit_type": "unit",
+      "title": "Природа Земли",
+      "part_number": null,
+      "order_index": 3,
+      "page_start": null,
+      "page_end": null,
+      "metadata": {}
+    },
+    {
+      "id": "tb.geography.polyarnaya_zvezda.7.2025.unit4",
+      "textbook_edition_id": "tb.geography.polyarnaya_zvezda.7.2025",
+      "parent_id": null,
+      "unit_type": "unit",
+      "title": "Природные комплексы и регионы",
+      "part_number": null,
+      "order_index": 4,
+      "page_start": null,
+      "page_end": null,
+      "metadata": {}
+    },
+    {
+      "id": "tb.geography.polyarnaya_zvezda.7.2025.unit5",
+      "textbook_edition_id": "tb.geography.polyarnaya_zvezda.7.2025",
+      "parent_id": null,
+      "unit_type": "unit",
+      "title": "Материки и страны",
+      "part_number": null,
+      "order_index": 5,
+      "page_start": null,
+      "page_end": null,
+      "metadata": {}
+    },
+    {
+      "id": "tb.geography.polyarnaya_zvezda.7.2025.unit6",
+      "textbook_edition_id": "tb.geography.polyarnaya_zvezda.7.2025",
+      "parent_id": null,
+      "unit_type": "unit",
+      "title": "Глобальные проблемы человечества",
+      "part_number": null,
+      "order_index": 6,
+      "page_start": null,
+      "page_end": null,
+      "metadata": {}
+    },
+    {
+      "id": "tb.informatics.bosova.7.2025.unit1",
+      "textbook_edition_id": "tb.informatics.bosova.7.2025",
+      "parent_id": null,
+      "unit_type": "unit",
+      "title": "Информация и информационные процессы",
+      "part_number": null,
+      "order_index": 1,
+      "page_start": null,
+      "page_end": null,
+      "metadata": {}
+    },
+    {
+      "id": "tb.informatics.bosova.7.2025.unit2",
+      "textbook_edition_id": "tb.informatics.bosova.7.2025",
+      "parent_id": null,
+      "unit_type": "unit",
+      "title": "Компьютер — универсальное устройство обработки данных",
+      "part_number": null,
+      "order_index": 2,
+      "page_start": null,
+      "page_end": null,
+      "metadata": {}
+    },
+    {
+      "id": "tb.informatics.bosova.7.2025.unit3",
+      "textbook_edition_id": "tb.informatics.bosova.7.2025",
+      "parent_id": null,
+      "unit_type": "unit",
+      "title": "Обработка текстовой информации",
+      "part_number": null,
+      "order_index": 3,
+      "page_start": null,
+      "page_end": null,
+      "metadata": {}
+    },
+    {
+      "id": "tb.informatics.bosova.7.2025.unit4",
+      "textbook_edition_id": "tb.informatics.bosova.7.2025",
+      "parent_id": null,
+      "unit_type": "unit",
+      "title": "Обработка графической информации",
+      "part_number": null,
+      "order_index": 4,
+      "page_start": null,
+      "page_end": null,
+      "metadata": {}
+    },
+    {
+      "id": "tb.informatics.bosova.7.2025.unit5",
+      "textbook_edition_id": "tb.informatics.bosova.7.2025",
+      "parent_id": null,
+      "unit_type": "unit",
+      "title": "Мультимедиа",
+      "part_number": null,
+      "order_index": 5,
+      "page_start": null,
+      "page_end": null,
+      "metadata": {}
+    },
+    {
+      "id": "tb.history.russia.medinsky_torkunov.7.2025.unit1",
+      "textbook_edition_id": "tb.history.russia.medinsky_torkunov.7.2025",
+      "parent_id": null,
+      "unit_type": "unit",
+      "title": "Россия в XVI в.",
+      "part_number": null,
+      "order_index": 1,
+      "page_start": null,
+      "page_end": null,
+      "metadata": {}
+    },
+    {
+      "id": "tb.history.russia.medinsky_torkunov.7.2025.unit2",
+      "textbook_edition_id": "tb.history.russia.medinsky_torkunov.7.2025",
+      "parent_id": null,
+      "unit_type": "unit",
+      "title": "Смута в России",
+      "part_number": null,
+      "order_index": 2,
+      "page_start": null,
+      "page_end": null,
+      "metadata": {}
+    },
+    {
+      "id": "tb.history.russia.medinsky_torkunov.7.2025.unit3",
+      "textbook_edition_id": "tb.history.russia.medinsky_torkunov.7.2025",
+      "parent_id": null,
+      "unit_type": "unit",
+      "title": "Россия при первых Романовых",
+      "part_number": null,
+      "order_index": 3,
+      "page_start": null,
+      "page_end": null,
+      "metadata": {}
+    }
+  ],
+  "curriculum_unit_skills": [
+    {
+      "curriculum_unit_id": "ru.fgos_ooo.base.math.algebra.7.unit1",
+      "skill_id": "math.algebra.linear_equation.basic"
+    },
+    {
+      "curriculum_unit_id": "ru.fgos_ooo.base.math.algebra.7.unit2",
+      "skill_id": "math.algebra.function.graph_reading"
+    },
+    {
+      "curriculum_unit_id": "ru.fgos_ooo.base.math.algebra.7.unit4",
+      "skill_id": "math.algebra.polynomial.operations"
+    },
+    {
+      "curriculum_unit_id": "ru.fgos_ooo.base.math.algebra.7.unit5",
+      "skill_id": "math.algebra.abbreviated_multiplication"
+    },
+    {
+      "curriculum_unit_id": "ru.fgos_ooo.base.math.algebra.7.unit6",
+      "skill_id": "math.algebra.linear_system.two_variables"
+    },
+    {
+      "curriculum_unit_id": "ru.fgos_ooo.base.math.algebra.7.unit6",
+      "skill_id": "math.algebra.linear_system.graphical"
+    },
+    {
+      "curriculum_unit_id": "ru.fgos_ooo.base.math.algebra.7.unit6",
+      "skill_id": "math.algebra.linear_system.substitution"
+    },
+    {
+      "curriculum_unit_id": "ru.fgos_ooo.base.math.algebra.7.unit6",
+      "skill_id": "math.algebra.linear_system.addition"
+    },
+    {
+      "curriculum_unit_id": "ru.fgos_ooo.base.math.algebra.7.unit6",
+      "skill_id": "math.algebra.linear_system.word_problem"
+    },
+    {
+      "curriculum_unit_id": "ru.fgos_ooo.base.math.geometry.7.unit1",
+      "skill_id": "math.geometry.basic.points_lines_segments"
+    },
+    {
+      "curriculum_unit_id": "ru.fgos_ooo.base.math.geometry.7.unit1",
+      "skill_id": "math.geometry.angles"
+    },
+    {
+      "curriculum_unit_id": "ru.fgos_ooo.base.math.geometry.7.unit2",
+      "skill_id": "math.geometry.triangle.congruence"
+    },
+    {
+      "curriculum_unit_id": "ru.fgos_ooo.base.math.geometry.7.unit2",
+      "skill_id": "math.geometry.triangle.isosceles"
+    },
+    {
+      "curriculum_unit_id": "ru.fgos_ooo.base.math.geometry.7.unit3",
+      "skill_id": "math.geometry.parallel_lines"
+    },
+    {
+      "curriculum_unit_id": "ru.fgos_ooo.base.math.geometry.7.unit4",
+      "skill_id": "math.geometry.triangle.angle_sum"
+    },
+    {
+      "curriculum_unit_id": "ru.fgos_ooo.base.math.probability_statistics.7.unit1",
+      "skill_id": "math.statistics.tables_charts"
+    },
+    {
+      "curriculum_unit_id": "ru.fgos_ooo.base.math.probability_statistics.7.unit2",
+      "skill_id": "math.statistics.mean_median_range"
+    },
+    {
+      "curriculum_unit_id": "ru.fgos_ooo.base.math.probability_statistics.7.unit2",
+      "skill_id": "math.statistics.data_distribution"
+    },
+    {
+      "curriculum_unit_id": "ru.fgos_ooo.base.math.probability_statistics.7.unit6",
+      "skill_id": "math.probability.elementary_event"
+    },
+    {
+      "curriculum_unit_id": "ru.fgos_ooo.base.math.probability_statistics.7.unit7",
+      "skill_id": "math.sets.basic_operations"
+    },
+    {
+      "curriculum_unit_id": "ru.fgos_ooo.base.russian.language.7.unit2",
+      "skill_id": "russian.grammar.participle"
+    },
+    {
+      "curriculum_unit_id": "ru.fgos_ooo.base.russian.language.7.unit2",
+      "skill_id": "russian.grammar.participial_phrase"
+    },
+    {
+      "curriculum_unit_id": "ru.fgos_ooo.base.russian.language.7.unit3",
+      "skill_id": "russian.grammar.gerund"
+    },
+    {
+      "curriculum_unit_id": "ru.fgos_ooo.base.russian.language.7.unit4",
+      "skill_id": "russian.grammar.adverb"
+    },
+    {
+      "curriculum_unit_id": "ru.fgos_ooo.base.russian.language.7.unit5",
+      "skill_id": "russian.grammar.preposition"
+    },
+    {
+      "curriculum_unit_id": "ru.fgos_ooo.base.russian.language.7.unit6",
+      "skill_id": "russian.grammar.conjunction"
+    },
+    {
+      "curriculum_unit_id": "ru.fgos_ooo.base.russian.language.7.unit7",
+      "skill_id": "russian.grammar.particle"
+    },
+    {
+      "curriculum_unit_id": "ru.fgos_ooo.base.physics.general.7.unit2",
+      "skill_id": "physics.matter.density"
+    },
+    {
+      "curriculum_unit_id": "ru.fgos_ooo.base.physics.general.7.unit3",
+      "skill_id": "physics.motion.speed"
+    },
+    {
+      "curriculum_unit_id": "ru.fgos_ooo.base.physics.general.7.unit3",
+      "skill_id": "physics.mechanics.inertia"
+    },
+    {
+      "curriculum_unit_id": "ru.fgos_ooo.base.physics.general.7.unit4",
+      "skill_id": "physics.pressure.basic"
+    },
+    {
+      "curriculum_unit_id": "ru.fgos_ooo.base.physics.general.7.unit5",
+      "skill_id": "physics.work_power_energy.basic"
+    },
+    {
+      "curriculum_unit_id": "ru.fgos_ooo.base.biology.general.7.unit1",
+      "skill_id": "biology.plants.groups"
+    },
+    {
+      "curriculum_unit_id": "ru.fgos_ooo.base.biology.general.7.unit2",
+      "skill_id": "biology.classification.basic"
+    },
+    {
+      "curriculum_unit_id": "ru.fgos_ooo.base.biology.general.7.unit3",
+      "skill_id": "biology.ecology.plant_environment"
+    },
+    {
+      "curriculum_unit_id": "ru.fgos_ooo.base.biology.general.7.unit4",
+      "skill_id": "biology.bacteria.basic"
+    },
+    {
+      "curriculum_unit_id": "ru.fgos_ooo.base.biology.general.7.unit5",
+      "skill_id": "biology.fungi.basic"
+    },
+    {
+      "curriculum_unit_id": "ru.fgos_ooo.base.geography.general.7.unit2",
+      "skill_id": "geography.population.distribution"
+    },
+    {
+      "curriculum_unit_id": "ru.fgos_ooo.base.geography.general.7.unit3",
+      "skill_id": "geography.climate.basic"
+    },
+    {
+      "curriculum_unit_id": "ru.fgos_ooo.base.geography.general.7.unit3",
+      "skill_id": "geography.world_ocean"
+    },
+    {
+      "curriculum_unit_id": "ru.fgos_ooo.base.geography.general.7.unit4",
+      "skill_id": "geography.natural_zones"
+    },
+    {
+      "curriculum_unit_id": "ru.fgos_ooo.base.geography.general.7.unit5",
+      "skill_id": "geography.continent.profile"
+    },
+    {
+      "curriculum_unit_id": "ru.fgos_ooo.base.informatics.general.7.unit1",
+      "skill_id": "informatics.information.processes"
+    },
+    {
+      "curriculum_unit_id": "ru.fgos_ooo.base.informatics.general.7.unit1",
+      "skill_id": "informatics.data.representation"
+    },
+    {
+      "curriculum_unit_id": "ru.fgos_ooo.base.informatics.general.7.unit2",
+      "skill_id": "informatics.files.basic"
+    },
+    {
+      "curriculum_unit_id": "ru.fgos_ooo.base.informatics.general.7.unit3",
+      "skill_id": "informatics.text.processing"
+    },
+    {
+      "curriculum_unit_id": "ru.fgos_ooo.base.informatics.general.7.unit4",
+      "skill_id": "informatics.graphics.basic"
+    },
+    {
+      "curriculum_unit_id": "ru.fgos_ooo.base.informatics.general.7.unit5",
+      "skill_id": "informatics.presentation.basic"
+    }
+  ],
+  "textbook_unit_skills": [
+    {
+      "textbook_unit_id": "tb.math.algebra.makarychev.7.2023.unit1",
+      "skill_id": "math.algebra.linear_equation.basic"
+    },
+    {
+      "textbook_unit_id": "tb.math.algebra.makarychev.7.2023.unit2",
+      "skill_id": "math.algebra.function.graph_reading"
+    },
+    {
+      "textbook_unit_id": "tb.math.algebra.makarychev.7.2023.unit4",
+      "skill_id": "math.algebra.polynomial.operations"
+    },
+    {
+      "textbook_unit_id": "tb.math.algebra.makarychev.7.2023.unit5",
+      "skill_id": "math.algebra.abbreviated_multiplication"
+    },
+    {
+      "textbook_unit_id": "tb.math.algebra.makarychev.7.2023.unit6",
+      "skill_id": "math.algebra.linear_system.two_variables"
+    },
+    {
+      "textbook_unit_id": "tb.math.algebra.makarychev.7.2023.unit6",
+      "skill_id": "math.algebra.linear_system.graphical"
+    },
+    {
+      "textbook_unit_id": "tb.math.algebra.makarychev.7.2023.unit6",
+      "skill_id": "math.algebra.linear_system.substitution"
+    },
+    {
+      "textbook_unit_id": "tb.math.algebra.makarychev.7.2023.unit6",
+      "skill_id": "math.algebra.linear_system.addition"
+    },
+    {
+      "textbook_unit_id": "tb.math.algebra.makarychev.7.2023.unit6",
+      "skill_id": "math.algebra.linear_system.word_problem"
+    },
+    {
+      "textbook_unit_id": "tb.math.geometry.atanasyan.7_9.2025.unit1",
+      "skill_id": "math.geometry.basic.points_lines_segments"
+    },
+    {
+      "textbook_unit_id": "tb.math.geometry.atanasyan.7_9.2025.unit1",
+      "skill_id": "math.geometry.angles"
+    },
+    {
+      "textbook_unit_id": "tb.math.geometry.atanasyan.7_9.2025.unit2",
+      "skill_id": "math.geometry.triangle.congruence"
+    },
+    {
+      "textbook_unit_id": "tb.math.geometry.atanasyan.7_9.2025.unit2",
+      "skill_id": "math.geometry.triangle.isosceles"
+    },
+    {
+      "textbook_unit_id": "tb.math.geometry.atanasyan.7_9.2025.unit3",
+      "skill_id": "math.geometry.parallel_lines"
+    },
+    {
+      "textbook_unit_id": "tb.math.geometry.atanasyan.7_9.2025.unit4",
+      "skill_id": "math.geometry.triangle.angle_sum"
+    },
+    {
+      "textbook_unit_id": "tb.math.probability_statistics.vysotsky_yashchenko.7_9.2024.unit1",
+      "skill_id": "math.statistics.tables_charts"
+    },
+    {
+      "textbook_unit_id": "tb.math.probability_statistics.vysotsky_yashchenko.7_9.2024.unit2",
+      "skill_id": "math.statistics.mean_median_range"
+    },
+    {
+      "textbook_unit_id": "tb.math.probability_statistics.vysotsky_yashchenko.7_9.2024.unit2",
+      "skill_id": "math.statistics.data_distribution"
+    },
+    {
+      "textbook_unit_id": "tb.math.probability_statistics.vysotsky_yashchenko.7_9.2024.unit6",
+      "skill_id": "math.probability.elementary_event"
+    },
+    {
+      "textbook_unit_id": "tb.math.probability_statistics.vysotsky_yashchenko.7_9.2024.unit7",
+      "skill_id": "math.sets.basic_operations"
+    },
+    {
+      "textbook_unit_id": "tb.russian.baranov_ladyzhenskaya.7.2023.unit2",
+      "skill_id": "russian.grammar.participle"
+    },
+    {
+      "textbook_unit_id": "tb.russian.baranov_ladyzhenskaya.7.2023.unit2",
+      "skill_id": "russian.grammar.participial_phrase"
+    },
+    {
+      "textbook_unit_id": "tb.russian.baranov_ladyzhenskaya.7.2023.unit3",
+      "skill_id": "russian.grammar.gerund"
+    },
+    {
+      "textbook_unit_id": "tb.russian.baranov_ladyzhenskaya.7.2023.unit4",
+      "skill_id": "russian.grammar.adverb"
+    },
+    {
+      "textbook_unit_id": "tb.russian.baranov_ladyzhenskaya.7.2023.unit5",
+      "skill_id": "russian.grammar.preposition"
+    },
+    {
+      "textbook_unit_id": "tb.russian.baranov_ladyzhenskaya.7.2023.unit6",
+      "skill_id": "russian.grammar.conjunction"
+    },
+    {
+      "textbook_unit_id": "tb.russian.baranov_ladyzhenskaya.7.2023.unit7",
+      "skill_id": "russian.grammar.particle"
+    },
+    {
+      "textbook_unit_id": "tb.physics.peryshkin_ivanov.7.2023.unit2",
+      "skill_id": "physics.matter.density"
+    },
+    {
+      "textbook_unit_id": "tb.physics.peryshkin_ivanov.7.2023.unit3",
+      "skill_id": "physics.motion.speed"
+    },
+    {
+      "textbook_unit_id": "tb.physics.peryshkin_ivanov.7.2023.unit3",
+      "skill_id": "physics.mechanics.inertia"
+    },
+    {
+      "textbook_unit_id": "tb.physics.peryshkin_ivanov.7.2023.unit4",
+      "skill_id": "physics.pressure.basic"
+    },
+    {
+      "textbook_unit_id": "tb.physics.peryshkin_ivanov.7.2023.unit5",
+      "skill_id": "physics.work_power_energy.basic"
+    },
+    {
+      "textbook_unit_id": "tb.biology.pasechnik.7.2024.unit1",
+      "skill_id": "biology.plants.groups"
+    },
+    {
+      "textbook_unit_id": "tb.biology.pasechnik.7.2024.unit2",
+      "skill_id": "biology.classification.basic"
+    },
+    {
+      "textbook_unit_id": "tb.biology.pasechnik.7.2024.unit3",
+      "skill_id": "biology.ecology.plant_environment"
+    },
+    {
+      "textbook_unit_id": "tb.biology.pasechnik.7.2024.unit4",
+      "skill_id": "biology.bacteria.basic"
+    },
+    {
+      "textbook_unit_id": "tb.biology.pasechnik.7.2024.unit5",
+      "skill_id": "biology.fungi.basic"
+    },
+    {
+      "textbook_unit_id": "tb.geography.polyarnaya_zvezda.7.2025.unit2",
+      "skill_id": "geography.population.distribution"
+    },
+    {
+      "textbook_unit_id": "tb.geography.polyarnaya_zvezda.7.2025.unit3",
+      "skill_id": "geography.climate.basic"
+    },
+    {
+      "textbook_unit_id": "tb.geography.polyarnaya_zvezda.7.2025.unit3",
+      "skill_id": "geography.world_ocean"
+    },
+    {
+      "textbook_unit_id": "tb.geography.polyarnaya_zvezda.7.2025.unit4",
+      "skill_id": "geography.natural_zones"
+    },
+    {
+      "textbook_unit_id": "tb.geography.polyarnaya_zvezda.7.2025.unit5",
+      "skill_id": "geography.continent.profile"
+    },
+    {
+      "textbook_unit_id": "tb.informatics.bosova.7.2025.unit1",
+      "skill_id": "informatics.information.processes"
+    },
+    {
+      "textbook_unit_id": "tb.informatics.bosova.7.2025.unit1",
+      "skill_id": "informatics.data.representation"
+    },
+    {
+      "textbook_unit_id": "tb.informatics.bosova.7.2025.unit2",
+      "skill_id": "informatics.files.basic"
+    },
+    {
+      "textbook_unit_id": "tb.informatics.bosova.7.2025.unit3",
+      "skill_id": "informatics.text.processing"
+    },
+    {
+      "textbook_unit_id": "tb.informatics.bosova.7.2025.unit4",
+      "skill_id": "informatics.graphics.basic"
+    },
+    {
+      "textbook_unit_id": "tb.informatics.bosova.7.2025.unit5",
+      "skill_id": "informatics.presentation.basic"
+    }
+  ]
+}

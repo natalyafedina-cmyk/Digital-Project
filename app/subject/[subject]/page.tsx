@@ -1,9 +1,13 @@
 "use client";
 
+import { learnerConfig } from "@/lib/learner-config";
+import { useAcademicContext } from "@/lib/curriculum/client-context";
+import { courseQuery, resolveCourse, coursesForSubject } from "@/lib/curriculum/catalog";
+import CourseSelector from "@/components/CourseSelector";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
-import { useParams } from "next/navigation";
+import { useParams, useSearchParams } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 
 type Session = {
@@ -81,6 +85,13 @@ const SUBJECTS = {
     image: "/images/history.png",
     icon: "🏛️",
   },
+  informatics: {
+    name: "Информатика",
+    subtitle: "Информация, данные и технологии",
+    description: "Разбираемся в информационных процессах и действиях с данными шаг за шагом.",
+    image: null,
+    icon: "💻",
+  },
 } as const;
 
 const MODES = [
@@ -96,7 +107,14 @@ export default function SubjectPage() {
   const params = useParams();
   const subjectKey = String(params.subject || "") as keyof typeof SUBJECTS;
   const subject = SUBJECTS[subjectKey];
+  const searchParams = useSearchParams();
+  const requestedCourse = searchParams.get("course");
+  const course = subject ? resolveCourse(subjectKey, coursesForSubject(subjectKey).some(item => item.id === requestedCourse) ? requestedCourse : undefined) : null;
   const supabase = createClient();
+  const [childId, setChildId] = useState<string | null>(null);
+  const [legacyGrade, setLegacyGrade] = useState(learnerConfig.grade);
+  const [childName, setChildName] = useState(learnerConfig.displayName);
+  const academic = useAcademicContext(childId, legacyGrade);
 
   const [sessions, setSessions] = useState<Session[]>([]);
   const [topics, setTopics] = useState<TopicProgress[]>([]);
@@ -124,7 +142,7 @@ export default function SubjectPage() {
 
     const { data: child } = await supabase
       .from("children")
-      .select("id")
+      .select("id,name,grade")
       .eq("parent_id", user.id)
       .limit(1)
       .maybeSingle();
@@ -133,6 +151,10 @@ export default function SubjectPage() {
       setLoading(false);
       return;
     }
+
+    setChildId(child.id);
+    setLegacyGrade(child.grade);
+    setChildName(child.name);
 
     const [sessionsResult, topicsResult] = await Promise.all([
       supabase
@@ -199,14 +221,14 @@ export default function SubjectPage() {
               Родителю
             </Link>
             <div className="h-10 w-10 rounded-full bg-violet-600 text-white grid place-items-center font-bold">
-              С
+              {childName.slice(0, 1)}
             </div>
-            <span className="font-semibold">Софья</span>
+            <span className="font-semibold">{childName}</span>
           </div>
         </header>
 
         <section className="relative overflow-hidden rounded-[30px] min-h-[250px] shadow-lg">
-          <Image
+          {subject.image ? <Image
             src={subject.image}
             alt=""
             fill
@@ -214,12 +236,12 @@ export default function SubjectPage() {
             sizes="(min-width: 1450px) 1450px, 100vw"
             quality={60}
             className="object-cover"
-          />
+          /> : <div className="absolute inset-0 bg-gradient-to-br from-[#393794] to-[#8c76cc]" />}
           <div className="absolute inset-0 bg-gradient-to-r from-[#14164f]/95 via-[#2b2768]/70 to-[#1d1645]/15" />
 
           <div className="relative z-10 p-7 md:p-9 text-white max-w-[760px]">
             <p className="inline-flex rounded-xl bg-white/15 px-3 py-2 text-sm">
-              {subject.icon} {subject.name} · 7 класс
+              {subject.icon} {subject.name} · {academic.grade} класс
             </p>
             <h1 className="text-4xl md:text-5xl font-bold mt-4">{subject.name}</h1>
             <p className="text-lg text-violet-100 mt-2">{subject.subtitle}</p>
@@ -242,6 +264,8 @@ export default function SubjectPage() {
           </div>
         </section>
 
+        <CourseSelector subjectId={subjectKey} selectedCourseId={course?.id} />
+
         <section className="mt-5">
           <h2 className="text-2xl font-bold">Что будем делать?</h2>
           <p className="text-sm text-slate-500 mt-1">
@@ -252,7 +276,7 @@ export default function SubjectPage() {
             {MODES.map((mode) => (
               <Link
                 key={mode.key}
-                href={`/subject/${subjectKey}/${mode.key}`}
+                href={`/subject/${subjectKey}/${mode.key}${courseQuery(course?.id)}`}
                 className="rounded-[24px] bg-white p-4 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition"
               >
                 <div className="flex items-start gap-3">
@@ -282,7 +306,7 @@ export default function SubjectPage() {
               <div className="mt-4 rounded-2xl bg-violet-50 p-4">
                 <p className="font-bold">{currentTopic.topic}</p>
                 <p className="text-sm text-slate-500 mt-1">
-                  Последняя тема, с которой работала Софья.
+                  Последняя тема занятий {childName}.
                 </p>
                 <div className="mt-4 h-2 rounded-full bg-violet-100 overflow-hidden">
                   <div

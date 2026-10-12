@@ -10,7 +10,8 @@ type IconName =
   | "physics"
   | "literature"
   | "biology"
-  | "history";
+  | "history"
+  | "informatics";
 
 const subjects = [
   {
@@ -93,6 +94,16 @@ const subjects = [
     icon: "history" as IconName,
     iconClass: "bg-[#ffe4dc] text-[#d97856]",
   },
+  {
+    name: "Информатика",
+    subtitle: "Информация, данные и технологии",
+    image: null,
+    href: "/subject/informatics",
+    action1: "Разобрать тему",
+    action2: "Практика",
+    icon: "informatics" as IconName,
+    iconClass: "bg-[#dceaff] text-[#4284e6]",
+  },
 ];
 
 const menuItems = [
@@ -129,6 +140,7 @@ const quickActions = [
 ];
 
 function SubjectIcon({ name }: { name: IconName }) {
+  if (name === "informatics") return <span aria-hidden="true">💻</span>;
   const common = {
     width: 20,
     height: 20,
@@ -402,7 +414,7 @@ export default function Home() {
               </HomeLink>
 
               <span className="pointer-events-none text-xs text-violet-400">
-                8 предметов
+                9 предметов
               </span>
             </div>
 
@@ -415,7 +427,7 @@ export default function Home() {
           </div>
 
           {/* КАРТОЧКИ ПРЕДМЕТОВ */}
-          <section id="subjects" className="relative z-30 flex-1 min-h-0 grid grid-cols-2 xl:grid-cols-4 grid-rows-4 xl:grid-rows-2 gap-2.5">
+          <section id="subjects" className="relative z-30 flex-1 min-h-0 grid grid-cols-2 xl:grid-cols-4 grid-rows-5 xl:grid-rows-3 gap-2.5">
             {subjects.map((subject) => (
               <HomeLink
                 key={subject.name}
@@ -423,14 +435,14 @@ export default function Home() {
                 className="relative z-40 group min-h-0 bg-white rounded-[18px] overflow-hidden shadow-sm hover:shadow-lg hover:-translate-y-0.5 transition flex flex-col cursor-pointer"
               >
                 <div className="pointer-events-none relative flex-1 min-h-[94px]">
-                  <Image
+                  {subject.image ? <Image
                     src={subject.image}
                     alt=""
                     fill
                     sizes="(min-width: 1280px) 25vw, 50vw"
                     quality={55}
                     className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
-                  />
+                  /> : <div className="absolute inset-0 bg-gradient-to-br from-[#393794] to-[#8c76cc] flex items-center justify-center text-5xl" aria-hidden="true">💻</div>}
 
                   <div className="absolute inset-0 bg-gradient-to-t from-[#11143f]/88 via-[#11143f]/10 to-transparent" />
 

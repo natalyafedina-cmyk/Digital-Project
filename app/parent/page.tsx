@@ -1,5 +1,8 @@
 "use client";
 
+import { learnerConfig } from "@/lib/learner-config";
+import { useAcademicContext } from "@/lib/curriculum/client-context";
+import AcademicContext from "@/components/AcademicContext";
 import { useEffect, useMemo, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import {
@@ -70,6 +73,7 @@ const SUBJECT_NAMES: Record<string, string> = {
   literature: "Литература",
   biology: "Биология",
   history: "История",
+  informatics: "Информатика",
 };
 
 export default function ParentPage() {
@@ -77,7 +81,9 @@ export default function ParentPage() {
 
   const [loading, setLoading] = useState(true);
   const [childId, setChildId] = useState<string | null>(null);
-  const [childName, setChildName] = useState("Софья");
+  const [legacyGrade, setLegacyGrade] = useState(learnerConfig.grade);
+  const academic = useAcademicContext(childId, legacyGrade);
+  const [childName, setChildName] = useState(learnerConfig.displayName);
   const [sessions, setSessions] = useState<Session[]>([]);
   const [rules, setRules] = useState<Rule[]>([]);
   const [methodEvents, setMethodEvents] = useState<MethodEvent[]>([]);
@@ -114,7 +120,7 @@ export default function ParentPage() {
 
     const { data: created, error: insertError } = await supabase
       .from("children")
-      .insert({ parent_id: userId, name: "Софья", grade: 7 })
+      .insert({ parent_id: userId, name: learnerConfig.displayName, grade: learnerConfig.grade })
       .select("id,name,grade")
       .single();
 
@@ -139,6 +145,7 @@ export default function ParentPage() {
       const child = await ensureChild(user.id);
       setChildId(child.id);
       setChildName(child.name);
+      setLegacyGrade(child.grade);
 
       const [
         sessionsRes,
@@ -561,6 +568,8 @@ export default function ParentPage() {
             {error}
           </div>
         )}
+
+        <AcademicContext summary={academic} />
 
         <section className="grid md:grid-cols-4 gap-3 mb-5">
           {[

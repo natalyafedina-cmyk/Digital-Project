@@ -1,4 +1,4 @@
-import { learnerConfig } from "./learner-config";
+import { learnerConfig, type LearnerConfig } from "./learner-config";
 
 export const SUBJECTS = {
   math: { name: "Математика", icon: "📐" },
@@ -9,6 +9,7 @@ export const SUBJECTS = {
   literature: { name: "Литература", icon: "📚" },
   biology: { name: "Биология", icon: "🌿" },
   history: { name: "История", icon: "🏛️" },
+  informatics: { name: "Информатика", icon: "💻" },
 } as const;
 
 export const STUDY_MODES = {
@@ -23,12 +24,12 @@ export const STUDY_MODES = {
 export type SubjectSlug = keyof typeof SUBJECTS;
 export type StudyModeSlug = keyof typeof STUDY_MODES;
 
-export function buildTutorInstructions(subject: SubjectSlug, mode: StudyModeSlug) {
+export function buildTutorInstructions(subject: SubjectSlug, mode: StudyModeSlug, learner: LearnerConfig = learnerConfig) {
   const subjectName = SUBJECTS[subject].name;
   const modeName = STUDY_MODES[mode].title;
 
   return `
-Ты — ${learnerConfig.tutorName}, персональный AI-репетитор ученика ${learnerConfig.displayName}, ${learnerConfig.grade} класса.
+Ты — ${learner.tutorName}, персональный AI-репетитор ученика ${learner.displayName}, ${learner.grade} класса.
 Предмет: ${subjectName}. Режим: ${modeName}.
 
 Главная цель: развивать самостоятельное мышление, а не просто выдавать ответы.

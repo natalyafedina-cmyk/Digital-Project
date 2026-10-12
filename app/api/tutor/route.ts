@@ -1,3 +1,7 @@
+import { authenticatedRequestClient } from "@/lib/supabase/request-client";
+import { getActiveLearningContext, renderAcademicContext } from "@/lib/curriculum/learning-context";
+import { SupabaseCurriculumRepository } from "@/lib/curriculum/repository";
+import { resolveCourse } from "@/lib/curriculum/catalog";
 import { createLLMProvider, createVisionProvider } from "@/lib/providers";
 import { learnerConfig } from "@/lib/learner-config";
 import {
@@ -326,6 +330,21 @@ export async function POST(request: Request) {
       );
     }
 
+    const courseId = typeof body.courseId === "string" ? body.courseId : undefined;
+    let course;
+    try { course = resolveCourse(subject, courseId); } catch {
+      return Response.json({ error: "Курс не относится к выбранному предмету." }, { status: 400 });
+    }
+    let learner = learnerConfig;
+    let academicPrompt = course ? `Выбранный курс: ${course.displayName}.` : "";
+    if (typeof body.childId === "string" && body.childId) {
+      const client = await authenticatedRequestClient(request);
+      if (!client) return Response.json({ error: "Нужен вход родителя." }, { status: 401 });
+      const context = await getActiveLearningContext(body.childId, subject, courseId, new SupabaseCurriculumRepository(client));
+      learner = { ...learnerConfig, displayName: context.child.name, grade: context.grade };
+      academicPrompt = renderAcademicContext(context);
+    }
+
     let imageText = "";
     if (imageDataUrl) {
       imageText = await createVisionProvider().recognize(imageDataUrl);
@@ -457,7 +476,7 @@ previousMethodOutcome:
 
 НУЖЕН СТРОГО JSON БЕЗ MARKDOWN:
 {
-  "answer": "короткий ответ ученику ${learnerConfig.displayName}",
+  "answer": "короткий ответ ученику ${learner.displayName}",
   "visualBlock": "наглядная схема или пустая строка",
   "visualLabel": "короткая подпись к схеме или пустая строка",
   "teachingMethod": "один метод",
@@ -482,7 +501,8 @@ classification, story, experiment, map_logic, character_analysis.
       {
         role: "system",
         text:
-          buildTutorInstructions(subject, mode) +
+          buildTutorInstructions(subject, mode, learner) +
+          "\n\n" + academicPrompt +
           "\n\n" +
           pedagogy,
       },

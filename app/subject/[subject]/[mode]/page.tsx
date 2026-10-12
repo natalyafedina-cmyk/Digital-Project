@@ -1,9 +1,13 @@
 "use client";
 
+import { learnerConfig } from "@/lib/learner-config";
+import { resolveCourse, courseQuery, coursesForSubject } from "@/lib/curriculum/catalog";
+import { sessionAuthorization, useAcademicContext } from "@/lib/curriculum/client-context";
+import CourseSelector from "@/components/CourseSelector";
 import { speakWithBrowser } from "@/lib/browser-speech";
 
 import { useEffect, useRef, useState } from "react";
-import { useParams } from "next/navigation";
+import { useParams, useSearchParams } from "next/navigation";
 import {
   SUBJECTS,
   STUDY_MODES,
@@ -153,6 +157,9 @@ export default function StudyModePage() {
   const subjectKey = params.subject as SubjectSlug;
   const modeKey = params.mode as StudyModeSlug;
   const currentSubject = SUBJECTS[subjectKey];
+  const searchParams = useSearchParams();
+  const requestedCourse = searchParams.get("course");
+  const course = currentSubject ? resolveCourse(subjectKey, coursesForSubject(subjectKey).some(item => item.id === requestedCourse) ? requestedCourse : undefined) : null;
   const currentMode = STUDY_MODES[modeKey];
 
   const [text, setText] = useState("");
@@ -163,6 +170,9 @@ export default function StudyModePage() {
 
   const [userId, setUserId] = useState<string | null>(null);
   const [childId, setChildId] = useState<string | null>(null);
+  const [legacyGrade, setLegacyGrade] = useState(learnerConfig.grade);
+  const [childName, setChildName] = useState(learnerConfig.displayName);
+  const academic = useAcademicContext(childId, legacyGrade);
   const [activeSessionId, setActiveSessionId] = useState<string | null>(null);
   const [parentRules, setParentRules] = useState<string[]>([]);
   const [methodProfile, setMethodProfile] = useState<MethodSummary[]>([]);
@@ -194,7 +204,7 @@ export default function StudyModePage() {
 
   useEffect(() => {
     void initializePersistence();
-  }, [subjectKey, modeKey]);
+  }, [subjectKey, modeKey, course?.id]);
 
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -216,8 +226,8 @@ export default function StudyModePage() {
       .from("children")
       .insert({
         parent_id: parentId,
-        name: "Софья",
-        grade: 7,
+        name: learnerConfig.displayName,
+        grade: learnerConfig.grade,
         voice_settings: DEFAULT_VOICE,
       })
       .select("id,name,grade,voice_settings")
@@ -276,6 +286,8 @@ export default function StudyModePage() {
     try {
       const child = await ensureChild(user.id);
       setChildId(child.id);
+      setLegacyGrade(child.grade);
+      setChildName(child.name);
       await loadMethodProfile(child.id);
 
       if (child.voice_settings) {
@@ -311,6 +323,7 @@ export default function StudyModePage() {
         .eq("child_id", child.id)
         .eq("subject", subjectKey)
         .eq("mode", modeKey)
+        .or(course ? `course_id.eq.${course.id}${coursesForSubject(subjectKey).length === 1 ? ",course_id.is.null" : ""}` : "course_id.is.null")
         .eq("status", "active")
         .gte("last_activity_at", cutoff)
         .order("last_activity_at", { ascending: false })
@@ -320,6 +333,10 @@ export default function StudyModePage() {
       if (!recentSession) {
         setActiveSessionId(null);
         setMessages([]);
+        setSupportStage(0);
+        setPreviousMethod(null);
+        setActiveIntent(null);
+        setActiveGoal(null);
         return;
       }
 
@@ -806,6 +823,7 @@ export default function StudyModePage() {
           .insert({
             child_id: childId,
             subject: subjectKey,
+            course_id: course?.id || null,
             mode: modeKey,
             title: userText.slice(0, 140),
             status: "active",
@@ -822,8 +840,10 @@ export default function StudyModePage() {
 
       const response = await fetch("/api/tutor", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json", ...await sessionAuthorization() },
         body: JSON.stringify({
+          childId,
+          courseId: course?.id,
           subject: subjectKey,
           mode: modeKey,
           message: userText,
@@ -961,7 +981,7 @@ export default function StudyModePage() {
             </a>
 
             <a
-              href={`/subject/${subjectKey}`}
+              href={`/subject/${subjectKey}${courseQuery(course?.id)}`}
               className="rounded-xl bg-white px-4 py-2.5 text-sm font-semibold text-slate-600 shadow-sm"
             >
               ← {currentSubject.name}
@@ -983,10 +1003,11 @@ export default function StudyModePage() {
             </a>
           </div>
         </header>
+        <CourseSelector subjectId={subjectKey} selectedCourseId={course?.id} mode={modeKey} />
 
         <section className="rounded-[30px] bg-gradient-to-r from-[#24235e] to-[#6752c8] text-white p-6 md:p-8 shadow-lg mb-5">
           <p className="text-sm text-violet-200 mb-2">
-            {currentSubject.icon} {currentSubject.name} · 7 класс
+            {currentSubject.icon} {currentSubject.name} · {academic.grade} класс
           </p>
           <div className="flex items-center gap-3">
             <div className="text-3xl">{currentMode.icon}</div>
@@ -1031,7 +1052,7 @@ export default function StudyModePage() {
             </div>
 
             <div className="rounded-[22px] bg-violet-50 p-4 mb-4">
-              <p className="text-sm">Привет, Софья! 🌙</p>
+              <p className="text-sm">Привет, {childName}! 🌙</p>
               <p className="font-semibold mt-1">{currentMode.question}</p>
             </div>
 

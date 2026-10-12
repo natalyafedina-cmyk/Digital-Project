@@ -36,6 +36,15 @@ export const METHOD_LABELS: Record<TeachingMethod, string> = {
 };
 
 export const SUBJECT_STRATEGIES = {
+  informatics: {
+    name: "Информатика",
+    preferred: ["visual_schema", "step_by_step", "experiment", "comparison", "retrieval_practice"],
+    rules: [
+      "Показывай информационный процесс схемой: входные данные → действие → результат.",
+      "Для практического действия разбирай один шаг и предлагай ребёнку выполнить следующий самостоятельно.",
+      "Не выдумывай возможности программы или устройства; уточняй недостающие условия.",
+    ],
+  },
   math: {
     name: "Математика",
     preferred: ["visual_schema", "worked_example", "step_by_step", "game", "analogy"],

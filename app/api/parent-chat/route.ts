@@ -1,3 +1,5 @@
+import { createLLMProvider } from "@/lib/providers";
+import { learnerConfig } from "@/lib/learner-config";
 import {
   buildEvidenceOnlyParentAnalysis,
   getParentDataConfidence,
@@ -5,15 +7,6 @@ import {
 
 export const runtime = "nodejs";
 
-function requireEnv() {
-  const apiKey = process.env.YANDEX_API_KEY;
-  const folderId = process.env.YANDEX_FOLDER_ID;
-
-  if (!apiKey) throw new Error("YANDEX_API_KEY не найден в .env.local");
-  if (!folderId) throw new Error("YANDEX_FOLDER_ID не найден в .env.local");
-
-  return { apiKey, folderId };
-}
 
 function parseJson(raw: string) {
   const cleaned = raw
@@ -75,7 +68,7 @@ function parseJson(raw: string) {
 
 export async function POST(request: Request) {
   try {
-    const { apiKey, folderId } = requireEnv();
+    const llm = createLLMProvider();
     const body = await request.json();
 
     const message =
@@ -85,7 +78,7 @@ export async function POST(request: Request) {
     const childName =
       typeof body.childName === "string"
         ? body.childName
-        : "Софья";
+        : learnerConfig.displayName;
 
     const activeRules = Array.isArray(body.activeRules)
       ? body.activeRules.slice(0, 30)
@@ -108,7 +101,7 @@ export async function POST(request: Request) {
     }
 
     const system = `
-Ты — Луник, AI-репетитор. Сейчас ты разговариваешь С РОДИТЕЛЕМ ребёнка ${childName}.
+Ты — ${learnerConfig.tutorName}, AI-репетитор. Сейчас ты разговариваешь С РОДИТЕЛЕМ ребёнка ${childName}.
 
 ВАЖНЕЙШЕЕ ПРАВИЛО:
 Ты можешь делать выводы о прогрессе, слабых темах и подходящих методиках ТОЛЬКО по переданным ниже данным.
@@ -178,41 +171,7 @@ pedagogy, motivation, format, voice, subject, general.
       { role: "user", text: message },
     ];
 
-    const response = await fetch(
-      "https://ai.api.cloud.yandex.net/foundationModels/v1/completion",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Api-Key ${apiKey}`,
-          "x-folder-id": folderId,
-          "x-data-logging-enabled": "false",
-        },
-        body: JSON.stringify({
-          modelUri: `gpt://${folderId}/yandexgpt/latest`,
-          completionOptions: {
-            stream: false,
-            temperature: 0.2,
-            maxTokens: "1000",
-            reasoningOptions: { mode: "ENABLED_HIDDEN" },
-          },
-          messages,
-        }),
-      }
-    );
-
-    const data = await response.json();
-
-    if (!response.ok) {
-      throw new Error(
-        data?.message ||
-          data?.error?.message ||
-          "Не удалось получить ответ родительского помощника."
-      );
-    }
-
-    const raw =
-      data?.result?.alternatives?.[0]?.message?.text?.trim() || "";
+    const raw = await llm.generate({ messages, temperature: 0.2, maxTokens: 1000 });
 
     const parsed = parseJson(raw);
     const confidence = getParentDataConfidence(evidence);
@@ -239,15 +198,7 @@ pedagogy, motivation, format, voice, subject, general.
     }
 
     return Response.json(parsed);
-  } catch (error) {
-    return Response.json(
-      {
-        error:
-          error instanceof Error
-            ? error.message
-            : "Не удалось получить ответ.",
-      },
-      { status: 500 }
-    );
+  } catch {
+    return Response.json({ error: "Не удалось получить ответ родительского помощника." }, { status: 500 });
   }
 }

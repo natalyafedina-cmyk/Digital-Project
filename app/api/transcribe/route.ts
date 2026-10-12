@@ -1,12 +1,7 @@
+import { createSTTProvider } from "@/lib/providers";
 import { normalizeEnglishTranscript } from "@/lib/stt-normalization";
 
 export const runtime = "nodejs";
-
-function requireApiKey() {
-  const apiKey = process.env.YANDEX_API_KEY;
-  if (!apiKey) throw new Error("YANDEX_API_KEY не найден в .env.local");
-  return apiKey;
-}
 
 function readWavSampleRate(buffer: Buffer) {
   if (buffer.length < 44) throw new Error("Аудиофайл слишком короткий.");
@@ -40,7 +35,6 @@ function extractWavPcm(buffer: Buffer) {
 
 export async function POST(request: Request) {
   try {
-    const apiKey = requireApiKey();
     const formData = await request.formData();
     const audio = formData.get("audio");
     const langValue = formData.get("lang");
@@ -61,49 +55,13 @@ export async function POST(request: Request) {
       );
     }
 
-    const url = new URL(
-      "https://stt.api.cloud.yandex.net/speech/v1/stt:recognize"
-    );
-    url.searchParams.set("topic", lang === "en-US" ? "general:rc" : "general");
-    url.searchParams.set("lang", lang);
-    url.searchParams.set("format", "lpcm");
-    url.searchParams.set("sampleRateHertz", String(sampleRate));
-
-    const response = await fetch(url, {
-      method: "POST",
-      headers: {
-        Authorization: `Api-Key ${apiKey}`,
-        "Content-Type": "application/octet-stream",
-      },
-      // Node's Buffer is a Uint8Array at runtime, but the Fetch typings do not
-      // accept Buffer as a request body. Converting it keeps the audio bytes
-      // unchanged and makes the server route type-safe.
-      body: new Uint8Array(pcmBuffer),
-    });
-
-    const data = await response.json();
-
-    if (!response.ok) {
-      throw new Error(
-        data?.error_message || data?.message || "SpeechKit не смог распознать голос."
-      );
-    }
-
-    const rawText = data?.result?.trim() || "";
+    const recognized = await createSTTProvider().transcribe({ audio: new Uint8Array(pcmBuffer), sampleRate, lang });
+    const rawText = recognized.text;
     const text =
       lang === "en-US" ? normalizeEnglishTranscript(rawText) : rawText;
 
     return Response.json({ text, rawText });
-  } catch (error) {
-    console.error("Transcription error:", error);
-    return Response.json(
-      {
-        error:
-          error instanceof Error
-            ? error.message
-            : "Не удалось распознать голосовое сообщение.",
-      },
-      { status: 500 }
-    );
+  } catch {
+    return Response.json({ error: "Не удалось распознать голосовое сообщение." }, { status: 500 });
   }
 }

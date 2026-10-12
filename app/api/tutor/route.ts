@@ -1,3 +1,5 @@
+import { createLLMProvider, createVisionProvider } from "@/lib/providers";
+import { learnerConfig } from "@/lib/learner-config";
 import {
   SUBJECTS,
   STUDY_MODES,
@@ -30,61 +32,6 @@ type MethodSummary = {
   attempts: number;
   avgOutcome: number;
 };
-
-function requireEnv() {
-  const apiKey = process.env.YANDEX_API_KEY;
-  const folderId = process.env.YANDEX_FOLDER_ID;
-
-  if (!apiKey) throw new Error("YANDEX_API_KEY не найден в .env.local");
-  if (!folderId) throw new Error("YANDEX_FOLDER_ID не найден в .env.local");
-
-  return { apiKey, folderId };
-}
-
-function dataUrlToBase64(dataUrl: string) {
-  const match = dataUrl.match(/^data:([^;]+);base64,(.+)$/);
-  if (!match) throw new Error("Не удалось прочитать изображение.");
-  return { mimeType: match[1], base64: match[2] };
-}
-
-async function recognizeImage(
-  imageDataUrl: string,
-  apiKey: string,
-  folderId: string
-) {
-  const { mimeType, base64 } = dataUrlToBase64(imageDataUrl);
-
-  const response = await fetch(
-    "https://ocr.api.cloud.yandex.net/ocr/v1/recognizeText",
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Api-Key ${apiKey}`,
-        "x-folder-id": folderId,
-        "x-data-logging-enabled": "false",
-      },
-      body: JSON.stringify({
-        mimeType,
-        languageCodes: ["ru", "en"],
-        model: "page",
-        content: base64,
-      }),
-    }
-  );
-
-  const data = await response.json();
-
-  if (!response.ok) {
-    throw new Error(
-      data?.message ||
-        data?.error?.message ||
-        "Yandex Vision не смог распознать изображение."
-    );
-  }
-
-  return data?.result?.textAnnotation?.fullText?.trim() || "";
-}
 
 function parseModelJson(raw: string) {
   const cleaned = raw
@@ -325,7 +272,7 @@ function renderMethodProfile(methods: MethodSummary[]) {
 
 export async function POST(request: Request) {
   try {
-    const { apiKey, folderId } = requireEnv();
+    const llm = createLLMProvider();
     const body = await request.json();
 
     const subject = body.subject as SubjectSlug;
@@ -381,7 +328,7 @@ export async function POST(request: Request) {
 
     let imageText = "";
     if (imageDataUrl) {
-      imageText = await recognizeImage(imageDataUrl, apiKey, folderId);
+      imageText = await createVisionProvider().recognize(imageDataUrl);
     }
 
     const userText = [
@@ -510,7 +457,7 @@ previousMethodOutcome:
 
 НУЖЕН СТРОГО JSON БЕЗ MARKDOWN:
 {
-  "answer": "короткий ответ Софье",
+  "answer": "короткий ответ ученику ${learnerConfig.displayName}",
   "visualBlock": "наглядная схема или пустая строка",
   "visualLabel": "короткая подпись к схеме или пустая строка",
   "teachingMethod": "один метод",
@@ -546,41 +493,7 @@ classification, story, experiment, map_logic, character_analysis.
       { role: "user", text: userText },
     ];
 
-    const response = await fetch(
-      "https://ai.api.cloud.yandex.net/foundationModels/v1/completion",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Api-Key ${apiKey}`,
-          "x-folder-id": folderId,
-          "x-data-logging-enabled": "false",
-        },
-        body: JSON.stringify({
-          modelUri: `gpt://${folderId}/yandexgpt/latest`,
-          completionOptions: {
-            stream: false,
-            temperature: 0.35,
-            maxTokens: "1300",
-            reasoningOptions: { mode: "ENABLED_HIDDEN" },
-          },
-          messages,
-        }),
-      }
-    );
-
-    const data = await response.json();
-
-    if (!response.ok) {
-      throw new Error(
-        data?.message ||
-          data?.error?.message ||
-          "YandexGPT не смог сформировать ответ."
-      );
-    }
-
-    let raw =
-      data?.result?.alternatives?.[0]?.message?.text?.trim() || "";
+    let raw = await llm.generate({ messages, temperature: 0.35, maxTokens: 1300 });
 
     let parsed = parseModelJson(raw);
     const supportContext = [
@@ -609,34 +522,11 @@ classification, story, experiment, map_logic, character_analysis.
           : item
       );
 
-      const retryResponse = await fetch(
-        "https://ai.api.cloud.yandex.net/foundationModels/v1/completion",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Api-Key ${apiKey}`,
-            "x-folder-id": folderId,
-            "x-data-logging-enabled": "false",
-          },
-          body: JSON.stringify({
-            modelUri: `gpt://${folderId}/yandexgpt/latest`,
-            completionOptions: {
-              stream: false,
-              temperature: 0.2,
-              maxTokens: "1100",
-              reasoningOptions: { mode: "ENABLED_HIDDEN" },
-            },
-            messages: retryMessages,
-          }),
-        }
-      );
-
-      const retryData = await retryResponse.json();
-      if (retryResponse.ok) {
-        raw =
-          retryData?.result?.alternatives?.[0]?.message?.text?.trim() || raw;
+      try {
+        raw = await llm.generate({ messages: retryMessages, temperature: 0.2, maxTokens: 1100 });
         parsed = parseModelJson(raw);
+      } catch {
+        // Preserve the existing support-stage guard when regeneration is unavailable.
       }
 
       if (
@@ -699,17 +589,7 @@ classification, story, experiment, map_logic, character_analysis.
       nextSupportStage,
       recognizedImageText: imageText || null,
     });
-  } catch (error) {
-    console.error("Tutor API error:", error);
-
-    return Response.json(
-      {
-        error:
-          error instanceof Error
-            ? error.message
-            : "Не удалось получить ответ Луника.",
-      },
-      { status: 500 }
-    );
+  } catch {
+    return Response.json({ error: "Не удалось получить ответ репетитора." }, { status: 500 });
   }
 }

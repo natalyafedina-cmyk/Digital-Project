@@ -1,5 +1,7 @@
 "use client";
 
+import { speakWithBrowser } from "@/lib/browser-speech";
+
 import { useEffect, useRef, useState } from "react";
 import { useParams } from "next/navigation";
 import {
@@ -585,7 +587,7 @@ export default function StudyModePage() {
         }),
       });
 
-      if (!response.ok) return;
+      if (!response.ok) throw new Error("Voice unavailable");
 
       const blob = await response.blob();
 
@@ -594,9 +596,10 @@ export default function StudyModePage() {
       setReplyAudioUrl(url);
 
       const audio = new Audio(url);
-      await audio.play().catch(() => {});
+      await audio.play();
     } catch {
-      // Голос не должен ломать текстовый ответ.
+      speakWithBrowser(answer, subjectKey === "english" ? "en-US" : "ru-RU",
+        subjectKey === "english" ? voiceSettings.englishSpeed : voiceSettings.speed);
     }
   }
 

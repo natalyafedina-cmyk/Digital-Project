@@ -1,14 +1,8 @@
+import { createTTSProvider } from "@/lib/providers";
 export const runtime = "nodejs";
-
-function requireApiKey() {
-  const apiKey = process.env.YANDEX_API_KEY;
-  if (!apiKey) throw new Error("YANDEX_API_KEY не найден в .env.local");
-  return apiKey;
-}
 
 export async function POST(request: Request) {
   try {
-    const apiKey = requireApiKey();
     const body = await request.json();
 
     const text =
@@ -31,39 +25,7 @@ export async function POST(request: Request) {
       );
     }
 
-    const params = new URLSearchParams();
-    params.set("text", text);
-    params.set("format", "mp3");
-    params.set("speed", String(speed));
-
-    if (subject === "english") {
-      params.set("voice", "john");
-      params.set("lang", "en-US");
-    } else {
-      params.set("voice", "jane");
-      params.set("lang", "ru-RU");
-
-      if (preset === "warm") params.set("emotion", "good");
-    }
-
-    const response = await fetch(
-      "https://tts.api.cloud.yandex.net/speech/v1/tts:synthesize",
-      {
-        method: "POST",
-        headers: {
-          Authorization: `Api-Key ${apiKey}`,
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-        body: params.toString(),
-      }
-    );
-
-    if (!response.ok) {
-      const errorText = await response.text();
-      throw new Error(errorText || "SpeechKit не смог озвучить ответ.");
-    }
-
-    const audioBuffer = await response.arrayBuffer();
+    const audioBuffer = await createTTSProvider().synthesize({ text, lang: subject === "english" ? "en-US" : "ru-RU", speed, preset });
 
     return new Response(audioBuffer, {
       headers: {
@@ -71,17 +33,7 @@ export async function POST(request: Request) {
         "Cache-Control": "no-store",
       },
     });
-  } catch (error) {
-    console.error("Speech error:", error);
-
-    return Response.json(
-      {
-        error:
-          error instanceof Error
-            ? error.message
-            : "Не удалось озвучить ответ.",
-      },
-      { status: 500 }
-    );
+  } catch {
+    return Response.json({ error: "Не удалось озвучить ответ." }, { status: 503 });
   }
 }

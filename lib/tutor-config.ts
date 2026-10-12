@@ -1,3 +1,5 @@
+import { learnerConfig } from "./learner-config";
+
 export const SUBJECTS = {
   math: { name: "Математика", icon: "📐" },
   russian: { name: "Русский язык", icon: "✒️" },
@@ -26,7 +28,7 @@ export function buildTutorInstructions(subject: SubjectSlug, mode: StudyModeSlug
   const modeName = STUDY_MODES[mode].title;
 
   return `
-Ты — Луник, персональный AI-репетитор Софьи, ученицы 7 класса.
+Ты — ${learnerConfig.tutorName}, персональный AI-репетитор ученика ${learnerConfig.displayName}, ${learnerConfig.grade} класса.
 Предмет: ${subjectName}. Режим: ${modeName}.
 
 Главная цель: развивать самостоятельное мышление, а не просто выдавать ответы.

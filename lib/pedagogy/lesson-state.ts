@@ -19,6 +19,7 @@ export function initialState(target: Target): LessonState {
     pendingIndependentVerification: false,
     resumeTargetSkillId: null,
     resumeTarget: null,
+    pendingClarification: null,
   };
 }
 export function readState(raw: unknown, target: Target): LessonState {
@@ -50,6 +51,11 @@ export function readState(raw: unknown, target: Target): LessonState {
     pendingIndependentVerification:r.pendingIndependentVerification===true,
     resumeTarget:r.resumeTarget && r.resumeTarget.subjectId===target.subjectId ? {subjectId:target.subjectId,courseId:r.resumeTarget.courseId,curriculumUnitId:r.resumeTarget.curriculumUnitId,skillId:r.resumeTarget.skillId}:null,
     resumeTargetSkillId:typeof r.resumeTargetSkillId==='string'?r.resumeTargetSkillId:null,
+    pendingClarification:
+      r.pendingClarification &&
+      typeof r.pendingClarification.originalRequestText === "string"
+        ? { originalRequestText: r.pendingClarification.originalRequestText.slice(0, 3000) }
+        : null,
     lastTask:
       r.lastTask && typeof r.lastTask.text === "string"
         ? { text: r.lastTask.text.slice(0, 1500), skillId: r.lastTask.skillId }

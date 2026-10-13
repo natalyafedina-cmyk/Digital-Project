@@ -12,6 +12,38 @@ import {
   type Target,
 } from "./types";
 export const RESOLUTION_MIN = 0.7;
+
+function normalizeChoice(value: string) {
+  return value
+    .normalize("NFKC")
+    .toLowerCase()
+    .replace(/ё/g, "е")
+    .replace(/[^\p{L}\p{N}]+/gu, " ")
+    .trim()
+    .replace(/\s+/g, " ");
+}
+
+export function matchCourseClarification(
+  text: string,
+  courses: RequestCatalog["courses"],
+): string | null {
+  const input = normalizeChoice(text);
+  if (!input) return null;
+
+  const matches = courses.filter((course) => {
+    const display = normalizeChoice(course.displayName);
+    const id = normalizeChoice(course.id);
+    const idTail = normalizeChoice(course.id.split(".").at(-1) || "");
+    return (
+      input === display ||
+      input === id ||
+      input === idTail ||
+      (display.length >= 4 && input.includes(display))
+    );
+  });
+
+  return matches.length === 1 ? matches[0].id : null;
+}
 export function clarification(
   subjectId: string,
   courses: RequestCatalog["courses"],

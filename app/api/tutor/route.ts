@@ -1,5 +1,5 @@
 import { requestCatalog } from '@/lib/learning-request/repository';
-import { resolveLearningRequest,reuseResolution,validateResolution } from '@/lib/learning-request/resolver';
+import { matchCourseClarification,resolveLearningRequest,reuseResolution,validateResolution } from '@/lib/learning-request/resolver';
 import { planPedagogy } from '@/lib/pedagogy/planner';
 import { acceptedState } from '@/lib/pedagogy/lesson-state';
 import { loadLesson,persistLesson,initialState } from '@/lib/pedagogy/repository';
@@ -250,7 +250,25 @@ export async function POST(request: Request) {
     const cheapFollowup=reuseResolution(lesson.target,userText);
     const reuse=!!lesson.target.courseId && (awaiting&&shouldAnalyze(userText)&&!/[?？]/.test(userText)&&userText.length<300 || cheapFollowup.requestedActions.some(a=>['ask_for_hint','change_method'].includes(a)));
     let resolution=reuseResolution(lesson.target,userText);
-    if(client&&!reuse&&!(sttConfidence!=null&&sttConfidence<.65)){
+    let resumedClarification=false;
+    const pendingClarification =
+      lesson.phase==='clarify' &&
+      lesson.expectedLearnerAction==='clarify' &&
+      lesson.pendingClarification?.originalRequestText
+        ? lesson.pendingClarification.originalRequestText
+        : null;
+    if(client&&pendingClarification&&!(sttConfidence!=null&&sttConfidence<.65)){
+      const broadCatalog=await requestCatalog(client,subject,null,academicContext?.program?.id,academicContext?.grade);
+      const clarifiedCourse=course?.id||matchCourseClarification(userText,broadCatalog.courses);
+      if(clarifiedCourse){
+        const clarifiedCatalog=await requestCatalog(client,subject,clarifiedCourse,academicContext?.program?.id,academicContext?.grade);
+        resolution=await resolveLearningRequest(llm,{text:pendingClarification,subjectId:subject,explicitCourse:clarifiedCourse,target:lesson.target,catalog:clarifiedCatalog,recentContext:userText});
+      }else{
+        resolution=await resolveLearningRequest(llm,{text:`${pendingClarification}\nУточнение ученика к выбору курса: ${userText}`,subjectId:subject,target:lesson.target,catalog:broadCatalog,recentContext:history.slice(-2).map(h=>h.text).join('\n')});
+      }
+      resumedClarification=true;
+    }
+    if(client&&!resumedClarification&&!reuse&&!(sttConfidence!=null&&sttConfidence<.65)){
       const catalog=await requestCatalog(client,subject,course?.id||null,academicContext?.program?.id,academicContext?.grade);
       resolution=await resolveLearningRequest(llm,{text:userText,subjectId:subject,explicitCourse:course?.id||null,target:lesson.target,catalog,recentContext:history.slice(-2).map(h=>h.text).join('\n')});
     }
@@ -440,7 +458,17 @@ classification, story, experiment, map_logic, character_analysis.
         turnId: typeof body.turnId === "string" ? body.turnId : crypto.randomUUID(), analysis, supportStage: lesson.supportStage, sttConfidence, signal }), undefined, 3000); }
       catch { console.error("evidence_write_unavailable"); }
     }
-    if(client&&academicContext&&sessionId){lesson=acceptedState(lesson,decision,parsed.taskBlock);if(decision.shouldGenerateTask&&!parsed.taskBlock){lesson.phase="clarify";lesson.expectedLearnerAction="clarify";}await persistLesson(client,sessionId,academicContext.child.id,lesson);}
+    if(client&&academicContext&&sessionId){
+      const originalClarificationRequest=lesson.pendingClarification?.originalRequestText||userText;
+      lesson=acceptedState(lesson,decision,parsed.taskBlock);
+      if(decision.actions.includes("clarify_target")){
+        lesson.pendingClarification={originalRequestText:originalClarificationRequest.slice(0,3000)};
+      }else{
+        lesson.pendingClarification=null;
+      }
+      if(decision.shouldGenerateTask&&!parsed.taskBlock){lesson.phase="clarify";lesson.expectedLearnerAction="clarify";}
+      await persistLesson(client,sessionId,academicContext.child.id,lesson);
+    }
     return Response.json({
       ...parsed,
       lessonState:client?lesson:null,

@@ -5,8 +5,8 @@ declare missing_indexes integer;
 begin
   if (select count(*) from public.subjects) <> 9 or (select count(*) from public.courses) <> 13
     or (select count(*) from public.textbook_editions) <> 13
-    or (select count(*) from public.curriculum_units) <> 51
-    or (select count(*) from public.textbook_units) <> 51
+    or (select count(*) from public.curriculum_units) <> 62
+    or (select count(*) from public.textbook_units) <> 62
     or (select count(*) from public.skills) <> 63 then raise exception 'Catalog counts'; end if;
   if exists (select 1 from public.student_enrollments) or exists (select 1 from public.student_textbook_assignments)
     or exists (select 1 from public.student_skill_state) then raise exception 'Personal backfill'; end if;
@@ -30,9 +30,11 @@ begin
   if missing_indexes <> 0 then raise exception 'Unindexed FK: %', missing_indexes; end if;
   if (select classification from public.curriculum_program_courses where course_id = 'history.moscow_region') <> 'regional'
     then raise exception 'Regional classification'; end if;
-  if exists (select 1 from public.textbook_editions where isbn is not null)
-    or exists (select 1 from public.textbook_units where page_start is not null or page_end is not null or part_number is not null)
-    then raise exception 'Invented bibliography'; end if;
+  -- The approved baseline now includes verified part/page metadata; validate its ranges.
+  if exists (select 1 from public.textbook_units where page_start < 1 or page_end < page_start)
+    then raise exception 'Invalid bibliography range'; end if;
+  if exists(select 1 from public.textbook_units u join public.textbook_editions b on b.id=u.textbook_edition_id
+    where u.part_number < 1 or (b.part_count is not null and u.part_number > b.part_count)) then raise exception 'Invalid confirmed part'; end if;
   begin
     insert into public.skill_prerequisites(skill_id,prerequisite_skill_id)
       values ('math.algebra.linear_equation.basic','math.algebra.linear_system.substitution');

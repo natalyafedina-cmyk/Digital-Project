@@ -1,5 +1,8 @@
 "use client";
 
+import { COURSES } from "@/lib/curriculum/catalog";
+import type { StructuredParentRule } from "@/lib/parent-rule-engine";
+import { sessionAuthorization } from "@/lib/curriculum/client-context";
 import { learnerConfig } from "@/lib/learner-config";
 import { useAcademicContext } from "@/lib/curriculum/client-context";
 import AcademicContext from "@/components/AcademicContext";
@@ -100,6 +103,8 @@ export default function ParentPage() {
     category: string;
     subject: string | null;
   } | null>(null);
+  const [pendingRule, setPendingRule] = useState<{ text: string; rule: StructuredParentRule } | null>(null);
+  const [ruleQuestion, setRuleQuestion] = useState<string | null>(null);
   const [newRule, setNewRule] = useState("");
   const [error, setError] = useState("");
 
@@ -231,18 +236,19 @@ export default function ParentPage() {
     }
   }
 
-  async function addRule(
-    text: string,
-    scope: "permanent" | "temporary" = "permanent",
-    meta?: {
-      category?: string;
-      subject?: string | null;
-      priority?: number;
-    }
-  ) {
+  async function addRule(text: string) {
     const clean = text.trim();
     if (!clean || !childId) return;
 
+    if (pendingRule?.text !== clean) {
+      try {
+        const response = await fetch("/api/parent-rule", { method: "POST", headers: { "Content-Type": "application/json", ...await sessionAuthorization() }, body: JSON.stringify({ text: clean }) });
+        const data = await response.json();
+        if (!response.ok) { setError(data.error); return false; }
+        if (data.needsClarification) { setPendingRule(null); setRuleQuestion(data.clarificationQuestion); return false; }
+        setPendingRule({ text: clean, rule: data.rule }); setRuleQuestion(null); return false;
+      } catch { setError("Не удалось проверить правило."); return false; }
+    }
     const {
       data: { user },
     } = await supabase.auth.getUser();
@@ -254,11 +260,16 @@ export default function ParentPage() {
         parent_id: user.id,
         child_id: childId,
         rule_text: clean,
-        scope,
+        scope: pendingRule.rule.duration.type === "permanent" ? "permanent" : "temporary",
         active: true,
-        category: meta?.category || "general",
-        subject: meta?.subject || null,
-        priority: meta?.priority ?? 50,
+        category: pendingRule.rule.category,
+        priority: pendingRule.rule.priority,
+        subject: pendingRule.rule.subjectId,
+        course_id: pendingRule.rule.courseId,
+        skill_id: pendingRule.rule.skillId,
+        structured_rule: pendingRule.rule,
+        interpretation_status: "confirmed",
+        valid_until: pendingRule.rule.duration.until || null,
       })
       .select(
         "id,rule_text,scope,active,category,subject,priority"
@@ -273,6 +284,8 @@ export default function ParentPage() {
     setRules((previous) => [data as Rule, ...previous]);
     setNewRule("");
     setSuggestedRule(null);
+    setPendingRule(null);
+    return true;
   }
 
   async function disableRule(id: string) {
@@ -287,23 +300,8 @@ export default function ParentPage() {
   async function applySuggestedRule() {
     if (!suggestedRule) return;
 
-    if (
-      suggestedRule.action === "replace" &&
-      suggestedRule.targetRuleId
-    ) {
-      await disableRule(suggestedRule.targetRuleId);
-    }
-
-    await addRule(
-      suggestedRule.text,
-      suggestedRule.scope,
-      {
-        category: suggestedRule.category,
-        subject: suggestedRule.subject,
-      }
-    );
-
-    setSuggestedRule(null);
+    const saved = await addRule(suggestedRule.text);
+    if (saved && suggestedRule.action === "replace" && suggestedRule.targetRuleId) await disableRule(suggestedRule.targetRuleId);
   }
 
   async function sendParentChat() {
@@ -313,6 +311,7 @@ export default function ParentPage() {
     setChatLoading(true);
     setError("");
     setSuggestedRule(null);
+    setPendingRule(null);
 
     try {
       const {
@@ -873,10 +872,18 @@ export default function ParentPage() {
               ))}
             </div>
 
+            {ruleQuestion && <p className="text-sm text-violet-700 mt-3">{ruleQuestion}</p>}
+            {pendingRule && <div className="rounded-2xl bg-violet-50 p-3 mt-3 text-sm">
+              <p>{pendingRule.rule.instruction}</p>
+              <p className="text-xs text-slate-500">{pendingRule.rule.subjectId ? SUBJECT_NAMES[pendingRule.rule.subjectId] || pendingRule.rule.subjectId : "Все предметы"} · {COURSES.find(course => course.id === pendingRule.rule.courseId)?.displayName || "Все курсы"} · {pendingRule.rule.duration.until ? new Date(pendingRule.rule.duration.until).toLocaleDateString("ru-RU", { timeZone: "Europe/Moscow" }) : "Постоянно"}</p>
+              {suggestedRule?.action === "replace" && <p className="mt-1">Заменит правило: {rules.find(rule => rule.id === suggestedRule.targetRuleId)?.rule_text || "выбранное правило"}</p>}
+              <button className="mt-2 text-violet-700 font-semibold" onClick={() => void (suggestedRule ? applySuggestedRule() : addRule(pendingRule.text))}>Подтвердить сохранение</button>
+              <button className="ml-3 text-slate-500" onClick={() => setPendingRule(null)}>Отмена</button>
+            </div>}
             <div className="flex gap-2 mt-4">
               <input
                 value={newRule}
-                onChange={(event) => setNewRule(event.target.value)}
+                onChange={(event) => { setNewRule(event.target.value); setPendingRule(null); }}
                 placeholder="Добавить правило вручную"
                 className="flex-1 rounded-2xl border border-violet-100 px-4 py-3 text-sm outline-none"
               />

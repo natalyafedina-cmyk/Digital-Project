@@ -54,6 +54,7 @@ type TutorResult = {
   topicEvidence?: string;
   supportStageUsed: number;
   nextSupportStage: number;
+  analysisMetadata?: { confidence: number; source: string; errorClasses: string[]; criticFlags: string[]; evidenceEligible: boolean; evidence: string | null };
 };
 
 type VoiceSettings = {
@@ -162,6 +163,8 @@ export default function StudyModePage() {
   const course = currentSubject ? resolveCourse(subjectKey, coursesForSubject(subjectKey).some(item => item.id === requestedCourse) ? requestedCourse : undefined) : null;
   const currentMode = STUDY_MODES[modeKey];
 
+  const [inputModality, setInputModality] = useState<"text" | "voice">("text");
+  const [sttConfidence, setSttConfidence] = useState<number | null>(null);
   const [text, setText] = useState("");
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [isSending, setIsSending] = useState(false);
@@ -460,6 +463,8 @@ export default function StudyModePage() {
       });
 
       const data = await response.json();
+      setInputModality("voice");
+      setSttConfidence(typeof data.confidence === "number" ? data.confidence : null);
       if (!response.ok) {
         throw new Error(data.error || "Не удалось распознать голос.");
       }
@@ -704,6 +709,10 @@ export default function StudyModePage() {
       independence_score: result.independenceScore,
       correctness: result.correctness,
       needs_review: result.needsReview,
+      analyzer_confidence: result.analysisMetadata?.confidence ?? null,
+      analysis_source: result.analysisMetadata?.source ?? null,
+      error_classes: result.analysisMetadata?.errorClasses ?? null,
+      critic_flags: result.analysisMetadata?.criticFlags ?? null,
     });
 
     const observationEvidence = result.topicEvidence?.trim() || "";
@@ -727,6 +736,9 @@ export default function StudyModePage() {
           visual_type: result.visualType || "none",
           support_stage: result.supportStageUsed,
           evidence: observationEvidence,
+          evidence_type: result.analysisMetadata?.evidenceEligible ? "learning_evidence" : "context_observation",
+          confidence: result.analysisMetadata?.confidence ?? null,
+          observation_state: "candidate",
         });
 
       if (observationError) throw observationError;
@@ -843,6 +855,10 @@ export default function StudyModePage() {
         headers: { "Content-Type": "application/json", ...await sessionAuthorization() },
         body: JSON.stringify({
           childId,
+          sessionId,
+          turnId: crypto.randomUUID(),
+          sttConfidence,
+          inputModality: imageDataUrl ? "image" : inputModality,
           courseId: course?.id,
           subject: subjectKey,
           mode: modeKey,
@@ -895,6 +911,7 @@ export default function StudyModePage() {
           typeof data.topicEvidence === "string" ? data.topicEvidence : "",
         supportStageUsed: Number(data.supportStageUsed ?? supportStage),
         nextSupportStage: Number(data.nextSupportStage ?? supportStage),
+        analysisMetadata: data.analysisMetadata,
       };
 
       setMessages((previous) => [
@@ -1103,7 +1120,7 @@ export default function StudyModePage() {
             <textarea
               ref={messageInputRef}
               value={text}
-              onChange={(event) => setText(event.target.value)}
+              onChange={(event) => { setText(event.target.value); setSttConfidence(null); setInputModality("text"); }}
               onKeyDown={(event) => {
                 if (
                   event.key === "Enter" &&

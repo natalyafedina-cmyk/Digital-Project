@@ -1,0 +1,2886 @@
+[
+  {
+    "id": "G001",
+    "category": "math_ladder",
+    "text": "Ответ 9",
+    "subjectId": "math",
+    "courseId": "math.algebra",
+    "skillId": "math.algebra.linear_equation.basic",
+    "previousTask": "Уравнение x + 3 = 15. Чему равен x?",
+    "stage": 0,
+    "sttConfidence": null,
+    "modelAnalysis": {
+      "attemptKind": "answer",
+      "correctness": "incorrect",
+      "confidence": 0.9,
+      "skillIds": [
+        "math.algebra.linear_equation.basic"
+      ],
+      "prerequisiteSkillIds": [],
+      "errorClasses": [
+        "arithmetic_operation"
+      ],
+      "evidenceSummary": "Наблюдаемая попытка: Ответ 9"
+    },
+    "expected": {
+      "correctness": "incorrect",
+      "eligible": true,
+      "errorClass": "arithmetic_operation"
+    },
+    "candidate": {
+      "answer": "Проверь один шаг и попробуй снова.",
+      "visualBlock": null,
+      "teachingMethod": "dialogue",
+      "hintLevel": 0
+    },
+    "expectedFlags": [],
+    "rule": null
+  },
+  {
+    "id": "G002",
+    "category": "math_ladder",
+    "text": "Ответ 12",
+    "subjectId": "math",
+    "courseId": "math.algebra",
+    "skillId": "math.algebra.linear_equation.basic",
+    "previousTask": "Уравнение x + 3 = 15. Чему равен x?",
+    "stage": 0,
+    "sttConfidence": null,
+    "modelAnalysis": {
+      "attemptKind": "answer",
+      "correctness": "correct",
+      "confidence": 0.9,
+      "skillIds": [
+        "math.algebra.linear_equation.basic"
+      ],
+      "prerequisiteSkillIds": [],
+      "errorClasses": [],
+      "evidenceSummary": "Наблюдаемая попытка: Ответ 12"
+    },
+    "expected": {
+      "correctness": "correct",
+      "eligible": true,
+      "errorClass": ""
+    },
+    "candidate": {
+      "answer": "Проверь один шаг и попробуй снова.",
+      "visualBlock": null,
+      "teachingMethod": "dialogue",
+      "hintLevel": 0
+    },
+    "expectedFlags": [],
+    "rule": null
+  },
+  {
+    "id": "G003",
+    "category": "math_ladder",
+    "text": "Ответ 9",
+    "subjectId": "math",
+    "courseId": "math.algebra",
+    "skillId": "math.algebra.linear_equation.basic",
+    "previousTask": "Уравнение x + 3 = 15. Чему равен x?",
+    "stage": 1,
+    "sttConfidence": null,
+    "modelAnalysis": {
+      "attemptKind": "answer",
+      "correctness": "incorrect",
+      "confidence": 0.9,
+      "skillIds": [
+        "math.algebra.linear_equation.basic"
+      ],
+      "prerequisiteSkillIds": [],
+      "errorClasses": [
+        "arithmetic_operation"
+      ],
+      "evidenceSummary": "Наблюдаемая попытка: Ответ 9"
+    },
+    "expected": {
+      "correctness": "incorrect",
+      "eligible": true,
+      "errorClass": "arithmetic_operation"
+    },
+    "candidate": {
+      "answer": "Проверь один шаг и попробуй снова.",
+      "visualBlock": null,
+      "teachingMethod": "dialogue",
+      "hintLevel": 1
+    },
+    "expectedFlags": [],
+    "rule": null
+  },
+  {
+    "id": "G004",
+    "category": "math_ladder",
+    "text": "Ответ 12",
+    "subjectId": "math",
+    "courseId": "math.algebra",
+    "skillId": "math.algebra.linear_equation.basic",
+    "previousTask": "Уравнение x + 3 = 15. Чему равен x?",
+    "stage": 1,
+    "sttConfidence": null,
+    "modelAnalysis": {
+      "attemptKind": "answer",
+      "correctness": "correct",
+      "confidence": 0.9,
+      "skillIds": [
+        "math.algebra.linear_equation.basic"
+      ],
+      "prerequisiteSkillIds": [],
+      "errorClasses": [],
+      "evidenceSummary": "Наблюдаемая попытка: Ответ 12"
+    },
+    "expected": {
+      "correctness": "correct",
+      "eligible": true,
+      "errorClass": ""
+    },
+    "candidate": {
+      "answer": "Проверь один шаг и попробуй снова.",
+      "visualBlock": null,
+      "teachingMethod": "dialogue",
+      "hintLevel": 1
+    },
+    "expectedFlags": [],
+    "rule": null
+  },
+  {
+    "id": "G005",
+    "category": "math_ladder",
+    "text": "Ответ 9",
+    "subjectId": "math",
+    "courseId": "math.algebra",
+    "skillId": "math.algebra.linear_equation.basic",
+    "previousTask": "Уравнение x + 3 = 15. Чему равен x?",
+    "stage": 2,
+    "sttConfidence": null,
+    "modelAnalysis": {
+      "attemptKind": "answer",
+      "correctness": "incorrect",
+      "confidence": 0.9,
+      "skillIds": [
+        "math.algebra.linear_equation.basic"
+      ],
+      "prerequisiteSkillIds": [],
+      "errorClasses": [
+        "arithmetic_operation"
+      ],
+      "evidenceSummary": "Наблюдаемая попытка: Ответ 9"
+    },
+    "expected": {
+      "correctness": "incorrect",
+      "eligible": true,
+      "errorClass": "arithmetic_operation"
+    },
+    "candidate": {
+      "answer": "Проверь один шаг и попробуй снова.",
+      "visualBlock": null,
+      "teachingMethod": "dialogue",
+      "hintLevel": 2
+    },
+    "expectedFlags": [],
+    "rule": null
+  },
+  {
+    "id": "G006",
+    "category": "math_ladder",
+    "text": "Ответ 12",
+    "subjectId": "math",
+    "courseId": "math.algebra",
+    "skillId": "math.algebra.linear_equation.basic",
+    "previousTask": "Уравнение x + 3 = 15. Чему равен x?",
+    "stage": 2,
+    "sttConfidence": null,
+    "modelAnalysis": {
+      "attemptKind": "answer",
+      "correctness": "correct",
+      "confidence": 0.9,
+      "skillIds": [
+        "math.algebra.linear_equation.basic"
+      ],
+      "prerequisiteSkillIds": [],
+      "errorClasses": [],
+      "evidenceSummary": "Наблюдаемая попытка: Ответ 12"
+    },
+    "expected": {
+      "correctness": "correct",
+      "eligible": true,
+      "errorClass": ""
+    },
+    "candidate": {
+      "answer": "Проверь один шаг и попробуй снова.",
+      "visualBlock": null,
+      "teachingMethod": "dialogue",
+      "hintLevel": 2
+    },
+    "expectedFlags": [],
+    "rule": null
+  },
+  {
+    "id": "G007",
+    "category": "math_ladder",
+    "text": "Ответ 9",
+    "subjectId": "math",
+    "courseId": "math.algebra",
+    "skillId": "math.algebra.linear_equation.basic",
+    "previousTask": "Уравнение x + 3 = 15. Чему равен x?",
+    "stage": 3,
+    "sttConfidence": null,
+    "modelAnalysis": {
+      "attemptKind": "answer",
+      "correctness": "incorrect",
+      "confidence": 0.9,
+      "skillIds": [
+        "math.algebra.linear_equation.basic"
+      ],
+      "prerequisiteSkillIds": [],
+      "errorClasses": [
+        "arithmetic_operation"
+      ],
+      "evidenceSummary": "Наблюдаемая попытка: Ответ 9"
+    },
+    "expected": {
+      "correctness": "incorrect",
+      "eligible": true,
+      "errorClass": "arithmetic_operation"
+    },
+    "candidate": {
+      "answer": "Проверь один шаг и попробуй снова.",
+      "visualBlock": null,
+      "teachingMethod": "dialogue",
+      "hintLevel": 3
+    },
+    "expectedFlags": [],
+    "rule": null
+  },
+  {
+    "id": "G008",
+    "category": "math_ladder",
+    "text": "Ответ 12",
+    "subjectId": "math",
+    "courseId": "math.algebra",
+    "skillId": "math.algebra.linear_equation.basic",
+    "previousTask": "Уравнение x + 3 = 15. Чему равен x?",
+    "stage": 3,
+    "sttConfidence": null,
+    "modelAnalysis": {
+      "attemptKind": "answer",
+      "correctness": "correct",
+      "confidence": 0.9,
+      "skillIds": [
+        "math.algebra.linear_equation.basic"
+      ],
+      "prerequisiteSkillIds": [],
+      "errorClasses": [],
+      "evidenceSummary": "Наблюдаемая попытка: Ответ 12"
+    },
+    "expected": {
+      "correctness": "correct",
+      "eligible": true,
+      "errorClass": ""
+    },
+    "candidate": {
+      "answer": "Проверь один шаг и попробуй снова.",
+      "visualBlock": null,
+      "teachingMethod": "dialogue",
+      "hintLevel": 3
+    },
+    "expectedFlags": [],
+    "rule": null
+  },
+  {
+    "id": "G009",
+    "category": "math_ladder",
+    "text": "Ответ 9",
+    "subjectId": "math",
+    "courseId": "math.algebra",
+    "skillId": "math.algebra.linear_equation.basic",
+    "previousTask": "Уравнение x + 3 = 15. Чему равен x?",
+    "stage": 4,
+    "sttConfidence": null,
+    "modelAnalysis": {
+      "attemptKind": "answer",
+      "correctness": "incorrect",
+      "confidence": 0.9,
+      "skillIds": [
+        "math.algebra.linear_equation.basic"
+      ],
+      "prerequisiteSkillIds": [],
+      "errorClasses": [
+        "arithmetic_operation"
+      ],
+      "evidenceSummary": "Наблюдаемая попытка: Ответ 9"
+    },
+    "expected": {
+      "correctness": "incorrect",
+      "eligible": true,
+      "errorClass": "arithmetic_operation"
+    },
+    "candidate": {
+      "answer": "Проверь один шаг и попробуй снова.",
+      "visualBlock": null,
+      "teachingMethod": "dialogue",
+      "hintLevel": 4
+    },
+    "expectedFlags": [],
+    "rule": null
+  },
+  {
+    "id": "G010",
+    "category": "math_ladder",
+    "text": "Ответ 12",
+    "subjectId": "math",
+    "courseId": "math.algebra",
+    "skillId": "math.algebra.linear_equation.basic",
+    "previousTask": "Уравнение x + 3 = 15. Чему равен x?",
+    "stage": 4,
+    "sttConfidence": null,
+    "modelAnalysis": {
+      "attemptKind": "answer",
+      "correctness": "correct",
+      "confidence": 0.9,
+      "skillIds": [
+        "math.algebra.linear_equation.basic"
+      ],
+      "prerequisiteSkillIds": [],
+      "errorClasses": [],
+      "evidenceSummary": "Наблюдаемая попытка: Ответ 12"
+    },
+    "expected": {
+      "correctness": "correct",
+      "eligible": true,
+      "errorClass": ""
+    },
+    "candidate": {
+      "answer": "Проверь один шаг и попробуй снова.",
+      "visualBlock": null,
+      "teachingMethod": "dialogue",
+      "hintLevel": 4
+    },
+    "expectedFlags": [],
+    "rule": null
+  },
+  {
+    "id": "G011",
+    "category": "english_grammar",
+    "text": "I like read.",
+    "subjectId": "english",
+    "courseId": "english.language",
+    "skillId": "english.grammar.gerund_after_like",
+    "previousTask": "Ответь на предыдущий короткий вопрос по-английски.",
+    "stage": 0,
+    "sttConfidence": null,
+    "modelAnalysis": {
+      "attemptKind": "answer",
+      "correctness": "incorrect",
+      "confidence": 0.9,
+      "skillIds": [
+        "english.grammar.gerund_after_like"
+      ],
+      "prerequisiteSkillIds": [],
+      "errorClasses": [
+        "grammar_form"
+      ],
+      "evidenceSummary": "Наблюдаемая попытка: I like read."
+    },
+    "expected": {
+      "correctness": "incorrect",
+      "eligible": true,
+      "errorClass": "grammar_form"
+    },
+    "candidate": {
+      "answer": "Проверь один шаг и попробуй снова. Затем ответь по-английски.",
+      "visualBlock": null,
+      "teachingMethod": "dialogue",
+      "hintLevel": 0
+    },
+    "expectedFlags": [],
+    "rule": null
+  },
+  {
+    "id": "G012",
+    "category": "english_grammar",
+    "text": "Yesterday I go to school.",
+    "subjectId": "english",
+    "courseId": "english.language",
+    "skillId": "english.grammar.past_simple",
+    "previousTask": "Ответь на предыдущий короткий вопрос по-английски.",
+    "stage": 0,
+    "sttConfidence": null,
+    "modelAnalysis": {
+      "attemptKind": "answer",
+      "correctness": "incorrect",
+      "confidence": 0.9,
+      "skillIds": [
+        "english.grammar.past_simple"
+      ],
+      "prerequisiteSkillIds": [],
+      "errorClasses": [
+        "tense_agreement"
+      ],
+      "evidenceSummary": "Наблюдаемая попытка: Yesterday I go to school."
+    },
+    "expected": {
+      "correctness": "incorrect",
+      "eligible": true,
+      "errorClass": "tense_agreement"
+    },
+    "candidate": {
+      "answer": "Проверь один шаг и попробуй снова. Затем ответь по-английски.",
+      "visualBlock": null,
+      "teachingMethod": "dialogue",
+      "hintLevel": 0
+    },
+    "expectedFlags": [],
+    "rule": null
+  },
+  {
+    "id": "G013",
+    "category": "english_grammar",
+    "text": "My favorite hobby is read.",
+    "subjectId": "english",
+    "courseId": "english.language",
+    "skillId": "english.grammar.gerund_after_like",
+    "previousTask": "Ответь на предыдущий короткий вопрос по-английски.",
+    "stage": 0,
+    "sttConfidence": null,
+    "modelAnalysis": {
+      "attemptKind": "answer",
+      "correctness": "incorrect",
+      "confidence": 0.9,
+      "skillIds": [
+        "english.grammar.gerund_after_like"
+      ],
+      "prerequisiteSkillIds": [],
+      "errorClasses": [
+        "word_form"
+      ],
+      "evidenceSummary": "Наблюдаемая попытка: My favorite hobby is read."
+    },
+    "expected": {
+      "correctness": "incorrect",
+      "eligible": true,
+      "errorClass": "word_form"
+    },
+    "candidate": {
+      "answer": "Проверь один шаг и попробуй снова. Затем ответь по-английски.",
+      "visualBlock": null,
+      "teachingMethod": "dialogue",
+      "hintLevel": 0
+    },
+    "expectedFlags": [],
+    "rule": null
+  },
+  {
+    "id": "G014",
+    "category": "english_grammar",
+    "text": "How are you?",
+    "subjectId": "english",
+    "courseId": "english.language",
+    "skillId": "english.speaking.short_personal_answer",
+    "previousTask": "Ответь на предыдущий короткий вопрос по-английски.",
+    "stage": 0,
+    "sttConfidence": null,
+    "modelAnalysis": {
+      "attemptKind": "question",
+      "correctness": "incorrect",
+      "confidence": 0.9,
+      "skillIds": [
+        "english.speaking.short_personal_answer"
+      ],
+      "prerequisiteSkillIds": [],
+      "errorClasses": [
+        "incomplete_answer"
+      ],
+      "evidenceSummary": "Наблюдаемая попытка: How are you?"
+    },
+    "expected": {
+      "correctness": "unknown",
+      "eligible": false,
+      "errorClass": null
+    },
+    "candidate": {
+      "answer": "Проверь один шаг и попробуй снова. Затем ответь по-английски.",
+      "visualBlock": null,
+      "teachingMethod": "dialogue",
+      "hintLevel": 0
+    },
+    "expectedFlags": [],
+    "rule": null
+  },
+  {
+    "id": "G015",
+    "category": "english_grammar",
+    "text": "She have two cats.",
+    "subjectId": "english",
+    "courseId": "english.language",
+    "skillId": "english.speaking.short_personal_answer",
+    "previousTask": "Ответь на предыдущий короткий вопрос по-английски.",
+    "stage": 0,
+    "sttConfidence": null,
+    "modelAnalysis": {
+      "attemptKind": "answer",
+      "correctness": "incorrect",
+      "confidence": 0.9,
+      "skillIds": [
+        "english.speaking.short_personal_answer"
+      ],
+      "prerequisiteSkillIds": [],
+      "errorClasses": [
+        "grammar_form"
+      ],
+      "evidenceSummary": "Наблюдаемая попытка: She have two cats."
+    },
+    "expected": {
+      "correctness": "incorrect",
+      "eligible": true,
+      "errorClass": "grammar_form"
+    },
+    "candidate": {
+      "answer": "Проверь один шаг и попробуй снова. Затем ответь по-английски.",
+      "visualBlock": null,
+      "teachingMethod": "dialogue",
+      "hintLevel": 0
+    },
+    "expectedFlags": [],
+    "rule": null
+  },
+  {
+    "id": "G016",
+    "category": "english_grammar",
+    "text": "We was at home.",
+    "subjectId": "english",
+    "courseId": "english.language",
+    "skillId": "english.grammar.past_simple",
+    "previousTask": "Ответь на предыдущий короткий вопрос по-английски.",
+    "stage": 0,
+    "sttConfidence": null,
+    "modelAnalysis": {
+      "attemptKind": "answer",
+      "correctness": "incorrect",
+      "confidence": 0.9,
+      "skillIds": [
+        "english.grammar.past_simple"
+      ],
+      "prerequisiteSkillIds": [],
+      "errorClasses": [
+        "tense_agreement"
+      ],
+      "evidenceSummary": "Наблюдаемая попытка: We was at home."
+    },
+    "expected": {
+      "correctness": "incorrect",
+      "eligible": true,
+      "errorClass": "tense_agreement"
+    },
+    "candidate": {
+      "answer": "Проверь один шаг и попробуй снова. Затем ответь по-английски.",
+      "visualBlock": null,
+      "teachingMethod": "dialogue",
+      "hintLevel": 0
+    },
+    "expectedFlags": [],
+    "rule": null
+  },
+  {
+    "id": "G017",
+    "category": "non_attempt",
+    "text": "Я не знаю",
+    "subjectId": "english",
+    "courseId": "english.language",
+    "skillId": "english.speaking.short_personal_answer",
+    "previousTask": "Объясни свой ответ.",
+    "stage": 0,
+    "sttConfidence": null,
+    "modelAnalysis": {
+      "attemptKind": "answer",
+      "correctness": "incorrect",
+      "confidence": 0.9,
+      "skillIds": [
+        "english.speaking.short_personal_answer"
+      ],
+      "prerequisiteSkillIds": [],
+      "errorClasses": [
+        "concept_gap"
+      ],
+      "evidenceSummary": "Наблюдаемая попытка: Я не знаю"
+    },
+    "expected": {
+      "correctness": "unknown",
+      "eligible": false,
+      "errorClass": null
+    },
+    "candidate": {
+      "answer": "Проверь один шаг и попробуй снова. Затем ответь по-английски.",
+      "visualBlock": null,
+      "teachingMethod": "dialogue",
+      "hintLevel": 0
+    },
+    "expectedFlags": [],
+    "rule": null
+  },
+  {
+    "id": "G018",
+    "category": "non_attempt",
+    "text": "Объясни по-другому",
+    "subjectId": "english",
+    "courseId": "english.language",
+    "skillId": "english.speaking.short_personal_answer",
+    "previousTask": "Объясни свой ответ.",
+    "stage": 0,
+    "sttConfidence": null,
+    "modelAnalysis": {
+      "attemptKind": "answer",
+      "correctness": "incorrect",
+      "confidence": 0.9,
+      "skillIds": [
+        "english.speaking.short_personal_answer"
+      ],
+      "prerequisiteSkillIds": [],
+      "errorClasses": [
+        "concept_gap"
+      ],
+      "evidenceSummary": "Наблюдаемая попытка: Объясни по-другому"
+    },
+    "expected": {
+      "correctness": "unknown",
+      "eligible": false,
+      "errorClass": null
+    },
+    "candidate": {
+      "answer": "Проверь один шаг и попробуй снова. Затем ответь по-английски.",
+      "visualBlock": null,
+      "teachingMethod": "dialogue",
+      "hintLevel": 0
+    },
+    "expectedFlags": [],
+    "rule": null
+  },
+  {
+    "id": "G019",
+    "category": "non_attempt",
+    "text": "Объясни ещё раз",
+    "subjectId": "english",
+    "courseId": "english.language",
+    "skillId": "english.speaking.short_personal_answer",
+    "previousTask": "Объясни свой ответ.",
+    "stage": 0,
+    "sttConfidence": null,
+    "modelAnalysis": {
+      "attemptKind": "answer",
+      "correctness": "incorrect",
+      "confidence": 0.9,
+      "skillIds": [
+        "english.speaking.short_personal_answer"
+      ],
+      "prerequisiteSkillIds": [],
+      "errorClasses": [
+        "concept_gap"
+      ],
+      "evidenceSummary": "Наблюдаемая попытка: Объясни ещё раз"
+    },
+    "expected": {
+      "correctness": "unknown",
+      "eligible": false,
+      "errorClass": null
+    },
+    "candidate": {
+      "answer": "Проверь один шаг и попробуй снова. Затем ответь по-английски.",
+      "visualBlock": null,
+      "teachingMethod": "dialogue",
+      "hintLevel": 0
+    },
+    "expectedFlags": [],
+    "rule": null
+  },
+  {
+    "id": "G020",
+    "category": "non_attempt",
+    "text": "Я не понимаю",
+    "subjectId": "english",
+    "courseId": "english.language",
+    "skillId": "english.speaking.short_personal_answer",
+    "previousTask": "Объясни свой ответ.",
+    "stage": 0,
+    "sttConfidence": null,
+    "modelAnalysis": {
+      "attemptKind": "answer",
+      "correctness": "incorrect",
+      "confidence": 0.9,
+      "skillIds": [
+        "english.speaking.short_personal_answer"
+      ],
+      "prerequisiteSkillIds": [],
+      "errorClasses": [
+        "concept_gap"
+      ],
+      "evidenceSummary": "Наблюдаемая попытка: Я не понимаю"
+    },
+    "expected": {
+      "correctness": "unknown",
+      "eligible": false,
+      "errorClass": null
+    },
+    "candidate": {
+      "answer": "Проверь один шаг и попробуй снова. Затем ответь по-английски.",
+      "visualBlock": null,
+      "teachingMethod": "dialogue",
+      "hintLevel": 0
+    },
+    "expectedFlags": [],
+    "rule": null
+  },
+  {
+    "id": "G021",
+    "category": "non_attempt",
+    "text": "Покажи на схеме",
+    "subjectId": "english",
+    "courseId": "english.language",
+    "skillId": "english.speaking.short_personal_answer",
+    "previousTask": "Объясни свой ответ.",
+    "stage": 0,
+    "sttConfidence": null,
+    "modelAnalysis": {
+      "attemptKind": "answer",
+      "correctness": "incorrect",
+      "confidence": 0.9,
+      "skillIds": [
+        "english.speaking.short_personal_answer"
+      ],
+      "prerequisiteSkillIds": [],
+      "errorClasses": [
+        "concept_gap"
+      ],
+      "evidenceSummary": "Наблюдаемая попытка: Покажи на схеме"
+    },
+    "expected": {
+      "correctness": "unknown",
+      "eligible": false,
+      "errorClass": null
+    },
+    "candidate": {
+      "answer": "Проверь один шаг и попробуй снова. Затем ответь по-английски.",
+      "visualBlock": null,
+      "teachingMethod": "dialogue",
+      "hintLevel": 0
+    },
+    "expectedFlags": [],
+    "rule": null
+  },
+  {
+    "id": "G022",
+    "category": "non_attempt",
+    "text": "Дай пример",
+    "subjectId": "english",
+    "courseId": "english.language",
+    "skillId": "english.speaking.short_personal_answer",
+    "previousTask": "Объясни свой ответ.",
+    "stage": 0,
+    "sttConfidence": null,
+    "modelAnalysis": {
+      "attemptKind": "answer",
+      "correctness": "incorrect",
+      "confidence": 0.9,
+      "skillIds": [
+        "english.speaking.short_personal_answer"
+      ],
+      "prerequisiteSkillIds": [],
+      "errorClasses": [
+        "concept_gap"
+      ],
+      "evidenceSummary": "Наблюдаемая попытка: Дай пример"
+    },
+    "expected": {
+      "correctness": "unknown",
+      "eligible": false,
+      "errorClass": null
+    },
+    "candidate": {
+      "answer": "Новое задание: Name one animal. Ответь по-английски.",
+      "visualBlock": null,
+      "teachingMethod": "dialogue",
+      "hintLevel": 0
+    },
+    "expectedFlags": [],
+    "rule": null
+  },
+  {
+    "id": "G023",
+    "category": "non_attempt",
+    "text": "Можно подсказку?",
+    "subjectId": "english",
+    "courseId": "english.language",
+    "skillId": "english.speaking.short_personal_answer",
+    "previousTask": "Объясни свой ответ.",
+    "stage": 0,
+    "sttConfidence": null,
+    "modelAnalysis": {
+      "attemptKind": "answer",
+      "correctness": "incorrect",
+      "confidence": 0.9,
+      "skillIds": [
+        "english.speaking.short_personal_answer"
+      ],
+      "prerequisiteSkillIds": [],
+      "errorClasses": [
+        "concept_gap"
+      ],
+      "evidenceSummary": "Наблюдаемая попытка: Можно подсказку?"
+    },
+    "expected": {
+      "correctness": "unknown",
+      "eligible": false,
+      "errorClass": null
+    },
+    "candidate": {
+      "answer": "Проверь один шаг и попробуй снова. Затем ответь по-английски.",
+      "visualBlock": null,
+      "teachingMethod": "dialogue",
+      "hintLevel": 0
+    },
+    "expectedFlags": [],
+    "rule": null
+  },
+  {
+    "id": "G024",
+    "category": "non_attempt",
+    "text": "Как сказать это по-английски?",
+    "subjectId": "english",
+    "courseId": "english.language",
+    "skillId": "english.speaking.short_personal_answer",
+    "previousTask": "Объясни свой ответ.",
+    "stage": 0,
+    "sttConfidence": null,
+    "modelAnalysis": {
+      "attemptKind": "answer",
+      "correctness": "incorrect",
+      "confidence": 0.9,
+      "skillIds": [
+        "english.speaking.short_personal_answer"
+      ],
+      "prerequisiteSkillIds": [],
+      "errorClasses": [
+        "concept_gap"
+      ],
+      "evidenceSummary": "Наблюдаемая попытка: Как сказать это по-английски?"
+    },
+    "expected": {
+      "correctness": "unknown",
+      "eligible": false,
+      "errorClass": null
+    },
+    "candidate": {
+      "answer": "Проверь один шаг и попробуй снова. Затем ответь по-английски.",
+      "visualBlock": null,
+      "teachingMethod": "dialogue",
+      "hintLevel": 0
+    },
+    "expectedFlags": [],
+    "rule": null
+  },
+  {
+    "id": "G025",
+    "category": "stt_uncertainty",
+    "text": "Он идёт вчера",
+    "subjectId": "english",
+    "courseId": "english.language",
+    "skillId": "english.grammar.past_simple",
+    "previousTask": "Объясни свой ответ.",
+    "stage": 0,
+    "sttConfidence": 0.1,
+    "modelAnalysis": {
+      "attemptKind": "answer",
+      "correctness": "incorrect",
+      "confidence": 0.9,
+      "skillIds": [
+        "english.grammar.past_simple"
+      ],
+      "prerequisiteSkillIds": [],
+      "errorClasses": [
+        "tense_agreement"
+      ],
+      "evidenceSummary": "Наблюдаемая попытка: Он идёт вчера"
+    },
+    "expected": {
+      "correctness": "unknown",
+      "eligible": false,
+      "errorClass": "stt_uncertain"
+    },
+    "candidate": {
+      "answer": "Проверь один шаг и попробуй снова. Затем ответь по-английски.",
+      "visualBlock": null,
+      "teachingMethod": "dialogue",
+      "hintLevel": 0
+    },
+    "expectedFlags": [],
+    "rule": null
+  },
+  {
+    "id": "G026",
+    "category": "stt_uncertainty",
+    "text": "Он идёт вчера",
+    "subjectId": "english",
+    "courseId": "english.language",
+    "skillId": "english.grammar.past_simple",
+    "previousTask": "Объясни свой ответ.",
+    "stage": 0,
+    "sttConfidence": 0.4,
+    "modelAnalysis": {
+      "attemptKind": "answer",
+      "correctness": "incorrect",
+      "confidence": 0.9,
+      "skillIds": [
+        "english.grammar.past_simple"
+      ],
+      "prerequisiteSkillIds": [],
+      "errorClasses": [
+        "tense_agreement"
+      ],
+      "evidenceSummary": "Наблюдаемая попытка: Он идёт вчера"
+    },
+    "expected": {
+      "correctness": "unknown",
+      "eligible": false,
+      "errorClass": "stt_uncertain"
+    },
+    "candidate": {
+      "answer": "Проверь один шаг и попробуй снова. Затем ответь по-английски.",
+      "visualBlock": null,
+      "teachingMethod": "dialogue",
+      "hintLevel": 0
+    },
+    "expectedFlags": [],
+    "rule": null
+  },
+  {
+    "id": "G027",
+    "category": "stt_uncertainty",
+    "text": "Он идёт вчера",
+    "subjectId": "english",
+    "courseId": "english.language",
+    "skillId": "english.grammar.past_simple",
+    "previousTask": "Объясни свой ответ.",
+    "stage": 0,
+    "sttConfidence": 0.64,
+    "modelAnalysis": {
+      "attemptKind": "answer",
+      "correctness": "incorrect",
+      "confidence": 0.9,
+      "skillIds": [
+        "english.grammar.past_simple"
+      ],
+      "prerequisiteSkillIds": [],
+      "errorClasses": [
+        "tense_agreement"
+      ],
+      "evidenceSummary": "Наблюдаемая попытка: Он идёт вчера"
+    },
+    "expected": {
+      "correctness": "unknown",
+      "eligible": false,
+      "errorClass": "stt_uncertain"
+    },
+    "candidate": {
+      "answer": "Проверь один шаг и попробуй снова. Затем ответь по-английски.",
+      "visualBlock": null,
+      "teachingMethod": "dialogue",
+      "hintLevel": 0
+    },
+    "expectedFlags": [],
+    "rule": null
+  },
+  {
+    "id": "G028",
+    "category": "stt_uncertainty",
+    "text": "Он идёт вчера",
+    "subjectId": "english",
+    "courseId": "english.language",
+    "skillId": "english.grammar.past_simple",
+    "previousTask": "Объясни свой ответ.",
+    "stage": 0,
+    "sttConfidence": 0.65,
+    "modelAnalysis": {
+      "attemptKind": "answer",
+      "correctness": "incorrect",
+      "confidence": 0.9,
+      "skillIds": [
+        "english.grammar.past_simple"
+      ],
+      "prerequisiteSkillIds": [],
+      "errorClasses": [
+        "tense_agreement"
+      ],
+      "evidenceSummary": "Наблюдаемая попытка: Он идёт вчера"
+    },
+    "expected": {
+      "correctness": "incorrect",
+      "eligible": true,
+      "errorClass": "tense_agreement"
+    },
+    "candidate": {
+      "answer": "Проверь один шаг и попробуй снова. Затем ответь по-английски.",
+      "visualBlock": null,
+      "teachingMethod": "dialogue",
+      "hintLevel": 0
+    },
+    "expectedFlags": [],
+    "rule": null
+  },
+  {
+    "id": "G029",
+    "category": "stt_uncertainty",
+    "text": "Он идёт вчера",
+    "subjectId": "english",
+    "courseId": "english.language",
+    "skillId": "english.grammar.past_simple",
+    "previousTask": "Объясни свой ответ.",
+    "stage": 0,
+    "sttConfidence": null,
+    "modelAnalysis": {
+      "attemptKind": "answer",
+      "correctness": "incorrect",
+      "confidence": 0.9,
+      "skillIds": [
+        "english.grammar.past_simple"
+      ],
+      "prerequisiteSkillIds": [],
+      "errorClasses": [
+        "tense_agreement"
+      ],
+      "evidenceSummary": "Наблюдаемая попытка: Он идёт вчера"
+    },
+    "expected": {
+      "correctness": "incorrect",
+      "eligible": true,
+      "errorClass": "tense_agreement"
+    },
+    "candidate": {
+      "answer": "Проверь один шаг и попробуй снова. Затем ответь по-английски.",
+      "visualBlock": null,
+      "teachingMethod": "dialogue",
+      "hintLevel": 0
+    },
+    "expectedFlags": [],
+    "rule": null
+  },
+  {
+    "id": "G030",
+    "category": "russian",
+    "text": "Это глагол",
+    "subjectId": "russian",
+    "courseId": "russian.language",
+    "skillId": "russian.grammar.participle",
+    "previousTask": "Объясни свой ответ.",
+    "stage": 0,
+    "sttConfidence": null,
+    "modelAnalysis": {
+      "attemptKind": "answer",
+      "correctness": "incorrect",
+      "confidence": 0.9,
+      "skillIds": [
+        "russian.grammar.participle"
+      ],
+      "prerequisiteSkillIds": [],
+      "errorClasses": [
+        "word_form"
+      ],
+      "evidenceSummary": "Наблюдаемая попытка: Это глагол"
+    },
+    "expected": {
+      "correctness": "incorrect",
+      "eligible": true,
+      "errorClass": "word_form"
+    },
+    "candidate": {
+      "answer": "Проверь один шаг и попробуй снова.",
+      "visualBlock": null,
+      "teachingMethod": "dialogue",
+      "hintLevel": 0
+    },
+    "expectedFlags": [],
+    "rule": null
+  },
+  {
+    "id": "G031",
+    "category": "russian",
+    "text": "Это причастие",
+    "subjectId": "russian",
+    "courseId": "russian.language",
+    "skillId": "russian.grammar.participle",
+    "previousTask": "Объясни свой ответ.",
+    "stage": 0,
+    "sttConfidence": null,
+    "modelAnalysis": {
+      "attemptKind": "answer",
+      "correctness": "correct",
+      "confidence": 0.9,
+      "skillIds": [
+        "russian.grammar.participle"
+      ],
+      "prerequisiteSkillIds": [],
+      "errorClasses": [],
+      "evidenceSummary": "Наблюдаемая попытка: Это причастие"
+    },
+    "expected": {
+      "correctness": "correct",
+      "eligible": true,
+      "errorClass": ""
+    },
+    "candidate": {
+      "answer": "Проверь один шаг и попробуй снова.",
+      "visualBlock": null,
+      "teachingMethod": "dialogue",
+      "hintLevel": 0
+    },
+    "expectedFlags": [],
+    "rule": null
+  },
+  {
+    "id": "G032",
+    "category": "russian",
+    "text": "Оборот содержит зависимое слово",
+    "subjectId": "russian",
+    "courseId": "russian.language",
+    "skillId": "russian.grammar.participle",
+    "previousTask": "Объясни свой ответ.",
+    "stage": 0,
+    "sttConfidence": null,
+    "modelAnalysis": {
+      "attemptKind": "answer",
+      "correctness": "partial",
+      "confidence": 0.9,
+      "skillIds": [
+        "russian.grammar.participle"
+      ],
+      "prerequisiteSkillIds": [],
+      "errorClasses": [
+        "incomplete_answer"
+      ],
+      "evidenceSummary": "Наблюдаемая попытка: Оборот содержит зависимое слово"
+    },
+    "expected": {
+      "correctness": "partial",
+      "eligible": true,
+      "errorClass": "incomplete_answer"
+    },
+    "candidate": {
+      "answer": "Проверь один шаг и попробуй снова.",
+      "visualBlock": null,
+      "teachingMethod": "dialogue",
+      "hintLevel": 0
+    },
+    "expectedFlags": [],
+    "rule": null
+  },
+  {
+    "id": "G033",
+    "category": "literature",
+    "text": "Герой добрый, потому что мне нравится",
+    "subjectId": "literature",
+    "courseId": "literature.general",
+    "skillId": "literature.text.evidence_for_opinion",
+    "previousTask": "Объясни свой ответ.",
+    "stage": 0,
+    "sttConfidence": null,
+    "modelAnalysis": {
+      "attemptKind": "answer",
+      "correctness": "partial",
+      "confidence": 0.9,
+      "skillIds": [
+        "literature.text.evidence_for_opinion"
+      ],
+      "prerequisiteSkillIds": [],
+      "errorClasses": [
+        "reasoning_gap"
+      ],
+      "evidenceSummary": "Наблюдаемая попытка: Герой добрый, потому что мне нравится"
+    },
+    "expected": {
+      "correctness": "partial",
+      "eligible": true,
+      "errorClass": "reasoning_gap"
+    },
+    "candidate": {
+      "answer": "Проверь один шаг и попробуй снова.",
+      "visualBlock": null,
+      "teachingMethod": "dialogue",
+      "hintLevel": 0
+    },
+    "expectedFlags": [],
+    "rule": null
+  },
+  {
+    "id": "G034",
+    "category": "literature",
+    "text": "Он отказался ради друга",
+    "subjectId": "literature",
+    "courseId": "literature.general",
+    "skillId": "literature.text.evidence_for_opinion",
+    "previousTask": "Объясни свой ответ.",
+    "stage": 0,
+    "sttConfidence": null,
+    "modelAnalysis": {
+      "attemptKind": "answer",
+      "correctness": "correct",
+      "confidence": 0.9,
+      "skillIds": [
+        "literature.text.evidence_for_opinion"
+      ],
+      "prerequisiteSkillIds": [],
+      "errorClasses": [],
+      "evidenceSummary": "Наблюдаемая попытка: Он отказался ради друга"
+    },
+    "expected": {
+      "correctness": "correct",
+      "eligible": true,
+      "errorClass": ""
+    },
+    "candidate": {
+      "answer": "Проверь один шаг и попробуй снова.",
+      "visualBlock": null,
+      "teachingMethod": "dialogue",
+      "hintLevel": 0
+    },
+    "expectedFlags": [],
+    "rule": null
+  },
+  {
+    "id": "G035",
+    "category": "literature",
+    "text": "Жанр — роман",
+    "subjectId": "literature",
+    "courseId": "literature.general",
+    "skillId": "literature.text.evidence_for_opinion",
+    "previousTask": "Объясни свой ответ.",
+    "stage": 0,
+    "sttConfidence": null,
+    "modelAnalysis": {
+      "attemptKind": "answer",
+      "correctness": "incorrect",
+      "confidence": 0.9,
+      "skillIds": [
+        "literature.text.evidence_for_opinion"
+      ],
+      "prerequisiteSkillIds": [],
+      "errorClasses": [
+        "terminology_confusion"
+      ],
+      "evidenceSummary": "Наблюдаемая попытка: Жанр — роман"
+    },
+    "expected": {
+      "correctness": "incorrect",
+      "eligible": true,
+      "errorClass": "terminology_confusion"
+    },
+    "candidate": {
+      "answer": "Проверь один шаг и попробуй снова.",
+      "visualBlock": null,
+      "teachingMethod": "dialogue",
+      "hintLevel": 0
+    },
+    "expectedFlags": [],
+    "rule": null
+  },
+  {
+    "id": "G036",
+    "category": "history",
+    "text": "Сначала произошёл второй эпизод",
+    "subjectId": "history",
+    "courseId": "history.russia",
+    "skillId": "history.chronology",
+    "previousTask": "Объясни свой ответ.",
+    "stage": 0,
+    "sttConfidence": null,
+    "modelAnalysis": {
+      "attemptKind": "answer",
+      "correctness": "incorrect",
+      "confidence": 0.9,
+      "skillIds": [
+        "history.chronology"
+      ],
+      "prerequisiteSkillIds": [],
+      "errorClasses": [
+        "chronology_error"
+      ],
+      "evidenceSummary": "Наблюдаемая попытка: Сначала произошёл второй эпизод"
+    },
+    "expected": {
+      "correctness": "incorrect",
+      "eligible": true,
+      "errorClass": "chronology_error"
+    },
+    "candidate": {
+      "answer": "Проверь один шаг и попробуй снова.",
+      "visualBlock": null,
+      "teachingMethod": "dialogue",
+      "hintLevel": 0
+    },
+    "expectedFlags": [],
+    "rule": null
+  },
+  {
+    "id": "G037",
+    "category": "history",
+    "text": "Первое событие предшествовало второму",
+    "subjectId": "history",
+    "courseId": "history.russia",
+    "skillId": "history.chronology",
+    "previousTask": "Объясни свой ответ.",
+    "stage": 0,
+    "sttConfidence": null,
+    "modelAnalysis": {
+      "attemptKind": "answer",
+      "correctness": "correct",
+      "confidence": 0.9,
+      "skillIds": [
+        "history.chronology"
+      ],
+      "prerequisiteSkillIds": [],
+      "errorClasses": [],
+      "evidenceSummary": "Наблюдаемая попытка: Первое событие предшествовало второму"
+    },
+    "expected": {
+      "correctness": "correct",
+      "eligible": true,
+      "errorClass": ""
+    },
+    "candidate": {
+      "answer": "Проверь один шаг и попробуй снова.",
+      "visualBlock": null,
+      "teachingMethod": "dialogue",
+      "hintLevel": 0
+    },
+    "expectedFlags": [],
+    "rule": null
+  },
+  {
+    "id": "G038",
+    "category": "history",
+    "text": "Причина только одна",
+    "subjectId": "history",
+    "courseId": "history.russia",
+    "skillId": "history.chronology",
+    "previousTask": "Объясни свой ответ.",
+    "stage": 0,
+    "sttConfidence": null,
+    "modelAnalysis": {
+      "attemptKind": "answer",
+      "correctness": "partial",
+      "confidence": 0.9,
+      "skillIds": [
+        "history.chronology"
+      ],
+      "prerequisiteSkillIds": [],
+      "errorClasses": [
+        "cause_effect_error"
+      ],
+      "evidenceSummary": "Наблюдаемая попытка: Причина только одна"
+    },
+    "expected": {
+      "correctness": "partial",
+      "eligible": true,
+      "errorClass": "cause_effect_error"
+    },
+    "candidate": {
+      "answer": "Проверь один шаг и попробуй снова.",
+      "visualBlock": null,
+      "teachingMethod": "dialogue",
+      "hintLevel": 0
+    },
+    "expectedFlags": [],
+    "rule": null
+  },
+  {
+    "id": "G039",
+    "category": "physics",
+    "text": "Скорость равна пути",
+    "subjectId": "physics",
+    "courseId": "physics.general",
+    "skillId": "physics.motion.speed",
+    "previousTask": "Объясни свой ответ.",
+    "stage": 0,
+    "sttConfidence": null,
+    "modelAnalysis": {
+      "attemptKind": "answer",
+      "correctness": "incorrect",
+      "confidence": 0.9,
+      "skillIds": [
+        "physics.motion.speed"
+      ],
+      "prerequisiteSkillIds": [],
+      "errorClasses": [
+        "concept_gap"
+      ],
+      "evidenceSummary": "Наблюдаемая попытка: Скорость равна пути"
+    },
+    "expected": {
+      "correctness": "incorrect",
+      "eligible": true,
+      "errorClass": "concept_gap"
+    },
+    "candidate": {
+      "answer": "Проверь один шаг и попробуй снова.",
+      "visualBlock": null,
+      "teachingMethod": "dialogue",
+      "hintLevel": 0
+    },
+    "expectedFlags": [],
+    "rule": null
+  },
+  {
+    "id": "G040",
+    "category": "physics",
+    "text": "Путь делю на время",
+    "subjectId": "physics",
+    "courseId": "physics.general",
+    "skillId": "physics.motion.speed",
+    "previousTask": "Объясни свой ответ.",
+    "stage": 0,
+    "sttConfidence": null,
+    "modelAnalysis": {
+      "attemptKind": "answer",
+      "correctness": "correct",
+      "confidence": 0.9,
+      "skillIds": [
+        "physics.motion.speed"
+      ],
+      "prerequisiteSkillIds": [],
+      "errorClasses": [],
+      "evidenceSummary": "Наблюдаемая попытка: Путь делю на время"
+    },
+    "expected": {
+      "correctness": "correct",
+      "eligible": true,
+      "errorClass": ""
+    },
+    "candidate": {
+      "answer": "Проверь один шаг и попробуй снова.",
+      "visualBlock": null,
+      "teachingMethod": "dialogue",
+      "hintLevel": 0
+    },
+    "expectedFlags": [],
+    "rule": null
+  },
+  {
+    "id": "G041",
+    "category": "physics",
+    "text": "Единица м/с",
+    "subjectId": "physics",
+    "courseId": "physics.general",
+    "skillId": "physics.motion.speed",
+    "previousTask": "Объясни свой ответ.",
+    "stage": 0,
+    "sttConfidence": null,
+    "modelAnalysis": {
+      "attemptKind": "answer",
+      "correctness": "correct",
+      "confidence": 0.9,
+      "skillIds": [
+        "physics.motion.speed"
+      ],
+      "prerequisiteSkillIds": [],
+      "errorClasses": [],
+      "evidenceSummary": "Наблюдаемая попытка: Единица м/с"
+    },
+    "expected": {
+      "correctness": "correct",
+      "eligible": true,
+      "errorClass": ""
+    },
+    "candidate": {
+      "answer": "Проверь один шаг и попробуй снова.",
+      "visualBlock": null,
+      "teachingMethod": "dialogue",
+      "hintLevel": 0
+    },
+    "expectedFlags": [],
+    "rule": null
+  },
+  {
+    "id": "G042",
+    "category": "biology",
+    "text": "Грибы — растения",
+    "subjectId": "biology",
+    "courseId": "biology.general",
+    "skillId": "biology.plants.groups",
+    "previousTask": "Объясни свой ответ.",
+    "stage": 0,
+    "sttConfidence": null,
+    "modelAnalysis": {
+      "attemptKind": "answer",
+      "correctness": "incorrect",
+      "confidence": 0.9,
+      "skillIds": [
+        "biology.plants.groups"
+      ],
+      "prerequisiteSkillIds": [],
+      "errorClasses": [
+        "factual_confusion"
+      ],
+      "evidenceSummary": "Наблюдаемая попытка: Грибы — растения"
+    },
+    "expected": {
+      "correctness": "incorrect",
+      "eligible": true,
+      "errorClass": "factual_confusion"
+    },
+    "candidate": {
+      "answer": "Проверь один шаг и попробуй снова.",
+      "visualBlock": null,
+      "teachingMethod": "dialogue",
+      "hintLevel": 0
+    },
+    "expectedFlags": [],
+    "rule": null
+  },
+  {
+    "id": "G043",
+    "category": "biology",
+    "text": "Мхи относятся к растениям",
+    "subjectId": "biology",
+    "courseId": "biology.general",
+    "skillId": "biology.plants.groups",
+    "previousTask": "Объясни свой ответ.",
+    "stage": 0,
+    "sttConfidence": null,
+    "modelAnalysis": {
+      "attemptKind": "answer",
+      "correctness": "correct",
+      "confidence": 0.9,
+      "skillIds": [
+        "biology.plants.groups"
+      ],
+      "prerequisiteSkillIds": [],
+      "errorClasses": [],
+      "evidenceSummary": "Наблюдаемая попытка: Мхи относятся к растениям"
+    },
+    "expected": {
+      "correctness": "correct",
+      "eligible": true,
+      "errorClass": ""
+    },
+    "candidate": {
+      "answer": "Проверь один шаг и попробуй снова.",
+      "visualBlock": null,
+      "teachingMethod": "dialogue",
+      "hintLevel": 0
+    },
+    "expectedFlags": [],
+    "rule": null
+  },
+  {
+    "id": "G044",
+    "category": "biology",
+    "text": "Растению нужен свет",
+    "subjectId": "biology",
+    "courseId": "biology.general",
+    "skillId": "biology.plants.groups",
+    "previousTask": "Объясни свой ответ.",
+    "stage": 0,
+    "sttConfidence": null,
+    "modelAnalysis": {
+      "attemptKind": "answer",
+      "correctness": "partial",
+      "confidence": 0.9,
+      "skillIds": [
+        "biology.plants.groups"
+      ],
+      "prerequisiteSkillIds": [],
+      "errorClasses": [
+        "incomplete_answer"
+      ],
+      "evidenceSummary": "Наблюдаемая попытка: Растению нужен свет"
+    },
+    "expected": {
+      "correctness": "partial",
+      "eligible": true,
+      "errorClass": "incomplete_answer"
+    },
+    "candidate": {
+      "answer": "Проверь один шаг и попробуй снова.",
+      "visualBlock": null,
+      "teachingMethod": "dialogue",
+      "hintLevel": 0
+    },
+    "expectedFlags": [],
+    "rule": null
+  },
+  {
+    "id": "G045",
+    "category": "geography",
+    "text": "Климат меняется каждый час",
+    "subjectId": "geography",
+    "courseId": "geography.general",
+    "skillId": "geography.climate.basic",
+    "previousTask": "Объясни свой ответ.",
+    "stage": 0,
+    "sttConfidence": null,
+    "modelAnalysis": {
+      "attemptKind": "answer",
+      "correctness": "incorrect",
+      "confidence": 0.9,
+      "skillIds": [
+        "geography.climate.basic"
+      ],
+      "prerequisiteSkillIds": [],
+      "errorClasses": [
+        "concept_gap"
+      ],
+      "evidenceSummary": "Наблюдаемая попытка: Климат меняется каждый час"
+    },
+    "expected": {
+      "correctness": "incorrect",
+      "eligible": true,
+      "errorClass": "concept_gap"
+    },
+    "candidate": {
+      "answer": "Проверь один шаг и попробуй снова.",
+      "visualBlock": null,
+      "teachingMethod": "dialogue",
+      "hintLevel": 0
+    },
+    "expectedFlags": [],
+    "rule": null
+  },
+  {
+    "id": "G046",
+    "category": "geography",
+    "text": "Температура зависит от широты",
+    "subjectId": "geography",
+    "courseId": "geography.general",
+    "skillId": "geography.climate.basic",
+    "previousTask": "Объясни свой ответ.",
+    "stage": 0,
+    "sttConfidence": null,
+    "modelAnalysis": {
+      "attemptKind": "answer",
+      "correctness": "correct",
+      "confidence": 0.9,
+      "skillIds": [
+        "geography.climate.basic"
+      ],
+      "prerequisiteSkillIds": [],
+      "errorClasses": [],
+      "evidenceSummary": "Наблюдаемая попытка: Температура зависит от широты"
+    },
+    "expected": {
+      "correctness": "correct",
+      "eligible": true,
+      "errorClass": ""
+    },
+    "candidate": {
+      "answer": "Проверь один шаг и попробуй снова.",
+      "visualBlock": null,
+      "teachingMethod": "dialogue",
+      "hintLevel": 0
+    },
+    "expectedFlags": [],
+    "rule": null
+  },
+  {
+    "id": "G047",
+    "category": "geography",
+    "text": "Влияет высота",
+    "subjectId": "geography",
+    "courseId": "geography.general",
+    "skillId": "geography.climate.basic",
+    "previousTask": "Объясни свой ответ.",
+    "stage": 0,
+    "sttConfidence": null,
+    "modelAnalysis": {
+      "attemptKind": "answer",
+      "correctness": "partial",
+      "confidence": 0.9,
+      "skillIds": [
+        "geography.climate.basic"
+      ],
+      "prerequisiteSkillIds": [],
+      "errorClasses": [
+        "incomplete_answer"
+      ],
+      "evidenceSummary": "Наблюдаемая попытка: Влияет высота"
+    },
+    "expected": {
+      "correctness": "partial",
+      "eligible": true,
+      "errorClass": "incomplete_answer"
+    },
+    "candidate": {
+      "answer": "Проверь один шаг и попробуй снова.",
+      "visualBlock": null,
+      "teachingMethod": "dialogue",
+      "hintLevel": 0
+    },
+    "expectedFlags": [],
+    "rule": null
+  },
+  {
+    "id": "G048",
+    "category": "informatics",
+    "text": "Хранение — информационный процесс",
+    "subjectId": "informatics",
+    "courseId": "informatics.general",
+    "skillId": "informatics.information.processes",
+    "previousTask": "Объясни свой ответ.",
+    "stage": 0,
+    "sttConfidence": null,
+    "modelAnalysis": {
+      "attemptKind": "answer",
+      "correctness": "correct",
+      "confidence": 0.9,
+      "skillIds": [
+        "informatics.information.processes"
+      ],
+      "prerequisiteSkillIds": [],
+      "errorClasses": [],
+      "evidenceSummary": "Наблюдаемая попытка: Хранение — информационный процесс"
+    },
+    "expected": {
+      "correctness": "correct",
+      "eligible": true,
+      "errorClass": ""
+    },
+    "candidate": {
+      "answer": "Проверь один шаг и попробуй снова.",
+      "visualBlock": null,
+      "teachingMethod": "dialogue",
+      "hintLevel": 0
+    },
+    "expectedFlags": [],
+    "rule": null
+  },
+  {
+    "id": "G049",
+    "category": "informatics",
+    "text": "Передача не связана с информацией",
+    "subjectId": "informatics",
+    "courseId": "informatics.general",
+    "skillId": "informatics.information.processes",
+    "previousTask": "Объясни свой ответ.",
+    "stage": 0,
+    "sttConfidence": null,
+    "modelAnalysis": {
+      "attemptKind": "answer",
+      "correctness": "incorrect",
+      "confidence": 0.9,
+      "skillIds": [
+        "informatics.information.processes"
+      ],
+      "prerequisiteSkillIds": [],
+      "errorClasses": [
+        "concept_gap"
+      ],
+      "evidenceSummary": "Наблюдаемая попытка: Передача не связана с информацией"
+    },
+    "expected": {
+      "correctness": "incorrect",
+      "eligible": true,
+      "errorClass": "concept_gap"
+    },
+    "candidate": {
+      "answer": "Проверь один шаг и попробуй снова.",
+      "visualBlock": null,
+      "teachingMethod": "dialogue",
+      "hintLevel": 0
+    },
+    "expectedFlags": [],
+    "rule": null
+  },
+  {
+    "id": "G050",
+    "category": "informatics",
+    "text": "Обработка меняет данные",
+    "subjectId": "informatics",
+    "courseId": "informatics.general",
+    "skillId": "informatics.information.processes",
+    "previousTask": "Объясни свой ответ.",
+    "stage": 0,
+    "sttConfidence": null,
+    "modelAnalysis": {
+      "attemptKind": "answer",
+      "correctness": "correct",
+      "confidence": 0.9,
+      "skillIds": [
+        "informatics.information.processes"
+      ],
+      "prerequisiteSkillIds": [],
+      "errorClasses": [],
+      "evidenceSummary": "Наблюдаемая попытка: Обработка меняет данные"
+    },
+    "expected": {
+      "correctness": "correct",
+      "eligible": true,
+      "errorClass": ""
+    },
+    "candidate": {
+      "answer": "Проверь один шаг и попробуй снова.",
+      "visualBlock": null,
+      "teachingMethod": "dialogue",
+      "hintLevel": 0
+    },
+    "expectedFlags": [],
+    "rule": null
+  },
+  {
+    "id": "G051",
+    "category": "analysis_confidence",
+    "text": "x = 4",
+    "subjectId": "math",
+    "courseId": "math.algebra",
+    "skillId": "math.algebra.linear_equation.basic",
+    "previousTask": "Объясни свой ответ.",
+    "stage": 0,
+    "sttConfidence": null,
+    "modelAnalysis": {
+      "attemptKind": "answer",
+      "correctness": "correct",
+      "confidence": 0.2,
+      "skillIds": [
+        "math.algebra.linear_equation.basic"
+      ],
+      "prerequisiteSkillIds": [],
+      "errorClasses": [],
+      "evidenceSummary": "Наблюдаемая попытка: x = 4"
+    },
+    "expected": {
+      "correctness": "unknown",
+      "eligible": false,
+      "errorClass": null
+    },
+    "candidate": {
+      "answer": "Проверь один шаг и попробуй снова.",
+      "visualBlock": null,
+      "teachingMethod": "dialogue",
+      "hintLevel": 0
+    },
+    "expectedFlags": [],
+    "rule": null
+  },
+  {
+    "id": "G052",
+    "category": "analysis_confidence",
+    "text": "x = 4",
+    "subjectId": "math",
+    "courseId": "math.algebra",
+    "skillId": "math.algebra.linear_equation.basic",
+    "previousTask": "Объясни свой ответ.",
+    "stage": 0,
+    "sttConfidence": null,
+    "modelAnalysis": {
+      "attemptKind": "answer",
+      "correctness": "correct",
+      "confidence": 0.69,
+      "skillIds": [
+        "math.algebra.linear_equation.basic"
+      ],
+      "prerequisiteSkillIds": [],
+      "errorClasses": [],
+      "evidenceSummary": "Наблюдаемая попытка: x = 4"
+    },
+    "expected": {
+      "correctness": "unknown",
+      "eligible": false,
+      "errorClass": null
+    },
+    "candidate": {
+      "answer": "Проверь один шаг и попробуй снова.",
+      "visualBlock": null,
+      "teachingMethod": "dialogue",
+      "hintLevel": 0
+    },
+    "expectedFlags": [],
+    "rule": null
+  },
+  {
+    "id": "G053",
+    "category": "analysis_confidence",
+    "text": "x = 4",
+    "subjectId": "math",
+    "courseId": "math.algebra",
+    "skillId": "math.algebra.linear_equation.basic",
+    "previousTask": "Объясни свой ответ.",
+    "stage": 0,
+    "sttConfidence": null,
+    "modelAnalysis": {
+      "attemptKind": "answer",
+      "correctness": "correct",
+      "confidence": 0.7,
+      "skillIds": [
+        "math.algebra.linear_equation.basic"
+      ],
+      "prerequisiteSkillIds": [],
+      "errorClasses": [],
+      "evidenceSummary": "Наблюдаемая попытка: x = 4"
+    },
+    "expected": {
+      "correctness": "correct",
+      "eligible": true,
+      "errorClass": ""
+    },
+    "candidate": {
+      "answer": "Проверь один шаг и попробуй снова.",
+      "visualBlock": null,
+      "teachingMethod": "dialogue",
+      "hintLevel": 0
+    },
+    "expectedFlags": [],
+    "rule": null
+  },
+  {
+    "id": "G054",
+    "category": "analysis_confidence",
+    "text": "x = 4",
+    "subjectId": "math",
+    "courseId": "math.algebra",
+    "skillId": "math.algebra.linear_equation.basic",
+    "previousTask": "Объясни свой ответ.",
+    "stage": 0,
+    "sttConfidence": null,
+    "modelAnalysis": {
+      "attemptKind": "answer",
+      "correctness": "correct",
+      "confidence": 1,
+      "skillIds": [
+        "math.algebra.linear_equation.basic"
+      ],
+      "prerequisiteSkillIds": [],
+      "errorClasses": [],
+      "evidenceSummary": "Наблюдаемая попытка: x = 4"
+    },
+    "expected": {
+      "correctness": "correct",
+      "eligible": true,
+      "errorClass": ""
+    },
+    "candidate": {
+      "answer": "Проверь один шаг и попробуй снова.",
+      "visualBlock": null,
+      "teachingMethod": "dialogue",
+      "hintLevel": 0
+    },
+    "expectedFlags": [],
+    "rule": null
+  },
+  {
+    "id": "G055",
+    "category": "skill_resolution",
+    "text": "Мой ответ",
+    "subjectId": "math",
+    "courseId": "math.geometry",
+    "skillId": "invented.skill",
+    "previousTask": "Объясни свой ответ.",
+    "stage": 0,
+    "sttConfidence": null,
+    "modelAnalysis": {
+      "attemptKind": "answer",
+      "correctness": "incorrect",
+      "confidence": 0.9,
+      "skillIds": [
+        "invented.skill"
+      ],
+      "prerequisiteSkillIds": [],
+      "errorClasses": [
+        "unknown"
+      ],
+      "evidenceSummary": "Наблюдаемая попытка: Мой ответ"
+    },
+    "expected": {
+      "correctness": "incorrect",
+      "eligible": false,
+      "errorClass": "unknown"
+    },
+    "candidate": {
+      "answer": "Проверь один шаг и попробуй снова.",
+      "visualBlock": null,
+      "teachingMethod": "dialogue",
+      "hintLevel": 0
+    },
+    "expectedFlags": [],
+    "rule": null
+  },
+  {
+    "id": "G056",
+    "category": "skill_resolution",
+    "text": "Мой ответ",
+    "subjectId": "math",
+    "courseId": "math.geometry",
+    "skillId": "english.grammar.past_simple",
+    "previousTask": "Объясни свой ответ.",
+    "stage": 0,
+    "sttConfidence": null,
+    "modelAnalysis": {
+      "attemptKind": "answer",
+      "correctness": "incorrect",
+      "confidence": 0.9,
+      "skillIds": [
+        "english.grammar.past_simple"
+      ],
+      "prerequisiteSkillIds": [],
+      "errorClasses": [
+        "unknown"
+      ],
+      "evidenceSummary": "Наблюдаемая попытка: Мой ответ"
+    },
+    "expected": {
+      "correctness": "incorrect",
+      "eligible": false,
+      "errorClass": "unknown"
+    },
+    "candidate": {
+      "answer": "Проверь один шаг и попробуй снова.",
+      "visualBlock": null,
+      "teachingMethod": "dialogue",
+      "hintLevel": 0
+    },
+    "expectedFlags": [],
+    "rule": null
+  },
+  {
+    "id": "G057",
+    "category": "no_answer_reveal",
+    "text": "Посмотри попытку",
+    "subjectId": "math",
+    "courseId": "math.algebra",
+    "skillId": "math.algebra.linear_equation.basic",
+    "previousTask": "Объясни свой ответ.",
+    "stage": 0,
+    "sttConfidence": null,
+    "modelAnalysis": {
+      "attemptKind": "answer",
+      "correctness": "incorrect",
+      "confidence": 0.9,
+      "skillIds": [
+        "math.algebra.linear_equation.basic"
+      ],
+      "prerequisiteSkillIds": [],
+      "errorClasses": [
+        "concept_gap"
+      ],
+      "evidenceSummary": "Наблюдаемая попытка: Посмотри попытку"
+    },
+    "expected": {
+      "correctness": "incorrect",
+      "eligible": true,
+      "errorClass": "concept_gap"
+    },
+    "candidate": {
+      "answer": "Ответ: 12",
+      "visualBlock": null,
+      "teachingMethod": "dialogue",
+      "hintLevel": 0
+    },
+    "expectedFlags": [
+      "premature_answer"
+    ],
+    "rule": null
+  },
+  {
+    "id": "G058",
+    "category": "no_answer_reveal",
+    "text": "Посмотри попытку",
+    "subjectId": "math",
+    "courseId": "math.algebra",
+    "skillId": "math.algebra.linear_equation.basic",
+    "previousTask": "Объясни свой ответ.",
+    "stage": 1,
+    "sttConfidence": null,
+    "modelAnalysis": {
+      "attemptKind": "answer",
+      "correctness": "incorrect",
+      "confidence": 0.9,
+      "skillIds": [
+        "math.algebra.linear_equation.basic"
+      ],
+      "prerequisiteSkillIds": [],
+      "errorClasses": [
+        "concept_gap"
+      ],
+      "evidenceSummary": "Наблюдаемая попытка: Посмотри попытку"
+    },
+    "expected": {
+      "correctness": "incorrect",
+      "eligible": true,
+      "errorClass": "concept_gap"
+    },
+    "candidate": {
+      "answer": "Ответ: 12",
+      "visualBlock": null,
+      "teachingMethod": "dialogue",
+      "hintLevel": 1
+    },
+    "expectedFlags": [
+      "premature_answer"
+    ],
+    "rule": null
+  },
+  {
+    "id": "G059",
+    "category": "no_answer_reveal",
+    "text": "Посмотри попытку",
+    "subjectId": "math",
+    "courseId": "math.algebra",
+    "skillId": "math.algebra.linear_equation.basic",
+    "previousTask": "Объясни свой ответ.",
+    "stage": 2,
+    "sttConfidence": null,
+    "modelAnalysis": {
+      "attemptKind": "answer",
+      "correctness": "incorrect",
+      "confidence": 0.9,
+      "skillIds": [
+        "math.algebra.linear_equation.basic"
+      ],
+      "prerequisiteSkillIds": [],
+      "errorClasses": [
+        "concept_gap"
+      ],
+      "evidenceSummary": "Наблюдаемая попытка: Посмотри попытку"
+    },
+    "expected": {
+      "correctness": "incorrect",
+      "eligible": true,
+      "errorClass": "concept_gap"
+    },
+    "candidate": {
+      "answer": "Ответ: 12",
+      "visualBlock": null,
+      "teachingMethod": "dialogue",
+      "hintLevel": 2
+    },
+    "expectedFlags": [
+      "premature_answer"
+    ],
+    "rule": null
+  },
+  {
+    "id": "G060",
+    "category": "method_switching",
+    "text": "Мой ответ",
+    "subjectId": "history",
+    "courseId": "history.russia",
+    "skillId": "history.chronology",
+    "previousTask": "Объясни свой ответ.",
+    "stage": 0,
+    "sttConfidence": null,
+    "modelAnalysis": {
+      "attemptKind": "answer",
+      "correctness": "incorrect",
+      "confidence": 0.9,
+      "skillIds": [
+        "history.chronology"
+      ],
+      "prerequisiteSkillIds": [],
+      "errorClasses": [
+        "concept_gap"
+      ],
+      "evidenceSummary": "Наблюдаемая попытка: Мой ответ"
+    },
+    "expected": {
+      "correctness": "incorrect",
+      "eligible": true,
+      "errorClass": "concept_gap"
+    },
+    "candidate": {
+      "answer": "Попробуй снова.",
+      "visualBlock": null,
+      "teachingMethod": "story",
+      "hintLevel": 0
+    },
+    "expectedFlags": [
+      "reused_failed_method"
+    ],
+    "rule": null
+  },
+  {
+    "id": "G061",
+    "category": "method_switching",
+    "text": "Мой ответ",
+    "subjectId": "physics",
+    "courseId": "physics.general",
+    "skillId": "physics.motion.speed",
+    "previousTask": "Объясни свой ответ.",
+    "stage": 0,
+    "sttConfidence": null,
+    "modelAnalysis": {
+      "attemptKind": "answer",
+      "correctness": "incorrect",
+      "confidence": 0.9,
+      "skillIds": [
+        "physics.motion.speed"
+      ],
+      "prerequisiteSkillIds": [],
+      "errorClasses": [
+        "concept_gap"
+      ],
+      "evidenceSummary": "Наблюдаемая попытка: Мой ответ"
+    },
+    "expected": {
+      "correctness": "incorrect",
+      "eligible": true,
+      "errorClass": "concept_gap"
+    },
+    "candidate": {
+      "answer": "Попробуй снова.",
+      "visualBlock": null,
+      "teachingMethod": "story",
+      "hintLevel": 0
+    },
+    "expectedFlags": [
+      "reused_failed_method"
+    ],
+    "rule": null
+  },
+  {
+    "id": "G062",
+    "category": "method_switching",
+    "text": "Мой ответ",
+    "subjectId": "biology",
+    "courseId": "biology.general",
+    "skillId": "biology.plants.groups",
+    "previousTask": "Объясни свой ответ.",
+    "stage": 0,
+    "sttConfidence": null,
+    "modelAnalysis": {
+      "attemptKind": "answer",
+      "correctness": "incorrect",
+      "confidence": 0.9,
+      "skillIds": [
+        "biology.plants.groups"
+      ],
+      "prerequisiteSkillIds": [],
+      "errorClasses": [
+        "concept_gap"
+      ],
+      "evidenceSummary": "Наблюдаемая попытка: Мой ответ"
+    },
+    "expected": {
+      "correctness": "incorrect",
+      "eligible": true,
+      "errorClass": "concept_gap"
+    },
+    "candidate": {
+      "answer": "Попробуй снова.",
+      "visualBlock": null,
+      "teachingMethod": "story",
+      "hintLevel": 0
+    },
+    "expectedFlags": [
+      "reused_failed_method"
+    ],
+    "rule": null
+  },
+  {
+    "id": "G063",
+    "category": "parent_rules",
+    "text": "По математике используй игровые элементы.",
+    "subjectId": "math",
+    "courseId": "math.algebra",
+    "skillId": null,
+    "previousTask": "Объясни свой ответ.",
+    "stage": 0,
+    "sttConfidence": null,
+    "modelAnalysis": {
+      "attemptKind": "answer",
+      "correctness": "unknown",
+      "confidence": 0.9,
+      "skillIds": [],
+      "prerequisiteSkillIds": [],
+      "errorClasses": [],
+      "evidenceSummary": "Наблюдаемая попытка: По математике используй игровые элементы."
+    },
+    "expected": {
+      "correctness": "unknown",
+      "eligible": false,
+      "errorClass": ""
+    },
+    "candidate": {
+      "answer": "Проверь один шаг и попробуй снова.",
+      "visualBlock": null,
+      "teachingMethod": "dialogue",
+      "hintLevel": 0
+    },
+    "expectedFlags": [],
+    "rule": {
+      "category": "format",
+      "effect": "require",
+      "instruction": "По математике используй игровые элементы.",
+      "subjectId": "math",
+      "courseId": null,
+      "skillId": null,
+      "trigger": {},
+      "duration": {
+        "type": "permanent"
+      },
+      "priority": 50,
+      "confidence": 0.9,
+      "ambiguity": null,
+      "constraints": {
+        "method": "game"
+      }
+    }
+  },
+  {
+    "id": "G064",
+    "category": "parent_rules",
+    "text": "По английскому объясняй по-русски, но проси отвечать на английском.",
+    "subjectId": "english",
+    "courseId": "english.language",
+    "skillId": null,
+    "previousTask": "Объясни свой ответ.",
+    "stage": 0,
+    "sttConfidence": null,
+    "modelAnalysis": {
+      "attemptKind": "answer",
+      "correctness": "unknown",
+      "confidence": 0.9,
+      "skillIds": [],
+      "prerequisiteSkillIds": [],
+      "errorClasses": [],
+      "evidenceSummary": "Наблюдаемая попытка: По английскому объясняй по-русски, но проси отвечать на английском."
+    },
+    "expected": {
+      "correctness": "unknown",
+      "eligible": false,
+      "errorClass": ""
+    },
+    "candidate": {
+      "answer": "Проверь один шаг и попробуй снова. Затем ответь по-английски.",
+      "visualBlock": null,
+      "teachingMethod": "dialogue",
+      "hintLevel": 0
+    },
+    "expectedFlags": [],
+    "rule": {
+      "category": "format",
+      "effect": "require",
+      "instruction": "По английскому объясняй по-русски, но проси отвечать на английском.",
+      "subjectId": "english",
+      "courseId": null,
+      "skillId": null,
+      "trigger": {},
+      "duration": {
+        "type": "permanent"
+      },
+      "priority": 50,
+      "confidence": 0.9,
+      "ambiguity": null,
+      "constraints": {
+        "language": "ru",
+        "responseLanguage": "en"
+      }
+    }
+  },
+  {
+    "id": "G065",
+    "category": "parent_rules",
+    "text": "Сначала дай ей самой попробовать, потом подсказывай.",
+    "subjectId": "history",
+    "courseId": "history.russia",
+    "skillId": null,
+    "previousTask": "Объясни свой ответ.",
+    "stage": 0,
+    "sttConfidence": null,
+    "modelAnalysis": {
+      "attemptKind": "answer",
+      "correctness": "unknown",
+      "confidence": 0.9,
+      "skillIds": [],
+      "prerequisiteSkillIds": [],
+      "errorClasses": [],
+      "evidenceSummary": "Наблюдаемая попытка: Сначала дай ей самой попробовать, потом подсказывай."
+    },
+    "expected": {
+      "correctness": "unknown",
+      "eligible": false,
+      "errorClass": ""
+    },
+    "candidate": {
+      "answer": "Проверь один шаг и попробуй снова.",
+      "visualBlock": null,
+      "teachingMethod": "dialogue",
+      "hintLevel": 0
+    },
+    "expectedFlags": [],
+    "rule": {
+      "category": "format",
+      "effect": "require",
+      "instruction": "Сначала дай ей самой попробовать, потом подсказывай.",
+      "subjectId": null,
+      "courseId": null,
+      "skillId": null,
+      "trigger": {},
+      "duration": {
+        "type": "permanent"
+      },
+      "priority": 50,
+      "confidence": 0.9,
+      "ambiguity": null,
+      "constraints": {}
+    }
+  },
+  {
+    "id": "G066",
+    "category": "parent_rules",
+    "text": "Отвечай короче.",
+    "subjectId": "history",
+    "courseId": "history.russia",
+    "skillId": null,
+    "previousTask": "Объясни свой ответ.",
+    "stage": 0,
+    "sttConfidence": null,
+    "modelAnalysis": {
+      "attemptKind": "answer",
+      "correctness": "unknown",
+      "confidence": 0.9,
+      "skillIds": [],
+      "prerequisiteSkillIds": [],
+      "errorClasses": [],
+      "evidenceSummary": "Наблюдаемая попытка: Отвечай короче."
+    },
+    "expected": {
+      "correctness": "unknown",
+      "eligible": false,
+      "errorClass": ""
+    },
+    "candidate": {
+      "answer": "Проверь один шаг и попробуй снова.",
+      "visualBlock": null,
+      "teachingMethod": "dialogue",
+      "hintLevel": 0
+    },
+    "expectedFlags": [],
+    "rule": {
+      "category": "format",
+      "effect": "limit",
+      "instruction": "Отвечай короче.",
+      "subjectId": null,
+      "courseId": null,
+      "skillId": null,
+      "trigger": {},
+      "duration": {
+        "type": "permanent"
+      },
+      "priority": 50,
+      "confidence": 0.9,
+      "ambiguity": null,
+      "constraints": {
+        "maxSentences": 2
+      }
+    }
+  },
+  {
+    "id": "G067",
+    "category": "parent_rules",
+    "text": "По геометрии чаще используй схемы.",
+    "subjectId": "math",
+    "courseId": "math.geometry",
+    "skillId": null,
+    "previousTask": "Объясни свой ответ.",
+    "stage": 0,
+    "sttConfidence": null,
+    "modelAnalysis": {
+      "attemptKind": "answer",
+      "correctness": "unknown",
+      "confidence": 0.9,
+      "skillIds": [],
+      "prerequisiteSkillIds": [],
+      "errorClasses": [],
+      "evidenceSummary": "Наблюдаемая попытка: По геометрии чаще используй схемы."
+    },
+    "expected": {
+      "correctness": "unknown",
+      "eligible": false,
+      "errorClass": ""
+    },
+    "candidate": {
+      "answer": "Проверь один шаг и попробуй снова.",
+      "visualBlock": null,
+      "teachingMethod": "dialogue",
+      "hintLevel": 0
+    },
+    "expectedFlags": [],
+    "rule": {
+      "category": "format",
+      "effect": "prefer",
+      "instruction": "По геометрии чаще используй схемы.",
+      "subjectId": "math",
+      "courseId": "math.geometry",
+      "skillId": null,
+      "trigger": {},
+      "duration": {
+        "type": "permanent"
+      },
+      "priority": 50,
+      "confidence": 0.9,
+      "ambiguity": null,
+      "constraints": {
+        "format": "visual"
+      }
+    }
+  },
+  {
+    "id": "G068",
+    "category": "parent_rules",
+    "text": "На этой неделе не используй игры.",
+    "subjectId": "history",
+    "courseId": "history.russia",
+    "skillId": null,
+    "previousTask": "Объясни свой ответ.",
+    "stage": 0,
+    "sttConfidence": null,
+    "modelAnalysis": {
+      "attemptKind": "answer",
+      "correctness": "unknown",
+      "confidence": 0.9,
+      "skillIds": [],
+      "prerequisiteSkillIds": [],
+      "errorClasses": [],
+      "evidenceSummary": "Наблюдаемая попытка: На этой неделе не используй игры."
+    },
+    "expected": {
+      "correctness": "unknown",
+      "eligible": false,
+      "errorClass": ""
+    },
+    "candidate": {
+      "answer": "Проверь один шаг и попробуй снова.",
+      "visualBlock": null,
+      "teachingMethod": "dialogue",
+      "hintLevel": 0
+    },
+    "expectedFlags": [],
+    "rule": {
+      "category": "format",
+      "effect": "forbid",
+      "instruction": "На этой неделе не используй игры.",
+      "subjectId": null,
+      "courseId": null,
+      "skillId": null,
+      "trigger": {},
+      "duration": {
+        "type": "until",
+        "until": "2026-10-19T00:00:00Z"
+      },
+      "priority": 50,
+      "confidence": 0.9,
+      "ambiguity": null,
+      "constraints": {
+        "forbiddenTerms": [
+          "игра",
+          "балл"
+        ]
+      }
+    }
+  },
+  {
+    "id": "G069",
+    "category": "visual_format",
+    "text": "45 × 36",
+    "subjectId": "math",
+    "courseId": "math.algebra",
+    "skillId": null,
+    "previousTask": "Объясни свой ответ.",
+    "stage": 0,
+    "sttConfidence": null,
+    "modelAnalysis": {
+      "attemptKind": "answer",
+      "correctness": "unknown",
+      "confidence": 0.9,
+      "skillIds": [],
+      "prerequisiteSkillIds": [],
+      "errorClasses": [],
+      "evidenceSummary": "Наблюдаемая попытка: 45 × 36"
+    },
+    "expected": {
+      "correctness": "unknown",
+      "eligible": false,
+      "errorClass": ""
+    },
+    "candidate": {
+      "answer": "Назови первый шаг.",
+      "visualBlock": "   45\n×  36\n-----\n_____",
+      "teachingMethod": "visual_schema",
+      "hintLevel": 0
+    },
+    "expectedFlags": [],
+    "rule": null
+  },
+  {
+    "id": "G070",
+    "category": "evidence_state",
+    "text": "independent_success",
+    "subjectId": "math",
+    "courseId": "math.algebra",
+    "skillId": "math.algebra.linear_equation.basic",
+    "previousTask": "Уравнение x + 3 = 15. Чему равен x?",
+    "stage": 0,
+    "sttConfidence": null,
+    "modelAnalysis": {
+      "attemptKind": "answer",
+      "correctness": "incorrect",
+      "confidence": 0.9,
+      "skillIds": [
+        "math.algebra.linear_equation.basic"
+      ],
+      "prerequisiteSkillIds": [],
+      "errorClasses": [
+        "arithmetic_operation"
+      ],
+      "evidenceSummary": "Наблюдаемая попытка: Ответ 9"
+    },
+    "expected": {
+      "correctness": "incorrect",
+      "eligible": true,
+      "errorClass": "arithmetic_operation"
+    },
+    "candidate": {
+      "answer": "Проверь один шаг и попробуй снова.",
+      "visualBlock": null,
+      "teachingMethod": "dialogue",
+      "hintLevel": 0
+    },
+    "expectedFlags": [],
+    "rule": null,
+    "history": [
+      {
+        "correctness": "correct",
+        "supportStage": 0,
+        "sessionId": "one",
+        "date": "2026-10-13"
+      }
+    ],
+    "expectedStatus": "introduced"
+  },
+  {
+    "id": "G071",
+    "category": "evidence_state",
+    "text": "hinted_success",
+    "subjectId": "math",
+    "courseId": "math.algebra",
+    "skillId": "math.algebra.linear_equation.basic",
+    "previousTask": "Уравнение x + 3 = 15. Чему равен x?",
+    "stage": 0,
+    "sttConfidence": null,
+    "modelAnalysis": {
+      "attemptKind": "answer",
+      "correctness": "incorrect",
+      "confidence": 0.9,
+      "skillIds": [
+        "math.algebra.linear_equation.basic"
+      ],
+      "prerequisiteSkillIds": [],
+      "errorClasses": [
+        "arithmetic_operation"
+      ],
+      "evidenceSummary": "Наблюдаемая попытка: Ответ 9"
+    },
+    "expected": {
+      "correctness": "incorrect",
+      "eligible": true,
+      "errorClass": "arithmetic_operation"
+    },
+    "candidate": {
+      "answer": "Проверь один шаг и попробуй снова.",
+      "visualBlock": null,
+      "teachingMethod": "dialogue",
+      "hintLevel": 0
+    },
+    "expectedFlags": [],
+    "rule": null,
+    "history": [
+      {
+        "correctness": "correct",
+        "supportStage": 2,
+        "sessionId": "one",
+        "date": "2026-10-13"
+      }
+    ],
+    "expectedStatus": "introduced"
+  },
+  {
+    "id": "G072",
+    "category": "evidence_state",
+    "text": "one_error_after_mastery",
+    "subjectId": "math",
+    "courseId": "math.algebra",
+    "skillId": "math.algebra.linear_equation.basic",
+    "previousTask": "Уравнение x + 3 = 15. Чему равен x?",
+    "stage": 0,
+    "sttConfidence": null,
+    "modelAnalysis": {
+      "attemptKind": "answer",
+      "correctness": "incorrect",
+      "confidence": 0.9,
+      "skillIds": [
+        "math.algebra.linear_equation.basic"
+      ],
+      "prerequisiteSkillIds": [],
+      "errorClasses": [
+        "arithmetic_operation"
+      ],
+      "evidenceSummary": "Наблюдаемая попытка: Ответ 9"
+    },
+    "expected": {
+      "correctness": "incorrect",
+      "eligible": true,
+      "errorClass": "arithmetic_operation"
+    },
+    "candidate": {
+      "answer": "Проверь один шаг и попробуй снова.",
+      "visualBlock": null,
+      "teachingMethod": "dialogue",
+      "hintLevel": 0
+    },
+    "expectedFlags": [],
+    "rule": null,
+    "history": [
+      {
+        "correctness": "correct",
+        "supportStage": 0,
+        "sessionId": "one",
+        "date": "2026-10-13"
+      },
+      {
+        "correctness": "correct",
+        "supportStage": 0,
+        "sessionId": "one",
+        "date": "2026-10-13"
+      },
+      {
+        "correctness": "correct",
+        "supportStage": 0,
+        "sessionId": "two",
+        "date": "2026-10-13"
+      },
+      {
+        "correctness": "incorrect",
+        "supportStage": 0,
+        "sessionId": "one",
+        "date": "2026-10-13"
+      }
+    ],
+    "expectedStatus": "mastered"
+  },
+  {
+    "id": "G073",
+    "category": "evidence_state",
+    "text": "repeated_errors_after_mastery",
+    "subjectId": "math",
+    "courseId": "math.algebra",
+    "skillId": "math.algebra.linear_equation.basic",
+    "previousTask": "Уравнение x + 3 = 15. Чему равен x?",
+    "stage": 0,
+    "sttConfidence": null,
+    "modelAnalysis": {
+      "attemptKind": "answer",
+      "correctness": "incorrect",
+      "confidence": 0.9,
+      "skillIds": [
+        "math.algebra.linear_equation.basic"
+      ],
+      "prerequisiteSkillIds": [],
+      "errorClasses": [
+        "arithmetic_operation"
+      ],
+      "evidenceSummary": "Наблюдаемая попытка: Ответ 9"
+    },
+    "expected": {
+      "correctness": "incorrect",
+      "eligible": true,
+      "errorClass": "arithmetic_operation"
+    },
+    "candidate": {
+      "answer": "Проверь один шаг и попробуй снова.",
+      "visualBlock": null,
+      "teachingMethod": "dialogue",
+      "hintLevel": 0
+    },
+    "expectedFlags": [],
+    "rule": null,
+    "history": [
+      {
+        "correctness": "correct",
+        "supportStage": 0,
+        "sessionId": "one",
+        "date": "2026-10-13"
+      },
+      {
+        "correctness": "correct",
+        "supportStage": 0,
+        "sessionId": "one",
+        "date": "2026-10-13"
+      },
+      {
+        "correctness": "correct",
+        "supportStage": 0,
+        "sessionId": "two",
+        "date": "2026-10-13"
+      },
+      {
+        "correctness": "incorrect",
+        "supportStage": 0,
+        "sessionId": "one",
+        "date": "2026-10-13"
+      },
+      {
+        "correctness": "incorrect",
+        "supportStage": 0,
+        "sessionId": "one",
+        "date": "2026-10-13"
+      }
+    ],
+    "expectedStatus": "needs_review"
+  },
+  {
+    "id": "G074",
+    "category": "evidence_state",
+    "text": "partial_evidence",
+    "subjectId": "math",
+    "courseId": "math.algebra",
+    "skillId": "math.algebra.linear_equation.basic",
+    "previousTask": "Уравнение x + 3 = 15. Чему равен x?",
+    "stage": 0,
+    "sttConfidence": null,
+    "modelAnalysis": {
+      "attemptKind": "answer",
+      "correctness": "incorrect",
+      "confidence": 0.9,
+      "skillIds": [
+        "math.algebra.linear_equation.basic"
+      ],
+      "prerequisiteSkillIds": [],
+      "errorClasses": [
+        "arithmetic_operation"
+      ],
+      "evidenceSummary": "Наблюдаемая попытка: Ответ 9"
+    },
+    "expected": {
+      "correctness": "incorrect",
+      "eligible": true,
+      "errorClass": "arithmetic_operation"
+    },
+    "candidate": {
+      "answer": "Проверь один шаг и попробуй снова.",
+      "visualBlock": null,
+      "teachingMethod": "dialogue",
+      "hintLevel": 0
+    },
+    "expectedFlags": [],
+    "rule": null,
+    "history": [
+      {
+        "correctness": "correct",
+        "supportStage": 0,
+        "sessionId": "one",
+        "date": "2026-10-13"
+      },
+      {
+        "correctness": "partial",
+        "supportStage": 0,
+        "sessionId": "one",
+        "date": "2026-10-13"
+      }
+    ],
+    "expectedStatus": "learning"
+  }
+]

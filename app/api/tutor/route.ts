@@ -1,8 +1,13 @@
+import { analyzeLearnerTurn, shouldAnalyze } from "@/lib/learning-analysis";
+import { candidateSkills } from "@/lib/learning-analysis/repository";
+import { recordAcceptedEvidence } from "@/lib/evidence-engine";
+import { resolveParentRules, renderParentRules, type ParentRule } from "@/lib/parent-rule-engine";
+import { acceptResponse } from "@/lib/response-critic";
 import { authenticatedRequestClient } from "@/lib/supabase/request-client";
 import { getActiveLearningContext, renderAcademicContext } from "@/lib/curriculum/learning-context";
 import { SupabaseCurriculumRepository } from "@/lib/curriculum/repository";
 import { resolveCourse } from "@/lib/curriculum/catalog";
-import { createLLMProvider, createVisionProvider } from "@/lib/providers";
+import { createLLMProvider, createVisionProvider, withFailover } from "@/lib/providers";
 import { learnerConfig } from "@/lib/learner-config";
 import {
   SUBJECTS,
@@ -16,13 +21,10 @@ import {
   METHOD_LABELS,
   type TeachingMethod,
 } from "@/lib/adaptive-learning";
-import { buildFirstIncorrectAttemptHint } from "@/lib/first-attempt-feedback";
-import { applyParentRuleToTutorResult } from "@/lib/parent-rule-engine";
 import {
   LEARNING_INTENTS,
   buildLearningPlan,
   computeNextSupportStage,
-  isLearnerAttemptMessage,
   renderLearningPlan,
   type LearningIntent,
 } from "@/lib/learning-engine";
@@ -104,7 +106,7 @@ function parseModelJson(raw: string) {
     };
   } catch {
     return {
-      answer: raw.trim() || "Давай попробуем ещё раз.",
+      answer: "",
       visualBlock: null,
       visualLabel: null,
       teachingMethod: "dialogue",
@@ -119,136 +121,6 @@ function parseModelJson(raw: string) {
       topicEvidence: "",
     };
   }
-}
-
-function extractNumbers(text: string) {
-  return text.match(/\d+(?:[.,]\d+)?/g) || [];
-}
-
-function violatesSupportStage(
-  result: ReturnType<typeof parseModelJson>,
-  stage: number,
-  context: string,
-  taskGeneration = false
-) {
-  if (stage >= 3) return false;
-
-  const combined = [result.answer, result.visualBlock || ""].join("\n");
-  const allowedNumbers = new Set(extractNumbers(context));
-  const introducedNumbers = extractNumbers(combined).filter(
-    (value) => !allowedNumbers.has(value)
-  );
-
-  // Новое тренировочное задание может содержать новые числа уже на уровне 0:
-  // лестница помощи ограничивает решение, а не само условие задачи.
-  if (!taskGeneration && stage <= 1 && introducedNumbers.length > 0) return true;
-
-  if (
-    stage === 0 &&
-    /(?:готов(?:ый|ое)\s+ответ|ответ\s*[:=]|получ(?:ается|ится|им)|итог\s*[:=]|равно\s+\d|=\s*\d)/i.test(
-      combined
-    )
-  ) {
-    return true;
-  }
-
-  if (
-    stage <= 2 &&
-    /(?:ответ|итог)\s*[:=\-]?\s*\d/i.test(combined)
-  ) {
-    return true;
-  }
-
-  return false;
-}
-
-function safeSupportFallback(
-  result: ReturnType<typeof parseModelJson>,
-  stage: number,
-  wantsVisual: boolean,
-  subject?: SubjectSlug,
-  userText?: string
-) {
-  const englishAttempt =
-    subject === "english" &&
-    stage === 0 &&
-    Boolean(userText?.toLowerCase().includes("i like read"));
-
-  const answer =
-    englishAttempt
-      ? buildFirstIncorrectAttemptHint("english", userText || "")
-      : stage === 0
-      ? wantsVisual
-        ? "Покажу только структуру, без решения. Сначала назови, какой шаг ты сделаешь первым."
-        : "Сначала проверь свой ход сама: какой шаг ты сделала первым и почему?"
-      : stage === 1
-      ? "Дам маленькую подсказку: назови только первый шаг, который нужно сделать. Я проверю его."
-      : "Разберём один микро-шаг вместе, а дальше продолжишь сама.";
-
-  return {
-    ...result,
-    answer,
-    visualBlock: null,
-    visualLabel: null,
-    hintLevel: stage,
-    correctness: "unknown" as const,
-    supportSignal: "struggling" as const,
-  };
-}
-
-function safeIncorrectAttemptFallback(
-  result: ReturnType<typeof parseModelJson>,
-  subject: SubjectSlug,
-  userText: string
-) {
-  return {
-    ...result,
-    answer: buildFirstIncorrectAttemptHint(subject, userText),
-    visualBlock: null,
-    visualLabel: null,
-    hintLevel: 0,
-    supportSignal: "struggling" as const,
-  };
-}
-
-function isBeginnerEnglishScaffoldRequest(
-  subject: SubjectSlug,
-  mode: StudyModeSlug,
-  userText: string
-) {
-  if (subject !== "english" || mode !== "practice") return false;
-
-  const text = userText.toLowerCase();
-  const asksForSupport =
-    /не\s+знаю.*(?:по[- ]английски|как\s+ответить)|хочу\s+сказать|как\s+сказать.*по[- ]английски/.test(
-      text
-    );
-
-  return asksForSupport && /[а-яё]/i.test(userText);
-}
-
-function safeBeginnerEnglishScaffold(
-  result: ReturnType<typeof parseModelJson>,
-  userText: string
-) {
-  const lower = userText.toLowerCase();
-
-  const answer =
-    /я\s+люблю\s+читать|люблю\s+читать/.test(lower)
-      ? "Не будем переводить всю фразу за тебя. Начало уже есть: I like … Слово «читать» — read. Попробуй сама собрать английскую фразу. Если не получится, дам ещё одну маленькую подсказку."
-      : /я\s+люблю|мне\s+нравится/.test(lower)
-      ? "Не будем переводить всю фразу за тебя. Начало: I like … Назови по-русски только то действие или предмет, которого тебе не хватает, — я подскажу одно английское слово."
-      : "Не будем сразу переводить всю фразу. Попробуй назвать по-английски хотя бы первые 1–2 слова. Если не знаешь ни одного, напиши по-русски только ключевое слово — я дам короткую английскую опору.";
-
-  return {
-    ...result,
-    answer,
-    visualBlock: null,
-    visualLabel: null,
-    hintLevel: 0,
-    correctness: "unknown" as const,
-    supportSignal: "struggling" as const,
-  };
 }
 
 function renderMethodProfile(methods: MethodSummary[]) {
@@ -335,12 +207,15 @@ export async function POST(request: Request) {
     try { course = resolveCourse(subject, courseId); } catch {
       return Response.json({ error: "Курс не относится к выбранному предмету." }, { status: 400 });
     }
+    let client = null;
+    let academicContext = null;
     let learner = learnerConfig;
     let academicPrompt = course ? `Выбранный курс: ${course.displayName}.` : "";
     if (typeof body.childId === "string" && body.childId) {
-      const client = await authenticatedRequestClient(request);
+      client = await authenticatedRequestClient(request);
       if (!client) return Response.json({ error: "Нужен вход родителя." }, { status: 401 });
       const context = await getActiveLearningContext(body.childId, subject, courseId, new SupabaseCurriculumRepository(client));
+      academicContext = context;
       learner = { ...learnerConfig, displayName: context.child.name, grade: context.grade };
       academicPrompt = renderAcademicContext(context);
     }
@@ -359,6 +234,17 @@ export async function POST(request: Request) {
       .join("")
       .trim();
 
+    const sttConfidence = typeof body.sttConfidence === "number" && Number.isFinite(body.sttConfidence) && body.sttConfidence >= 0 && body.sttConfidence <= 1 ? body.sttConfidence : null;
+    const analysisInput = { text: userText, subjectId: subject, courseId: course?.id || null, sttConfidence,
+      previousTask: history.filter(item => item.role === "assistant").at(-1)?.text,
+      candidates: client && shouldAnalyze(userText) ? await candidateSkills(client, subject, course?.id || null, academicContext?.program?.id, academicContext?.grade) : [] };
+    const analysis = await analyzeLearnerTurn(llm, analysisInput);
+    let knownRules: ParentRule[] = parentRules.map((text, index) => ({ id: String(index), active: true, child_id: null, rule_text: text }));
+    if (client && academicContext) {
+      const ruleResult = await client.from("tutor_rules").select("id,active,child_id,rule_text,subject,priority,course_id,skill_id,structured_rule,interpretation_status,valid_from,valid_until")
+        .eq("active",true).or(`child_id.is.null,child_id.eq.${academicContext.child.id}`).limit(30);
+      knownRules = (ruleResult.data || []) as ParentRule[];
+    }
     const adaptiveProfileText = renderMethodProfile(methodProfile);
     const subjectPrompt = getSubjectAdaptivePrompt(subject);
     const learningPlan = buildLearningPlan({
@@ -370,14 +256,28 @@ export async function POST(request: Request) {
       supportStage,
     });
 
+    const applicableRules = resolveParentRules(knownRules, { childId: academicContext?.child.id || null,
+      subjectId: subject, courseId: course?.id || null, skillIds: analysis.skillIds, intent: learningPlan.intent,
+      taskGeneration: learningPlan.taskGeneration, modality: ["text","voice","image"].includes(body.inputModality) ? body.inputModality : imageDataUrl ? "image" : "text",
+      sessionId: typeof body.sessionId === "string" ? body.sessionId : null });
+    let skillSignal = "";
+    if (client && academicContext && analysis.skillIds[0]) {
+      const state = await client.from("student_skill_state").select("status,independent_successes,hinted_successes")
+        .eq("child_id",academicContext.child.id).eq("skill_id",analysis.skillIds[0]).maybeSingle();
+      if (state.data) skillSignal = JSON.stringify(state.data) + " Если mastered и practice, предложи короткую проверку или transfer task вместо объяснения с нуля. После помощи проверь самостоятельность на новом похожем задании.";
+    }
     const pedagogy = `
-ТЫ — ПЕРСОНАЛЬНЫЙ AI-РЕПЕТИТОР ЛУНИК ДЛЯ СОФЬИ, 7 КЛАСС.
+ТЫ — ${learner.tutorName}, ПЕРСОНАЛЬНЫЙ РЕПЕТИТОР ${learner.displayName}, КЛАСС ${learner.grade}.
+Анализ попытки (не изменяй correctness): ${JSON.stringify(analysis)}
+Сигнал навыка: ${skillSignal}
+Практика примерно 70%, теория 30%, по ситуации.
 
 ТВОЯ ЦЕЛЬ:
 1. Помочь понять материал.
 2. Сохранять самостоятельность ребёнка.
 3. Заинтересовывать, а не читать лекцию.
 4. Менять способ объяснения, если предыдущий не помог.
+После помощи проверь самостоятельность на новом похожем задании.
 5. Постепенно адаптироваться только по реальным данным занятий.
 
 ЖЁСТКАЯ ЛЕСТНИЦА ПОМОЩИ:
@@ -424,26 +324,11 @@ export async function POST(request: Request) {
 - Не используй LaTeX: $, $$, \\times, \\frac, \\sqrt.
 - Математика: ×, ÷, =, +, −, %, √, x², x³, 3/4.
 
-ОСОБЕННО ДЛЯ УМНОЖЕНИЯ В СТОЛБИК:
-- выравнивай числа ПО ПРАВОМУ КРАЮ;
-- используй моноширинную запись с пробелами;
-- второй частичный результат показывай ПОЛНЫМ числом с нулём, а не "135 со сдвигом";
-- правильный полный вид, когда полный разбор уже разрешён:
-     45
-  ×  36
-  -----
-    270
-   1350
-  -----
-   1620
-- на уровнях 0–2 вместо готовых чисел используй подчёркивания:
-     45
-  ×  36
-  -----
-    ___
-   ____
-  -----
-   ____
+STRUCTURED MATH CONTRACT:
+- Числа выравниваются справа в моноширинном visualBlock.
+- При support 0–1 показывай исходные операнды и пустые строки, без вычисленных результатов.
+- При support 2 показывай один принцип, при support 3 ровно один подшаг, при support 4 допустим полный разбор.
+- Для разрядных вычислений явно обозначай разряд/нулевой сдвиг; не подменяй полное число сокращённой записью.
 
 ${subjectPrompt}
 
@@ -454,11 +339,7 @@ ${renderLearningPlan(learningPlan)}
 Если taskGeneration=true, ответ обязан содержать само новое задание сразу, без предварительных просьб "назови первый шаг".
 
 ПРАВИЛА РОДИТЕЛЯ:
-${
-  parentRules.length
-    ? parentRules.map((rule, i) => `${i + 1}. ${rule}`).join("\n")
-    : "Дополнительных правил нет."
-}
+${renderParentRules(applicableRules)}
 
 НАБЛЮДАЕМАЯ ЭФФЕКТИВНОСТЬ МЕТОДОВ:
 ${adaptiveProfileText}
@@ -513,93 +394,28 @@ classification, story, experiment, map_logic, character_analysis.
       { role: "user", text: userText },
     ];
 
-    let raw = await llm.generate({ messages, temperature: 0.35, maxTokens: 1300 });
-
-    let parsed = parseModelJson(raw);
-    const supportContext = [
-      ...history.map((item) => item.text),
-      userText,
-    ].join("\n");
-
-    if (
-      violatesSupportStage(
-        parsed,
-        supportStage,
-        supportContext,
-        learningPlan.taskGeneration
-      )
-    ) {
-      const retryMessages = messages.map((item, index) =>
-        index === 0
-          ? {
-              ...item,
-              text:
-                item.text +
-                "\n\nКРИТИЧЕСКАЯ ПРОВЕРКА: предыдущая генерация нарушила текущую ступень помощи. Перегенерируй ответ строго в пределах уровня " +
-                supportStage +
-                ". Не добавляй вычислений, промежуточных результатов или готового ответа, которые ещё не разрешены этим уровнем.",
-            }
-          : item
-      );
-
-      try {
-        raw = await llm.generate({ messages: retryMessages, temperature: 0.2, maxTokens: 1100 });
-        parsed = parseModelJson(raw);
-      } catch {
-        // Preserve the existing support-stage guard when regeneration is unavailable.
-      }
-
-      if (
-        violatesSupportStage(
-          parsed,
-          supportStage,
-          supportContext,
-          learningPlan.taskGeneration
-        )
-      ) {
-        parsed = safeSupportFallback(
-          parsed,
-          supportStage,
-          learningPlan.visualType !== "none",
-          subject,
-          userText
-        );
-      }
+    const criticContext = { grade: learner.grade, courseId: course?.id || null, stage: supportStage, sourceText: history.map(item=>item.text).join("\n") + "\n" + userText,
+      taskGeneration: learningPlan.taskGeneration, wantsVisual: learningPlan.visualType !== "none", english: subject === "english",
+      mustChangeMethod: learningPlan.mustChangeMethod, previousMethod, analysis, rules: applicableRules };
+    const accepted = await acceptResponse(async flags => {
+      const candidateMessages = flags ? messages.map((item,index)=> index === 0 ? { ...item, text: item.text + "\nRepair these response violations without changing the learner analysis: " + flags.join(",") } : item) : messages;
+      return parseModelJson(await llm.generate({ messages: candidateMessages, temperature: flags ? .2 : .35, maxTokens: 1300 }));
+    }, criticContext, llm);
+    const parsed = { ...accepted.result, correctness: analysis.correctness, needsReview: false };
+    // Existing explicit hint requests may advance help without becoming a knowledge error.
+    // Technical/analyzer uncertainty never advances the ladder; management turns remain unchanged.
+    const technicalUncertainty = ["stt_uncertain","analyzer_unavailable","invalid_analysis","low_confidence","missing_evidence"].includes(analysis.uncertaintyReason || "");
+    const nextSupportStage = technicalUncertainty ? supportStage : computeNextSupportStage({
+      currentStage: supportStage, message: userText, correctness: analysis.correctness });
+    if (client && academicContext && typeof body.sessionId === "string") {
+      try { const evidenceClient = client, childId = academicContext.child.id;
+        await withFailover(signal => recordAcceptedEvidence(evidenceClient, { childId, sessionId: body.sessionId,
+        turnId: typeof body.turnId === "string" ? body.turnId : crypto.randomUUID(), analysis, supportStage, sttConfidence, signal }), undefined, 3000); }
+      catch { console.error("evidence_write_unavailable"); }
     }
-
-    // В разговорном английском для начинающего ребёнок получает русскую опору,
-    // но не готовый перевод всей фразы на первой просьбе о помощи.
-    if (
-      supportStage <= 1 &&
-      isBeginnerEnglishScaffoldRequest(subject, mode, userText)
-    ) {
-      parsed = safeBeginnerEnglishScaffold(parsed, userText);
-    }
-
-    // На первой ошибке защищаем самостоятельность ребёнка детерминированно:
-    // модель не должна случайно раскрыть правильный ответ в гуманитарном предмете.
-    if (
-      supportStage === 0 &&
-      (parsed.correctness === "incorrect" || parsed.correctness === "partial") &&
-      isLearnerAttemptMessage(userText)
-    ) {
-      parsed = safeIncorrectAttemptFallback(parsed, subject, userText);
-    }
-
-    const nextSupportStage = computeNextSupportStage({
-      currentStage: supportStage,
-      message: userText,
-      correctness: parsed.correctness,
-    });
-
-    parsed = applyParentRuleToTutorResult(parsed, {
-      subject,
-      parentRules,
-      taskGeneration: learningPlan.taskGeneration,
-    });
-
     return Response.json({
       ...parsed,
+      analysisMetadata: { confidence: analysis.confidence, source: "universal_analyzer", errorClasses: analysis.errorClasses, criticFlags: accepted.flags, evidenceEligible: analysis.learningEvidenceEligible, evidence: analysis.evidenceSummary },
       intent: learningPlan.intent,
       goal: learningPlan.goal,
       visualType: learningPlan.visualType,

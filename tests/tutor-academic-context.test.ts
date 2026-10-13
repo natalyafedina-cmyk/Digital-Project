@@ -12,7 +12,10 @@ vi.mock("@/lib/curriculum/repository", () => ({ SupabaseCurriculumRepository: cl
 import { POST } from "@/app/api/tutor/route";
 beforeEach(() => {
   vi.resetAllMocks();
-  mocks.auth.mockResolvedValue({});
+  const query: Record<string, unknown> = {};
+  for (const method of ["select","eq","or","limit","order","maybeSingle"]) query[method] = () => query;
+  query.then = (resolve: (value: unknown) => void) => resolve({data: [], error: null});
+  mocks.auth.mockResolvedValue({from: () => query});
   mocks.child.mockResolvedValue({ id: "child", name: "Test learner", grade: 6 });
   mocks.activeEnrollment.mockResolvedValue({ id: "e", grade: 8, academic_year_id: "2027-28", curriculum_program_id: "program", program_confirmed: true });
   mocks.year.mockResolvedValue({ id: "2027-28", label: "2027/28" });
@@ -46,4 +49,9 @@ it("does not load a child's context without a verified parent's session", async 
 it("rejects a course outside the subject before generation", async () => {
   expect((await POST(request({ courseId: "history.world" }))).status).toBe(400);
   expect(mocks.generate).not.toHaveBeenCalled();
+});
+it("repairs invalid generator JSON once and never exposes it to the learner",async()=>{
+ mocks.generate.mockResolvedValue('```json {broken');
+ const response=await POST(request());expect(response.status).toBe(200);
+ expect((await response.json()).answer).not.toContain("broken");expect(mocks.generate).toHaveBeenCalledTimes(2);
 });

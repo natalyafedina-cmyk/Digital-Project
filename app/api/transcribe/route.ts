@@ -60,7 +60,7 @@ export async function POST(request: Request) {
     const text =
       lang === "en-US" ? normalizeEnglishTranscript(rawText) : rawText;
 
-    return Response.json({ text, rawText });
+    return Response.json({ text, rawText, ...(recognized.confidence == null ? {} : { confidence: recognized.confidence }) });
   } catch {
     return Response.json({ error: "Не удалось распознать голосовое сообщение." }, { status: 500 });
   }

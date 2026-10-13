@@ -1,3 +1,4 @@
+import { interpretParentRule } from "@/lib/parent-rule-engine";
 import { createLLMProvider } from "@/lib/providers";
 import { learnerConfig } from "@/lib/learner-config";
 import {
@@ -197,6 +198,14 @@ pedagogy, motivation, format, voice, subject, general.
       });
     }
 
+    if (parsed.suggestedRule) {
+      try {
+        const interpretation = await interpretParentRule(llm, parsed.suggestedRule);
+        if (interpretation.needsClarification) return Response.json({ ...parsed, suggestedRule: null, needsClarification: true, clarificationQuestion: interpretation.clarificationQuestion,
+          answer: parsed.answer + " " + interpretation.clarificationQuestion });
+        return Response.json({ ...parsed, structuredRule: interpretation.rule });
+      } catch { return Response.json({ ...parsed, suggestedRule: null, answer: parsed.answer + " Формулировку правила нужно проверить перед сохранением." }); }
+    }
     return Response.json(parsed);
   } catch {
     return Response.json({ error: "Не удалось получить ответ родительского помощника." }, { status: 500 });

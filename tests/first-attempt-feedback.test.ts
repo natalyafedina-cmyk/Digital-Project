@@ -1,36 +1,8 @@
-import { describe, expect, it } from "vitest";
-import { buildFirstIncorrectAttemptHint } from "@/lib/first-attempt-feedback";
-
-describe("first incorrect attempt feedback", () => {
-  it("explains a first English error in Russian but keeps the practice target in English", () => {
-    const hint = buildFirstIncorrectAttemptHint(
-      "english",
-      "My favourite hobby is read a book"
-    );
-
-    expect(hint).toContain("is read");
-    expect(hint).toContain("по-английски");
-    expect(hint).toMatch(/[А-Яа-яЁё]/);
-    expect(hint.toLowerCase()).not.toContain("reading");
-  });
-
-  it("does not reveal the past form for a yesterday/go error", () => {
-    const hint = buildFirstIncorrectAttemptHint(
-      "english",
-      "Yesterday I go to school with my friend."
-    );
-
-    expect(hint).toContain("yesterday");
-    expect(hint).toContain("go");
-    expect(hint).toContain("по-английски");
-    expect(hint.toLowerCase()).not.toContain("went");
-  });
-  it("targets the read-form error after I like without giving the answer", () => {
-    const hint = buildFirstIncorrectAttemptHint("english", "I like read books.");
-
-    expect(hint).toContain("read");
-    expect(hint).toContain("I like");
-    expect(hint.toLowerCase()).not.toContain("reading");
-  });
-
+import { expect, it } from "vitest";
+import { safeResponse } from "@/lib/response-critic";
+import { unknownAnalysis } from "@/lib/learning-analysis";
+it("gives generic first-error feedback with Russian support and a fresh English retry", () => {
+ const analysis = { ...unknownAnalysis({text:"",subjectId:"english",courseId:"english.language",candidates:[]},""), correctness:"incorrect" as const, errorClasses:["grammar_form"] };
+ const result = safeResponse({stage:0,sourceText:"",taskGeneration:false,wantsVisual:false,english:true,mustChangeMethod:false,previousMethod:null,analysis,rules:[]});
+ expect(result.answer).toMatch(/[а-яё]/i); expect(result.answer).toContain("по-английски"); expect(result.answer).toContain("попробуй исправить");
 });

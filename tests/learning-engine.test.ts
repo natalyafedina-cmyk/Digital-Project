@@ -84,6 +84,31 @@ describe("adaptive learning engine", () => {
     expect(plan.allowedHelpLevel).toBe(0);
   });
 
+  it("preserves explanation intent when a child asks for an explanation and then a fresh example", () => {
+    const message =
+      "Объясни мне простыми словами, что такое линейное уравнение, но не решай за меня. Потом дай один простой пример, который я попробую решить сама.";
+
+    const plan = buildLearningPlan({
+      message,
+      subject: "math",
+      supportStage: 0,
+    });
+
+    expect(plan.intent).toBe("explain");
+    expect(plan.taskGeneration).toBe(true);
+    expect(plan.visualType).toBe("none");
+    expect(plan.format).toBe("text");
+  });
+
+  it("does not force a visual merely because a math request mentions an equation or example", () => {
+    expect(
+      detectVisualType(
+        "Объясни, что такое линейное уравнение, а потом дай простой пример.",
+        "math"
+      )
+    ).toBe("none");
+  });
+
   it("recognises a request to show rather than treating it as generic text", () => {
     expect(detectLearningIntent("Покажи это столбиком, без длинного текста")).toBe("visualize");
     expect(detectVisualType("Покажи это столбиком", "math")).toBe("structured_math");

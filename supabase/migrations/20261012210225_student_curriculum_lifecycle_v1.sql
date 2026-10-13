@@ -475,6 +475,7 @@ insert into public.curriculum_units (id, program_id, course_id, grade, parent_id
   ('ru.fgos_ooo.base.math.probability_statistics.7.unit6', 'ru.fgos_ooo.base', 'math.probability_statistics', 7, null, 'unit', 'Случайные опыты и случайные события', 6, '{}'::jsonb),
   ('ru.fgos_ooo.base.math.probability_statistics.7.unit7', 'ru.fgos_ooo.base', 'math.probability_statistics', 7, null, 'unit', 'Множества', 7, '{}'::jsonb),
   ('ru.fgos_ooo.base.math.probability_statistics.7.unit8', 'ru.fgos_ooo.base', 'math.probability_statistics', 7, null, 'unit', 'Математическое описание случайных явлений', 8, '{}'::jsonb),
+  ('ru.fgos_ooo.base.math.probability_statistics.7.unit9', 'ru.fgos_ooo.base', 'math.probability_statistics', 7, null, 'unit', 'Рассеивание данных', 9, '{}'::jsonb),
   ('ru.fgos_ooo.base.russian.language.7.unit1', 'ru.fgos_ooo.base', 'russian.language', 7, null, 'unit', 'Общие сведения о языке', 1, '{}'::jsonb),
   ('ru.fgos_ooo.base.russian.language.7.unit2', 'ru.fgos_ooo.base', 'russian.language', 7, null, 'unit', 'Причастие', 2, '{}'::jsonb),
   ('ru.fgos_ooo.base.russian.language.7.unit3', 'ru.fgos_ooo.base', 'russian.language', 7, null, 'unit', 'Деепричастие', 3, '{}'::jsonb),
@@ -484,6 +485,13 @@ insert into public.curriculum_units (id, program_id, course_id, grade, parent_id
   ('ru.fgos_ooo.base.russian.language.7.unit7', 'ru.fgos_ooo.base', 'russian.language', 7, null, 'unit', 'Частица', 7, '{}'::jsonb),
   ('ru.fgos_ooo.base.russian.language.7.unit8', 'ru.fgos_ooo.base', 'russian.language', 7, null, 'unit', 'Междометие', 8, '{}'::jsonb),
   ('ru.fgos_ooo.base.russian.language.7.unit9', 'ru.fgos_ooo.base', 'russian.language', 7, null, 'unit', 'Повторение и систематизация', 9, '{}'::jsonb),
+  ('ru.fgos_ooo.base.literature.general.7.unit1', 'ru.fgos_ooo.base', 'literature.general', 7, null, 'unit', 'Древнерусская литература', 1, '{}'::jsonb),
+  ('ru.fgos_ooo.base.literature.general.7.unit2', 'ru.fgos_ooo.base', 'literature.general', 7, null, 'unit', 'Литература первой половины XIX века', 2, '{}'::jsonb),
+  ('ru.fgos_ooo.base.literature.general.7.unit3', 'ru.fgos_ooo.base', 'literature.general', 7, null, 'unit', 'Литература второй половины XIX века', 3, '{}'::jsonb),
+  ('ru.fgos_ooo.base.literature.general.7.unit4', 'ru.fgos_ooo.base', 'literature.general', 7, null, 'unit', 'Литература конца XIX — начала XX века', 4, '{}'::jsonb),
+  ('ru.fgos_ooo.base.literature.general.7.unit5', 'ru.fgos_ooo.base', 'literature.general', 7, null, 'unit', 'Сатирические произведения отечественной и зарубежной литературы', 5, '{}'::jsonb),
+  ('ru.fgos_ooo.base.literature.general.7.unit6', 'ru.fgos_ooo.base', 'literature.general', 7, null, 'unit', 'Литература первой половины XX века', 6, '{}'::jsonb),
+  ('ru.fgos_ooo.base.literature.general.7.unit7', 'ru.fgos_ooo.base', 'literature.general', 7, null, 'unit', 'Зарубежная литература', 7, '{}'::jsonb),
   ('ru.fgos_ooo.base.physics.general.7.unit1', 'ru.fgos_ooo.base', 'physics.general', 7, null, 'unit', 'Физика и её роль в познании окружающего мира', 1, '{}'::jsonb),
   ('ru.fgos_ooo.base.physics.general.7.unit2', 'ru.fgos_ooo.base', 'physics.general', 7, null, 'unit', 'Первоначальные сведения о строении вещества', 2, '{}'::jsonb),
   ('ru.fgos_ooo.base.physics.general.7.unit3', 'ru.fgos_ooo.base', 'physics.general', 7, null, 'unit', 'Взаимодействие тел', 3, '{}'::jsonb),
@@ -507,7 +515,10 @@ insert into public.curriculum_units (id, program_id, course_id, grade, parent_id
   ('ru.fgos_ooo.base.informatics.general.7.unit5', 'ru.fgos_ooo.base', 'informatics.general', 7, null, 'unit', 'Мультимедиа', 5, '{}'::jsonb),
   ('ru.fgos_ooo.base.history.russia.7.unit1', 'ru.fgos_ooo.base', 'history.russia', 7, null, 'unit', 'Россия в XVI в.', 1, '{}'::jsonb),
   ('ru.fgos_ooo.base.history.russia.7.unit2', 'ru.fgos_ooo.base', 'history.russia', 7, null, 'unit', 'Смута в России', 2, '{}'::jsonb),
-  ('ru.fgos_ooo.base.history.russia.7.unit3', 'ru.fgos_ooo.base', 'history.russia', 7, null, 'unit', 'Россия при первых Романовых', 3, '{}'::jsonb)
+  ('ru.fgos_ooo.base.history.russia.7.unit3', 'ru.fgos_ooo.base', 'history.russia', 7, null, 'unit', 'Россия при первых Романовых', 3, '{}'::jsonb),
+  ('ru.fgos_ooo.base.history.moscow_region.7.unit1', 'ru.fgos_ooo.base', 'history.moscow_region', 7, null, 'unit', 'Московская область в Новейшее время', 1, '{}'::jsonb),
+  ('ru.fgos_ooo.base.history.moscow_region.7.unit2', 'ru.fgos_ooo.base', 'history.moscow_region', 7, null, 'unit', 'От революции к победе в Великой Отечественной войне', 2, '{}'::jsonb),
+  ('ru.fgos_ooo.base.history.moscow_region.7.unit3', 'ru.fgos_ooo.base', 'history.moscow_region', 7, null, 'unit', 'Подмосковье во второй половине XX — первой четверти XXI в.', 3, '{}'::jsonb)
 on conflict do nothing;
 
 insert into public.skills (id, subject_id, course_id, title, skill_type, description, grade_from, grade_to, active, metadata) values
@@ -585,19 +596,19 @@ insert into public.skill_prerequisites (skill_id, prerequisite_skill_id, relatio
 on conflict do nothing;
 
 insert into public.textbook_editions (id, course_id, title, authors, publisher, publication_year, series, isbn, part_count, grade_from, grade_to, metadata) values
-  ('tb.math.algebra.makarychev.7.2023', 'math.algebra', 'Математика. Алгебра. 7 класс. Базовый уровень', '["Ю. Н. Макарычев", "Н. Г. Миндюк", "К. И. Нешков", "С. Б. Суворова"]'::jsonb, 'Просвещение', 2023, null, null, null, 7, 7, '{"editor": ["С. А. Теляковский"]}'::jsonb),
-  ('tb.math.geometry.atanasyan.7_9.2025', 'math.geometry', 'Математика. Геометрия. 7–9 классы. Базовый уровень', '["Л. С. Атанасян", "В. Ф. Бутузов", "С. Б. Кадомцев", "Э. Г. Позняк", "И. И. Юдина"]'::jsonb, 'Просвещение', 2025, null, null, null, 7, 9, '{}'::jsonb),
-  ('tb.math.probability_statistics.vysotsky_yashchenko.7_9.2024', 'math.probability_statistics', 'Математика. Вероятность и статистика. 7–9 классы. Базовый уровень', '["И. Р. Высоцкий", "И. В. Ященко"]'::jsonb, 'Просвещение', 2024, null, null, 2, 7, 9, '{}'::jsonb),
-  ('tb.russian.baranov_ladyzhenskaya.7.2023', 'russian.language', 'Русский язык. 7 класс', '["М. Т. Баранов", "Т. А. Ладыженская", "Л. А. Тростенцова", "и др."]'::jsonb, 'Просвещение', 2023, null, null, 2, 7, 7, '{}'::jsonb),
-  ('tb.literature.korovina.7.2024', 'literature.general', 'Литература. 7 класс', '["В. Я. Коровина", "В. П. Журавлёв", "В. И. Коровин"]'::jsonb, 'Просвещение', 2024, null, null, 2, 7, 7, '{}'::jsonb),
-  ('tb.english.spotlight.7.2025', 'english.language', 'Английский язык. 7 класс', '["Ю. Е. Ваулина", "Дж. Дули", "О. Е. Подоляко", "В. Эванс"]'::jsonb, 'Просвещение / Express Publishing', 2025, 'Английский в фокусе / Spotlight', null, null, 7, 7, '{}'::jsonb),
-  ('tb.physics.peryshkin_ivanov.7.2023', 'physics.general', 'Физика. 7 класс. Базовый уровень', '["И. М. Перышкин", "А. И. Иванов"]'::jsonb, 'Просвещение', 2023, null, null, null, 7, 7, '{}'::jsonb),
-  ('tb.biology.pasechnik.7.2024', 'biology.general', 'Биология. 7 класс. Базовый уровень', '["В. В. Пасечник", "С. В. Суматохин", "З. Г. Гапонюк", "Г. Г. Швецов"]'::jsonb, 'Просвещение', 2024, null, null, null, 7, 7, '{}'::jsonb),
-  ('tb.geography.polyarnaya_zvezda.7.2025', 'geography.general', 'География. 7 класс', '["А. И. Алексеев", "и др."]'::jsonb, 'Просвещение', 2025, 'Полярная звезда', null, null, 7, 7, '{}'::jsonb),
-  ('tb.informatics.bosova.7.2025', 'informatics.general', 'Информатика. 7 класс. Базовый уровень', '["Л. Л. Босова", "А. Ю. Босова"]'::jsonb, 'Просвещение', 2025, null, null, null, 7, 7, '{}'::jsonb),
-  ('tb.history.russia.medinsky_torkunov.7.2025', 'history.russia', 'История. История России. XVI–XVII вв. 7 класс', '["В. Р. Мединский", "А. В. Торкунов"]'::jsonb, 'Просвещение', 2025, null, null, null, 7, 7, '{}'::jsonb),
-  ('tb.history.world.medinsky_chubaryan.7.2025', 'history.world', 'История. Всеобщая история. История Нового времени, конец XV–XVII вв. 7 класс', '["В. Р. Мединский", "А. О. Чубарьян"]'::jsonb, 'Просвещение', 2025, null, null, null, 7, 7, '{}'::jsonb),
-  ('tb.history.moscow_region.sukhov.6_7.2026', 'history.moscow_region', 'История нашего края. Московская область. 6–7 классы', '["В. В. Сухов", "А. С. Клемешов", "Е. Г. Жигирёва", "и др."]'::jsonb, 'Просвещение', 2026, null, null, null, 6, 7, '{}'::jsonb)
+  ('tb.math.algebra.makarychev.7.2023', 'math.algebra', 'Математика. Алгебра. 7 класс. Базовый уровень', '["Ю. Н. Макарычев", "Н. Г. Миндюк", "К. И. Нешков", "С. Б. Суворова"]'::jsonb, 'Просвещение', 2023, null, '978-5-09-102535-4', null, 7, 7, '{"editor": ["С. А. Теляковский"]}'::jsonb),
+  ('tb.math.geometry.atanasyan.7_9.2025', 'math.geometry', 'Математика. Геометрия. 7–9 классы. Базовый уровень', '["Л. С. Атанасян", "В. Ф. Бутузов", "С. Б. Кадомцев", "Э. Г. Позняк", "И. И. Юдина"]'::jsonb, 'Просвещение', 2025, null, '978-5-09-120158-1', null, 7, 9, '{}'::jsonb),
+  ('tb.math.probability_statistics.vysotsky_yashchenko.7_9.2024', 'math.probability_statistics', 'Математика. Вероятность и статистика. 7–9 классы. Базовый уровень', '["И. Р. Высоцкий", "И. В. Ященко"]'::jsonb, 'Просвещение', 2024, null, '978-5-09-112141-4', 2, 7, 9, '{"part_isbns":{"1":"978-5-09-112142-1"}}'::jsonb),
+  ('tb.russian.baranov_ladyzhenskaya.7.2023', 'russian.language', 'Русский язык. 7 класс', '["М. Т. Баранов", "Т. А. Ладыженская", "Л. А. Тростенцова", "Н. В. Ладыженская", "О. М. Александрова", "А. Д. Дейкина", "Л. Г. Антонова", "Л. Т. Григорян", "И. И. Кулибаба"]'::jsonb, 'Просвещение', 2023, null, '978-5-09-100134-1', 2, 7, 7, '{"part_isbns":{"1":"978-5-09-100135-8","2":"978-5-09-100136-5"}}'::jsonb),
+  ('tb.literature.korovina.7.2024', 'literature.general', 'Литература. 7 класс', '["В. Я. Коровина", "В. П. Журавлёв", "В. И. Коровин"]'::jsonb, 'Просвещение', 2024, null, '978-5-09-110801-9', 2, 7, 7, '{"part_isbns":{"1":"978-5-09-110802-6","2":"978-5-09-110803-3"}}'::jsonb),
+  ('tb.english.spotlight.7.2025', 'english.language', 'Английский язык. 7 класс', '["Ю. Е. Ваулина", "Дж. Дули", "О. Е. Подоляко", "В. Эванс"]'::jsonb, 'Просвещение / Express Publishing', 2025, 'Английский в фокусе / Spotlight', '978-5-09-119974-1', null, 7, 7, '{}'::jsonb),
+  ('tb.physics.peryshkin_ivanov.7.2023', 'physics.general', 'Физика. 7 класс. Базовый уровень', '["И. М. Перышкин", "А. И. Иванов"]'::jsonb, 'Просвещение', 2023, null, '978-5-09-102554-5', null, 7, 7, '{}'::jsonb),
+  ('tb.biology.pasechnik.7.2024', 'biology.general', 'Биология. 7 класс. Базовый уровень', '["В. В. Пасечник", "С. В. Суматохин", "З. Г. Гапонюк", "Г. Г. Швецов"]'::jsonb, 'Просвещение', 2024, null, '978-5-09-110810-1', null, 7, 7, '{}'::jsonb),
+  ('tb.geography.polyarnaya_zvezda.7.2025', 'geography.general', 'География. 7 класс', '["А. И. Алексеев", "В. В. Николина", "Е. К. Липкина", "С. И. Болысов", "Т. А. Ачкасова", "Г. Ю. Кузнецова"]'::jsonb, 'Просвещение', 2025, 'Полярная звезда', '978-5-09-119970-3', null, 7, 7, '{}'::jsonb),
+  ('tb.informatics.bosova.7.2025', 'informatics.general', 'Информатика. 7 класс. Базовый уровень', '["Л. Л. Босова", "А. Ю. Босова"]'::jsonb, 'Просвещение', 2025, null, '978-5-09-121643-1', null, 7, 7, '{}'::jsonb),
+  ('tb.history.russia.medinsky_torkunov.7.2025', 'history.russia', 'История. История России. XVI–XVII вв. 7 класс', '["В. Р. Мединский", "А. В. Торкунов"]'::jsonb, 'Просвещение', 2025, null, '978-5-09-123948-5', null, 7, 7, '{}'::jsonb),
+  ('tb.history.world.medinsky_chubaryan.7.2025', 'history.world', 'История. Всеобщая история. История Нового времени, конец XV–XVII вв. 7 класс', '["В. Р. Мединский", "А. О. Чубарьян"]'::jsonb, 'Просвещение', 2025, null, '978-5-09-123944-7', null, 7, 7, '{}'::jsonb),
+  ('tb.history.moscow_region.sukhov.6_7.2026', 'history.moscow_region', 'История нашего края. Московская область. 6–7 классы', '["В. В. Сухов", "А. С. Клемешов", "Е. Г. Жигирёва", "В. А. Тучин", "А. В. Духанина", "О. Г. Щенина"]'::jsonb, 'Просвещение', 2026, null, '978-5-09-135772-1', null, 6, 7, '{}'::jsonb)
 on conflict do nothing;
 
 insert into public.textbook_units (id, textbook_edition_id, parent_id, unit_type, title, part_number, order_index, page_start, page_end, metadata) values
@@ -619,6 +630,7 @@ insert into public.textbook_units (id, textbook_edition_id, parent_id, unit_type
   ('tb.math.probability_statistics.vysotsky_yashchenko.7_9.2024.unit6', 'tb.math.probability_statistics.vysotsky_yashchenko.7_9.2024', null, 'unit', 'Случайные опыты и случайные события', null, 6, null, null, '{}'::jsonb),
   ('tb.math.probability_statistics.vysotsky_yashchenko.7_9.2024.unit7', 'tb.math.probability_statistics.vysotsky_yashchenko.7_9.2024', null, 'unit', 'Множества', null, 7, null, null, '{}'::jsonb),
   ('tb.math.probability_statistics.vysotsky_yashchenko.7_9.2024.unit8', 'tb.math.probability_statistics.vysotsky_yashchenko.7_9.2024', null, 'unit', 'Математическое описание случайных явлений', null, 8, null, null, '{}'::jsonb),
+  ('tb.math.probability_statistics.vysotsky_yashchenko.7_9.2024.unit9', 'tb.math.probability_statistics.vysotsky_yashchenko.7_9.2024', null, 'unit', 'Рассеивание данных', null, 9, null, null, '{}'::jsonb),
   ('tb.russian.baranov_ladyzhenskaya.7.2023.unit1', 'tb.russian.baranov_ladyzhenskaya.7.2023', null, 'unit', 'Общие сведения о языке', null, 1, null, null, '{}'::jsonb),
   ('tb.russian.baranov_ladyzhenskaya.7.2023.unit2', 'tb.russian.baranov_ladyzhenskaya.7.2023', null, 'unit', 'Причастие', null, 2, null, null, '{}'::jsonb),
   ('tb.russian.baranov_ladyzhenskaya.7.2023.unit3', 'tb.russian.baranov_ladyzhenskaya.7.2023', null, 'unit', 'Деепричастие', null, 3, null, null, '{}'::jsonb),
@@ -628,6 +640,13 @@ insert into public.textbook_units (id, textbook_edition_id, parent_id, unit_type
   ('tb.russian.baranov_ladyzhenskaya.7.2023.unit7', 'tb.russian.baranov_ladyzhenskaya.7.2023', null, 'unit', 'Частица', null, 7, null, null, '{}'::jsonb),
   ('tb.russian.baranov_ladyzhenskaya.7.2023.unit8', 'tb.russian.baranov_ladyzhenskaya.7.2023', null, 'unit', 'Междометие', null, 8, null, null, '{}'::jsonb),
   ('tb.russian.baranov_ladyzhenskaya.7.2023.unit9', 'tb.russian.baranov_ladyzhenskaya.7.2023', null, 'unit', 'Повторение и систематизация', null, 9, null, null, '{}'::jsonb),
+  ('tb.literature.korovina.7.2024.unit1', 'tb.literature.korovina.7.2024', null, 'unit', 'Древнерусская литература', null, 1, null, null, '{}'::jsonb),
+  ('tb.literature.korovina.7.2024.unit2', 'tb.literature.korovina.7.2024', null, 'unit', 'Литература первой половины XIX века', null, 2, null, null, '{}'::jsonb),
+  ('tb.literature.korovina.7.2024.unit3', 'tb.literature.korovina.7.2024', null, 'unit', 'Литература второй половины XIX века', null, 3, null, null, '{}'::jsonb),
+  ('tb.literature.korovina.7.2024.unit4', 'tb.literature.korovina.7.2024', null, 'unit', 'Литература конца XIX — начала XX века', null, 4, null, null, '{}'::jsonb),
+  ('tb.literature.korovina.7.2024.unit5', 'tb.literature.korovina.7.2024', null, 'unit', 'Сатирические произведения отечественной и зарубежной литературы', null, 5, null, null, '{}'::jsonb),
+  ('tb.literature.korovina.7.2024.unit6', 'tb.literature.korovina.7.2024', null, 'unit', 'Литература первой половины XX века', null, 6, null, null, '{}'::jsonb),
+  ('tb.literature.korovina.7.2024.unit7', 'tb.literature.korovina.7.2024', null, 'unit', 'Зарубежная литература', null, 7, null, null, '{}'::jsonb),
   ('tb.physics.peryshkin_ivanov.7.2023.unit1', 'tb.physics.peryshkin_ivanov.7.2023', null, 'unit', 'Физика и её роль в познании окружающего мира', null, 1, null, null, '{}'::jsonb),
   ('tb.physics.peryshkin_ivanov.7.2023.unit2', 'tb.physics.peryshkin_ivanov.7.2023', null, 'unit', 'Первоначальные сведения о строении вещества', null, 2, null, null, '{}'::jsonb),
   ('tb.physics.peryshkin_ivanov.7.2023.unit3', 'tb.physics.peryshkin_ivanov.7.2023', null, 'unit', 'Взаимодействие тел', null, 3, null, null, '{}'::jsonb),
@@ -651,7 +670,10 @@ insert into public.textbook_units (id, textbook_edition_id, parent_id, unit_type
   ('tb.informatics.bosova.7.2025.unit5', 'tb.informatics.bosova.7.2025', null, 'unit', 'Мультимедиа', null, 5, null, null, '{}'::jsonb),
   ('tb.history.russia.medinsky_torkunov.7.2025.unit1', 'tb.history.russia.medinsky_torkunov.7.2025', null, 'unit', 'Россия в XVI в.', null, 1, null, null, '{}'::jsonb),
   ('tb.history.russia.medinsky_torkunov.7.2025.unit2', 'tb.history.russia.medinsky_torkunov.7.2025', null, 'unit', 'Смута в России', null, 2, null, null, '{}'::jsonb),
-  ('tb.history.russia.medinsky_torkunov.7.2025.unit3', 'tb.history.russia.medinsky_torkunov.7.2025', null, 'unit', 'Россия при первых Романовых', null, 3, null, null, '{}'::jsonb)
+  ('tb.history.russia.medinsky_torkunov.7.2025.unit3', 'tb.history.russia.medinsky_torkunov.7.2025', null, 'unit', 'Россия при первых Романовых', null, 3, null, null, '{}'::jsonb),
+  ('tb.history.moscow_region.sukhov.6_7.2026.unit1', 'tb.history.moscow_region.sukhov.6_7.2026', null, 'unit', 'Московская область в Новейшее время', null, 1, null, null, '{}'::jsonb),
+  ('tb.history.moscow_region.sukhov.6_7.2026.unit2', 'tb.history.moscow_region.sukhov.6_7.2026', null, 'unit', 'От революции к победе в Великой Отечественной войне', null, 2, null, null, '{}'::jsonb),
+  ('tb.history.moscow_region.sukhov.6_7.2026.unit3', 'tb.history.moscow_region.sukhov.6_7.2026', null, 'unit', 'Подмосковье во второй половине XX — первой четверти XXI в.', null, 3, null, null, '{}'::jsonb)
 on conflict do nothing;
 
 insert into public.curriculum_unit_skills (curriculum_unit_id, skill_id) values

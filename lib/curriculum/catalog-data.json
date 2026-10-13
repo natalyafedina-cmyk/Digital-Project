@@ -342,7 +342,7 @@
       "publisher": "Просвещение",
       "publication_year": 2023,
       "series": null,
-      "isbn": null,
+      "isbn": "978-5-09-102535-4",
       "part_count": null,
       "grade_from": 7,
       "grade_to": 7,
@@ -366,7 +366,7 @@
       "publisher": "Просвещение",
       "publication_year": 2025,
       "series": null,
-      "isbn": null,
+      "isbn": "978-5-09-120158-1",
       "part_count": null,
       "grade_from": 7,
       "grade_to": 9,
@@ -383,11 +383,15 @@
       "publisher": "Просвещение",
       "publication_year": 2024,
       "series": null,
-      "isbn": null,
+      "isbn": "978-5-09-112141-4",
       "part_count": 2,
       "grade_from": 7,
       "grade_to": 9,
-      "metadata": {}
+      "metadata": {
+        "part_isbns": {
+          "1": "978-5-09-112142-1"
+        }
+      }
     },
     {
       "id": "tb.russian.baranov_ladyzhenskaya.7.2023",
@@ -397,16 +401,26 @@
         "М. Т. Баранов",
         "Т. А. Ладыженская",
         "Л. А. Тростенцова",
-        "и др."
+        "Н. В. Ладыженская",
+        "О. М. Александрова",
+        "А. Д. Дейкина",
+        "Л. Г. Антонова",
+        "Л. Т. Григорян",
+        "И. И. Кулибаба"
       ],
       "publisher": "Просвещение",
       "publication_year": 2023,
       "series": null,
-      "isbn": null,
+      "isbn": "978-5-09-100134-1",
       "part_count": 2,
       "grade_from": 7,
       "grade_to": 7,
-      "metadata": {}
+      "metadata": {
+        "part_isbns": {
+          "1": "978-5-09-100135-8",
+          "2": "978-5-09-100136-5"
+        }
+      }
     },
     {
       "id": "tb.literature.korovina.7.2024",
@@ -420,11 +434,16 @@
       "publisher": "Просвещение",
       "publication_year": 2024,
       "series": null,
-      "isbn": null,
+      "isbn": "978-5-09-110801-9",
       "part_count": 2,
       "grade_from": 7,
       "grade_to": 7,
-      "metadata": {}
+      "metadata": {
+        "part_isbns": {
+          "1": "978-5-09-110802-6",
+          "2": "978-5-09-110803-3"
+        }
+      }
     },
     {
       "id": "tb.english.spotlight.7.2025",
@@ -439,7 +458,7 @@
       "publisher": "Просвещение / Express Publishing",
       "publication_year": 2025,
       "series": "Английский в фокусе / Spotlight",
-      "isbn": null,
+      "isbn": "978-5-09-119974-1",
       "part_count": null,
       "grade_from": 7,
       "grade_to": 7,
@@ -456,7 +475,7 @@
       "publisher": "Просвещение",
       "publication_year": 2023,
       "series": null,
-      "isbn": null,
+      "isbn": "978-5-09-102554-5",
       "part_count": null,
       "grade_from": 7,
       "grade_to": 7,
@@ -475,7 +494,7 @@
       "publisher": "Просвещение",
       "publication_year": 2024,
       "series": null,
-      "isbn": null,
+      "isbn": "978-5-09-110810-1",
       "part_count": null,
       "grade_from": 7,
       "grade_to": 7,
@@ -487,12 +506,16 @@
       "title": "География. 7 класс",
       "authors": [
         "А. И. Алексеев",
-        "и др."
+        "В. В. Николина",
+        "Е. К. Липкина",
+        "С. И. Болысов",
+        "Т. А. Ачкасова",
+        "Г. Ю. Кузнецова"
       ],
       "publisher": "Просвещение",
       "publication_year": 2025,
       "series": "Полярная звезда",
-      "isbn": null,
+      "isbn": "978-5-09-119970-3",
       "part_count": null,
       "grade_from": 7,
       "grade_to": 7,
@@ -509,7 +532,7 @@
       "publisher": "Просвещение",
       "publication_year": 2025,
       "series": null,
-      "isbn": null,
+      "isbn": "978-5-09-121643-1",
       "part_count": null,
       "grade_from": 7,
       "grade_to": 7,
@@ -526,7 +549,7 @@
       "publisher": "Просвещение",
       "publication_year": 2025,
       "series": null,
-      "isbn": null,
+      "isbn": "978-5-09-123948-5",
       "part_count": null,
       "grade_from": 7,
       "grade_to": 7,
@@ -543,7 +566,7 @@
       "publisher": "Просвещение",
       "publication_year": 2025,
       "series": null,
-      "isbn": null,
+      "isbn": "978-5-09-123944-7",
       "part_count": null,
       "grade_from": 7,
       "grade_to": 7,
@@ -557,12 +580,14 @@
         "В. В. Сухов",
         "А. С. Клемешов",
         "Е. Г. Жигирёва",
-        "и др."
+        "В. А. Тучин",
+        "А. В. Духанина",
+        "О. Г. Щенина"
       ],
       "publisher": "Просвещение",
       "publication_year": 2026,
       "series": null,
-      "isbn": null,
+      "isbn": "978-5-09-135772-1",
       "part_count": null,
       "grade_from": 6,
       "grade_to": 7,
@@ -1128,6 +1153,127 @@
       "parent_id": null,
       "unit_type": "unit",
       "title": "Россия при первых Романовых",
+      "order_index": 3,
+      "metadata": {}
+    },
+    {
+      "id": "ru.fgos_ooo.base.math.probability_statistics.7.unit9",
+      "program_id": "ru.fgos_ooo.base",
+      "course_id": "math.probability_statistics",
+      "grade": 7,
+      "parent_id": null,
+      "unit_type": "unit",
+      "title": "Рассеивание данных",
+      "order_index": 9,
+      "metadata": {}
+    },
+    {
+      "id": "ru.fgos_ooo.base.literature.general.7.unit1",
+      "program_id": "ru.fgos_ooo.base",
+      "course_id": "literature.general",
+      "grade": 7,
+      "parent_id": null,
+      "unit_type": "unit",
+      "title": "Древнерусская литература",
+      "order_index": 1,
+      "metadata": {}
+    },
+    {
+      "id": "ru.fgos_ooo.base.literature.general.7.unit2",
+      "program_id": "ru.fgos_ooo.base",
+      "course_id": "literature.general",
+      "grade": 7,
+      "parent_id": null,
+      "unit_type": "unit",
+      "title": "Литература первой половины XIX века",
+      "order_index": 2,
+      "metadata": {}
+    },
+    {
+      "id": "ru.fgos_ooo.base.literature.general.7.unit3",
+      "program_id": "ru.fgos_ooo.base",
+      "course_id": "literature.general",
+      "grade": 7,
+      "parent_id": null,
+      "unit_type": "unit",
+      "title": "Литература второй половины XIX века",
+      "order_index": 3,
+      "metadata": {}
+    },
+    {
+      "id": "ru.fgos_ooo.base.literature.general.7.unit4",
+      "program_id": "ru.fgos_ooo.base",
+      "course_id": "literature.general",
+      "grade": 7,
+      "parent_id": null,
+      "unit_type": "unit",
+      "title": "Литература конца XIX — начала XX века",
+      "order_index": 4,
+      "metadata": {}
+    },
+    {
+      "id": "ru.fgos_ooo.base.literature.general.7.unit5",
+      "program_id": "ru.fgos_ooo.base",
+      "course_id": "literature.general",
+      "grade": 7,
+      "parent_id": null,
+      "unit_type": "unit",
+      "title": "Сатирические произведения отечественной и зарубежной литературы",
+      "order_index": 5,
+      "metadata": {}
+    },
+    {
+      "id": "ru.fgos_ooo.base.literature.general.7.unit6",
+      "program_id": "ru.fgos_ooo.base",
+      "course_id": "literature.general",
+      "grade": 7,
+      "parent_id": null,
+      "unit_type": "unit",
+      "title": "Литература первой половины XX века",
+      "order_index": 6,
+      "metadata": {}
+    },
+    {
+      "id": "ru.fgos_ooo.base.literature.general.7.unit7",
+      "program_id": "ru.fgos_ooo.base",
+      "course_id": "literature.general",
+      "grade": 7,
+      "parent_id": null,
+      "unit_type": "unit",
+      "title": "Зарубежная литература",
+      "order_index": 7,
+      "metadata": {}
+    },
+    {
+      "id": "ru.fgos_ooo.base.history.moscow_region.7.unit1",
+      "program_id": "ru.fgos_ooo.base",
+      "course_id": "history.moscow_region",
+      "grade": 7,
+      "parent_id": null,
+      "unit_type": "unit",
+      "title": "Московская область в Новейшее время",
+      "order_index": 1,
+      "metadata": {}
+    },
+    {
+      "id": "ru.fgos_ooo.base.history.moscow_region.7.unit2",
+      "program_id": "ru.fgos_ooo.base",
+      "course_id": "history.moscow_region",
+      "grade": 7,
+      "parent_id": null,
+      "unit_type": "unit",
+      "title": "От революции к победе в Великой Отечественной войне",
+      "order_index": 2,
+      "metadata": {}
+    },
+    {
+      "id": "ru.fgos_ooo.base.history.moscow_region.7.unit3",
+      "program_id": "ru.fgos_ooo.base",
+      "course_id": "history.moscow_region",
+      "grade": 7,
+      "parent_id": null,
+      "unit_type": "unit",
+      "title": "Подмосковье во второй половине XX — первой четверти XXI в.",
       "order_index": 3,
       "metadata": {}
     }
@@ -2529,6 +2675,138 @@
       "parent_id": null,
       "unit_type": "unit",
       "title": "Россия при первых Романовых",
+      "part_number": null,
+      "order_index": 3,
+      "page_start": null,
+      "page_end": null,
+      "metadata": {}
+    },
+    {
+      "id": "tb.math.probability_statistics.vysotsky_yashchenko.7_9.2024.unit9",
+      "textbook_edition_id": "tb.math.probability_statistics.vysotsky_yashchenko.7_9.2024",
+      "parent_id": null,
+      "unit_type": "unit",
+      "title": "Рассеивание данных",
+      "part_number": null,
+      "order_index": 9,
+      "page_start": null,
+      "page_end": null,
+      "metadata": {}
+    },
+    {
+      "id": "tb.literature.korovina.7.2024.unit1",
+      "textbook_edition_id": "tb.literature.korovina.7.2024",
+      "parent_id": null,
+      "unit_type": "unit",
+      "title": "Древнерусская литература",
+      "part_number": null,
+      "order_index": 1,
+      "page_start": null,
+      "page_end": null,
+      "metadata": {}
+    },
+    {
+      "id": "tb.literature.korovina.7.2024.unit2",
+      "textbook_edition_id": "tb.literature.korovina.7.2024",
+      "parent_id": null,
+      "unit_type": "unit",
+      "title": "Литература первой половины XIX века",
+      "part_number": null,
+      "order_index": 2,
+      "page_start": null,
+      "page_end": null,
+      "metadata": {}
+    },
+    {
+      "id": "tb.literature.korovina.7.2024.unit3",
+      "textbook_edition_id": "tb.literature.korovina.7.2024",
+      "parent_id": null,
+      "unit_type": "unit",
+      "title": "Литература второй половины XIX века",
+      "part_number": null,
+      "order_index": 3,
+      "page_start": null,
+      "page_end": null,
+      "metadata": {}
+    },
+    {
+      "id": "tb.literature.korovina.7.2024.unit4",
+      "textbook_edition_id": "tb.literature.korovina.7.2024",
+      "parent_id": null,
+      "unit_type": "unit",
+      "title": "Литература конца XIX — начала XX века",
+      "part_number": null,
+      "order_index": 4,
+      "page_start": null,
+      "page_end": null,
+      "metadata": {}
+    },
+    {
+      "id": "tb.literature.korovina.7.2024.unit5",
+      "textbook_edition_id": "tb.literature.korovina.7.2024",
+      "parent_id": null,
+      "unit_type": "unit",
+      "title": "Сатирические произведения отечественной и зарубежной литературы",
+      "part_number": null,
+      "order_index": 5,
+      "page_start": null,
+      "page_end": null,
+      "metadata": {}
+    },
+    {
+      "id": "tb.literature.korovina.7.2024.unit6",
+      "textbook_edition_id": "tb.literature.korovina.7.2024",
+      "parent_id": null,
+      "unit_type": "unit",
+      "title": "Литература первой половины XX века",
+      "part_number": null,
+      "order_index": 6,
+      "page_start": null,
+      "page_end": null,
+      "metadata": {}
+    },
+    {
+      "id": "tb.literature.korovina.7.2024.unit7",
+      "textbook_edition_id": "tb.literature.korovina.7.2024",
+      "parent_id": null,
+      "unit_type": "unit",
+      "title": "Зарубежная литература",
+      "part_number": null,
+      "order_index": 7,
+      "page_start": null,
+      "page_end": null,
+      "metadata": {}
+    },
+    {
+      "id": "tb.history.moscow_region.sukhov.6_7.2026.unit1",
+      "textbook_edition_id": "tb.history.moscow_region.sukhov.6_7.2026",
+      "parent_id": null,
+      "unit_type": "unit",
+      "title": "Московская область в Новейшее время",
+      "part_number": null,
+      "order_index": 1,
+      "page_start": null,
+      "page_end": null,
+      "metadata": {}
+    },
+    {
+      "id": "tb.history.moscow_region.sukhov.6_7.2026.unit2",
+      "textbook_edition_id": "tb.history.moscow_region.sukhov.6_7.2026",
+      "parent_id": null,
+      "unit_type": "unit",
+      "title": "От революции к победе в Великой Отечественной войне",
+      "part_number": null,
+      "order_index": 2,
+      "page_start": null,
+      "page_end": null,
+      "metadata": {}
+    },
+    {
+      "id": "tb.history.moscow_region.sukhov.6_7.2026.unit3",
+      "textbook_edition_id": "tb.history.moscow_region.sukhov.6_7.2026",
+      "parent_id": null,
+      "unit_type": "unit",
+      "title": "Подмосковье во второй половине XX — первой четверти XXI в.",
       "part_number": null,
       "order_index": 3,
       "page_start": null,

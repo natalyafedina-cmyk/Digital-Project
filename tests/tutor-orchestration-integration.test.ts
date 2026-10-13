@@ -212,10 +212,61 @@ it("ambiguous general math request asks clarification without generic generator"
   expect(response.status).toBe(200);
   const r = await response.json();
   expect(r.lessonState.phase).toBe("clarify");
+  expect(r.lessonState.pendingClarification.originalRequestText).toBe(
+    "Помоги с новой темой",
+  );
   expect(r.taskBlock).toBe(null);
   expect(r.answer).toContain("Что именно");
   expect(m.generate).toHaveBeenCalledTimes(1);
   expect(m.rpc).not.toHaveBeenCalled();
+});
+
+it("course clarification resumes the original goal instead of asking the same question again", async () => {
+  const original =
+    "Объясни мне простыми словами, что такое линейное уравнение, но не решай за меня. Потом дай один простой пример, который я попробую решить сама.";
+
+  m.generate.mockResolvedValueOnce(
+    JSON.stringify({
+      ...raw,
+      courseId: null,
+      curriculumUnitId: null,
+      skillId: null,
+      confidence: 0.3,
+    }),
+  );
+
+  const first = await POST(req(original));
+  expect(first.status).toBe(200);
+  const clarificationResponse = await first.json();
+  expect(clarificationResponse.lessonState.phase).toBe("clarify");
+  expect(
+    clarificationResponse.lessonState.pendingClarification.originalRequestText,
+  ).toBe(original);
+
+  m.generate
+    .mockResolvedValueOnce(JSON.stringify(raw))
+    .mockResolvedValueOnce(generated("Реши: 4x + 7 = 19."));
+
+  const second = await POST(req("алгебра"));
+  expect(second.status).toBe(200);
+  const resumed = await second.json();
+
+  expect(resumed.answer).not.toContain("Что именно разбираем");
+  expect(resumed.requestResolution.courseId).toBe("math.algebra");
+  expect(resumed.requestResolution.requestedActions).toEqual([
+    "explain",
+    "practice",
+  ]);
+  expect(resumed.pedagogyDecision.actions).toEqual([
+    "explain_concept",
+    "give_practice_task",
+  ]);
+  expect(resumed.taskBlock.prompt).toContain("4x");
+  expect(resumed.lessonState.phase).toBe("await_attempt");
+  expect(resumed.lessonState.pendingClarification).toBe(null);
+  expect(m.session.course_id).toBe("math.algebra");
+  expect(m.session.target_skill_id).toBe(skill);
+  expect(m.generate).toHaveBeenCalledTimes(3);
 });
 function existingTask(stage = 0) {
   m.session = {

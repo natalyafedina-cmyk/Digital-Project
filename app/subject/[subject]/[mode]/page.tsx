@@ -1,4 +1,6 @@
 "use client";
+import type { TaskBlock,LessonState,Decision } from '@/lib/pedagogy/types';
+import type { Resolution } from '@/lib/learning-request/types';
 
 import { learnerConfig } from "@/lib/learner-config";
 import { resolveCourse, courseQuery, coursesForSubject } from "@/lib/curriculum/catalog";
@@ -22,6 +24,7 @@ import StructuredMathVisual, {
 type ChatMessage = {
   role: "user" | "assistant";
   text: string;
+  taskBlock?:TaskBlock|null;
   visualBlock?: string | null;
   teachingMethod?: string | null;
   intent?: string | null;
@@ -38,6 +41,10 @@ type MethodSummary = {
 
 type TutorResult = {
   answer: string;
+  taskBlock?:TaskBlock|null;
+  lessonState?:LessonState|null;
+  requestResolution?:Resolution|null;
+  pedagogyDecision?:Decision|null;
   visualBlock: string | null;
   visualLabel: string | null;
   teachingMethod: string;
@@ -322,11 +329,11 @@ export default function StudyModePage() {
 
       const { data: recentSession } = await supabase
         .from("study_sessions")
-        .select("id,last_activity_at")
+        .select("id,last_activity_at,lesson_state")
         .eq("child_id", child.id)
         .eq("subject", subjectKey)
         .eq("mode", modeKey)
-        .or(course ? `course_id.eq.${course.id}${coursesForSubject(subjectKey).length === 1 ? ",course_id.is.null" : ""}` : "course_id.is.null")
+        .or(course ? `course_id.eq.${course.id}${coursesForSubject(subjectKey).length === 1 ? ",course_id.is.null" : ""}` : coursesForSubject(subjectKey).map(c=>`course_id.eq.${c.id}`).concat("course_id.is.null").join(","))
         .eq("status", "active")
         .gte("last_activity_at", cutoff)
         .order("last_activity_at", { ascending: false })
@@ -362,6 +369,7 @@ export default function StudyModePage() {
         return {
           role: item.role as "user" | "assistant",
           text: item.text,
+          taskBlock: metadata.taskBlock as TaskBlock|null,
           visualBlock:
             typeof metadata.visualBlock === "string"
               ? metadata.visualBlock
@@ -398,7 +406,8 @@ export default function StudyModePage() {
       setPreviousMethod(lastAssistant?.teachingMethod || null);
       setActiveIntent(lastAssistant?.intent || null);
       setActiveGoal(lastAssistant?.goal || null);
-      setSupportStage(lastAssistant?.supportStage || 0);
+      setSupportStage(recentSession.lesson_state?.supportStage ?? lastAssistant?.supportStage ?? 0);
+      setPreviousMethod(recentSession.lesson_state?.previousMethod ?? lastAssistant?.teachingMethod ?? null);
 
       if ((storedMessages || []).length) {
         setNotice("Продолжаем последнее занятие. История восстановлена.");
@@ -659,6 +668,7 @@ export default function StudyModePage() {
             hintLevel: result.hintLevel,
             topic: result.topic,
             correctness: result.correctness,
+            taskBlock: result.taskBlock,
             visualBlock: result.visualBlock,
             visualLabel: result.visualLabel,
             teachingMethod: result.teachingMethod,
@@ -709,6 +719,9 @@ export default function StudyModePage() {
       independence_score: result.independenceScore,
       correctness: result.correctness,
       needs_review: result.needsReview,
+      request_resolution:result.requestResolution||null,
+      pedagogy_decision:result.pedagogyDecision||null,
+      lesson_phase:result.lessonState?.phase||null,
       analyzer_confidence: result.analysisMetadata?.confidence ?? null,
       analysis_source: result.analysisMetadata?.source ?? null,
       error_classes: result.analysisMetadata?.errorClasses ?? null,
@@ -911,6 +924,10 @@ export default function StudyModePage() {
           typeof data.topicEvidence === "string" ? data.topicEvidence : "",
         supportStageUsed: Number(data.supportStageUsed ?? supportStage),
         nextSupportStage: Number(data.nextSupportStage ?? supportStage),
+        taskBlock: data.taskBlock,
+        lessonState:data.lessonState,
+        requestResolution:data.requestResolution,
+        pedagogyDecision:data.pedagogyDecision,
         analysisMetadata: data.analysisMetadata,
       };
 
@@ -919,7 +936,8 @@ export default function StudyModePage() {
         {
           role: "assistant",
           text: result.answer,
-          visualBlock: result.visualBlock,
+          taskBlock: result.taskBlock,
+            visualBlock: result.visualBlock,
           teachingMethod: result.teachingMethod,
           intent: result.intent || null,
           goal: result.goal || null,
@@ -1092,6 +1110,7 @@ export default function StudyModePage() {
                       }`}
                     >
                       <div>{message.text}</div>
+                      {message.taskBlock && <div className="mt-3 rounded-2xl border border-violet-200 bg-white p-3"><p className="font-semibold mb-1">Попробуй самостоятельно:</p>{message.taskBlock.prompt}</div>}
 
                       {message.role === "assistant" &&
                         message.visualBlock &&

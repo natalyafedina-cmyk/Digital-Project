@@ -1,0 +1,234 @@
+[
+  {
+    "id": "explanation",
+    "subject": "math",
+    "requestedActions": [
+      "explain"
+    ],
+    "correctness": "unknown",
+    "stage": 0,
+    "status": null,
+    "expectedActions": [
+      "explain_concept"
+    ],
+    "phase": "explain",
+    "nextStage": 0
+  },
+  {
+    "id": "explain-practice",
+    "subject": "math",
+    "requestedActions": [
+      "explain",
+      "practice"
+    ],
+    "correctness": "unknown",
+    "stage": 0,
+    "status": null,
+    "expectedActions": [
+      "explain_concept",
+      "give_practice_task"
+    ],
+    "phase": "await_attempt",
+    "nextStage": 0
+  },
+  {
+    "id": "practice",
+    "subject": "math",
+    "requestedActions": [
+      "practice"
+    ],
+    "correctness": "unknown",
+    "stage": 0,
+    "status": null,
+    "expectedActions": [
+      "give_practice_task"
+    ],
+    "phase": "await_attempt",
+    "nextStage": 0
+  },
+  {
+    "id": "independent",
+    "subject": "math",
+    "requestedActions": [],
+    "correctness": "correct",
+    "stage": 0,
+    "status": null,
+    "expectedActions": [
+      "verify_independence"
+    ],
+    "phase": "verify_independence",
+    "nextStage": 0
+  },
+  {
+    "id": "hinted",
+    "subject": "math",
+    "requestedActions": [],
+    "correctness": "correct",
+    "stage": 2,
+    "status": null,
+    "expectedActions": [
+      "verify_independence"
+    ],
+    "phase": "verify_independence",
+    "nextStage": 0
+  },
+  {
+    "id": "wrong",
+    "subject": "math",
+    "requestedActions": [],
+    "correctness": "incorrect",
+    "stage": 0,
+    "status": null,
+    "expectedActions": [
+      "ask_for_attempt"
+    ],
+    "phase": "retry",
+    "nextStage": 0
+  },
+  {
+    "id": "hint",
+    "subject": "math",
+    "requestedActions": [
+      "ask_for_hint"
+    ],
+    "correctness": "unknown",
+    "stage": 0,
+    "status": null,
+    "expectedActions": [
+      "give_small_hint"
+    ],
+    "phase": "retry",
+    "nextStage": 1
+  },
+  {
+    "id": "concrete-hint",
+    "subject": "math",
+    "requestedActions": [
+      "ask_for_hint"
+    ],
+    "correctness": "unknown",
+    "stage": 1,
+    "status": null,
+    "expectedActions": [
+      "give_concrete_hint"
+    ],
+    "phase": "retry",
+    "nextStage": 2
+  },
+  {
+    "id": "one-step",
+    "subject": "math",
+    "requestedActions": [
+      "ask_for_hint"
+    ],
+    "correctness": "unknown",
+    "stage": 2,
+    "status": null,
+    "expectedActions": [
+      "solve_one_step_together"
+    ],
+    "phase": "retry",
+    "nextStage": 3
+  },
+  {
+    "id": "full-explanation",
+    "subject": "math",
+    "requestedActions": [
+      "ask_for_hint"
+    ],
+    "correctness": "unknown",
+    "stage": 3,
+    "status": null,
+    "expectedActions": [
+      "give_full_explanation"
+    ],
+    "phase": "retry",
+    "nextStage": 4
+  },
+  {
+    "id": "change-method",
+    "subject": "math",
+    "requestedActions": [
+      "change_method"
+    ],
+    "correctness": "unknown",
+    "stage": 1,
+    "status": null,
+    "expectedActions": [
+      "change_representation"
+    ],
+    "phase": "await_attempt",
+    "nextStage": 1
+  },
+  {
+    "id": "mastered",
+    "subject": "math",
+    "requestedActions": [
+      "practice"
+    ],
+    "correctness": "unknown",
+    "stage": 0,
+    "status": "mastered",
+    "expectedActions": [
+      "give_transfer_task"
+    ],
+    "phase": "await_attempt",
+    "nextStage": 0
+  },
+  {
+    "id": "nearly-mastered",
+    "subject": "math",
+    "requestedActions": [
+      "practice"
+    ],
+    "correctness": "unknown",
+    "stage": 0,
+    "status": "nearly_mastered",
+    "expectedActions": [
+      "give_transfer_task"
+    ],
+    "phase": "await_attempt",
+    "nextStage": 0
+  },
+  {
+    "id": "needs-review",
+    "subject": "math",
+    "requestedActions": [
+      "practice"
+    ],
+    "correctness": "unknown",
+    "stage": 0,
+    "status": "needs_review",
+    "expectedActions": [
+      "ask_diagnostic_question"
+    ],
+    "phase": "await_attempt",
+    "nextStage": 0
+  },
+  {
+    "id": "english-retry",
+    "subject": "english",
+    "requestedActions": [],
+    "correctness": "incorrect",
+    "stage": 0,
+    "status": null,
+    "expectedActions": [
+      "ask_for_attempt"
+    ],
+    "phase": "retry",
+    "nextStage": 0
+  },
+  {
+    "id": "history-independent",
+    "subject": "history",
+    "requestedActions": [],
+    "correctness": "correct",
+    "stage": 0,
+    "status": null,
+    "expectedActions": [
+      "verify_independence"
+    ],
+    "phase": "verify_independence",
+    "nextStage": 0
+  }
+]

@@ -1,5 +1,9 @@
-import { analyzeLearnerTurn, shouldAnalyze } from "@/lib/learning-analysis";
-import { candidateSkills } from "@/lib/learning-analysis/repository";
+import { requestCatalog } from '@/lib/learning-request/repository';
+import { resolveLearningRequest,reuseResolution,validateResolution } from '@/lib/learning-request/resolver';
+import { planPedagogy } from '@/lib/pedagogy/planner';
+import { acceptedState } from '@/lib/pedagogy/lesson-state';
+import { loadLesson,persistLesson,initialState } from '@/lib/pedagogy/repository';
+import { analyzeLearnerTurn, shouldAnalyze, unknownAnalysis } from "@/lib/learning-analysis";
 import { recordAcceptedEvidence } from "@/lib/evidence-engine";
 import { resolveParentRules, renderParentRules, type ParentRule } from "@/lib/parent-rule-engine";
 import { acceptResponse } from "@/lib/response-critic";
@@ -60,10 +64,11 @@ function parseModelJson(raw: string) {
         : "dialogue";
 
     return {
+      taskBlock: parsed.taskBlock && typeof parsed.taskBlock.prompt === 'string' && parsed.taskBlock.prompt.trim() ? {prompt:parsed.taskBlock.prompt.trim().slice(0,1500),skillId:null} : null,
       answer:
         typeof parsed.answer === "string"
           ? parsed.answer.trim()
-          : "Давай попробуем ещё раз.",
+          : "",
       visualBlock:
         typeof parsed.visualBlock === "string" && parsed.visualBlock.trim()
           ? parsed.visualBlock.trim()
@@ -106,6 +111,7 @@ function parseModelJson(raw: string) {
     };
   } catch {
     return {
+      taskBlock: null,
       answer: "",
       visualBlock: null,
       visualLabel: null,
@@ -170,7 +176,7 @@ export async function POST(request: Request) {
       ? body.methodProfile.slice(0, 20)
       : [];
 
-    const previousMethod =
+    let previousMethod =
       typeof body.previousMethod === "string" ? body.previousMethod : null;
 
     const currentIntent =
@@ -184,7 +190,7 @@ export async function POST(request: Request) {
         ? body.currentGoal.trim()
         : null;
 
-    const supportStage = Number.isFinite(Number(body.supportStage))
+    let supportStage = Number.isFinite(Number(body.supportStage))
       ? Math.max(0, Math.min(4, Number(body.supportStage)))
       : 0;
 
@@ -235,10 +241,28 @@ export async function POST(request: Request) {
       .trim();
 
     const sttConfidence = typeof body.sttConfidence === "number" && Number.isFinite(body.sttConfidence) && body.sttConfidence >= 0 && body.sttConfidence <= 1 ? body.sttConfidence : null;
-    const analysisInput = { text: userText, subjectId: subject, courseId: course?.id || null, sttConfidence,
-      previousTask: history.filter(item => item.role === "assistant").at(-1)?.text,
-      candidates: client && shouldAnalyze(userText) ? await candidateSkills(client, subject, course?.id || null, academicContext?.program?.id, academicContext?.grade) : [] };
-    const analysis = await analyzeLearnerTurn(llm, analysisInput);
+    const sessionId=typeof body.sessionId==='string'?body.sessionId:null;
+    let lesson=initialState({subjectId:subject,courseId:course?.id||null,curriculumUnitId:null,skillId:null});
+    if(client&&academicContext&&sessionId) lesson=await loadLesson(client,sessionId,academicContext.child.id,lesson.target);
+    if(client){supportStage=lesson.supportStage;previousMethod=lesson.previousMethod;}
+    const awaiting=!!lesson.lastTask&&['attempt_task','retry','answer'].includes(lesson.expectedLearnerAction);
+    // Short answers to an existing task reuse its target. New goals still go through semantics.
+    const cheapFollowup=reuseResolution(lesson.target,userText);
+    const reuse=!!lesson.target.courseId && (awaiting&&shouldAnalyze(userText)&&!/[?？]/.test(userText)&&userText.length<300 || cheapFollowup.requestedActions.some(a=>['ask_for_hint','change_method'].includes(a)));
+    let resolution=reuseResolution(lesson.target,userText);
+    if(client&&!reuse&&!(sttConfidence!=null&&sttConfidence<.65)){
+      const catalog=await requestCatalog(client,subject,course?.id||null,academicContext?.program?.id,academicContext?.grade);
+      resolution=await resolveLearningRequest(llm,{text:userText,subjectId:subject,explicitCourse:course?.id||null,target:lesson.target,catalog,recentContext:history.slice(-2).map(h=>h.text).join('\n')});
+    }
+    if(!resolution.needsClarification&&resolution.turnKind!=='new_goal'&&resolution.courseId===lesson.target.courseId){resolution={...resolution,curriculumUnitId:resolution.curriculumUnitId??lesson.target.curriculumUnitId,skillId:resolution.skillId??lesson.target.skillId};}
+    if(resolution.courseId){course=resolveCourse(subject,resolution.courseId);
+      if(client&&academicContext){academicContext=await getActiveLearningContext(body.childId,subject,resolution.courseId,new SupabaseCurriculumRepository(client));academicPrompt=renderAcademicContext(academicContext);}}
+    const selectedCatalog=client&&resolution.courseId?await requestCatalog(client,subject,resolution.courseId,academicContext?.program?.id,academicContext?.grade):null;
+    if(selectedCatalog&&!(sttConfidence!=null&&sttConfidence<.65))resolution=validateResolution(resolution,subject,selectedCatalog,courseId);
+    const candidates=selectedCatalog?.skills||[];
+    const analysisInput = { text:userText,subjectId:subject,courseId:resolution.courseId,sttConfidence,
+      previousTask:lesson.lastTask?.text||history.filter(item=>item.role==='assistant').at(-1)?.text,candidates };
+    const analysis = resolution.turnKind==='learner_attempt' ? await analyzeLearnerTurn(llm,analysisInput) : unknownAnalysis(analysisInput,sttConfidence!=null&&sttConfidence<.65?'stt_uncertain':'non_attempt');
     let knownRules: ParentRule[] = parentRules.map((text, index) => ({ id: String(index), active: true, child_id: null, rule_text: text }));
     if (client && academicContext) {
       const ruleResult = await client.from("tutor_rules").select("id,active,child_id,rule_text,subject,priority,course_id,skill_id,structured_rule,interpretation_status,valid_from,valid_until")
@@ -257,15 +281,14 @@ export async function POST(request: Request) {
     });
 
     const applicableRules = resolveParentRules(knownRules, { childId: academicContext?.child.id || null,
-      subjectId: subject, courseId: course?.id || null, skillIds: analysis.skillIds, intent: learningPlan.intent,
-      taskGeneration: learningPlan.taskGeneration, modality: ["text","voice","image"].includes(body.inputModality) ? body.inputModality : imageDataUrl ? "image" : "text",
+      subjectId: subject, courseId: course?.id || null, skillIds: [...new Set([resolution.skillId,...analysis.skillIds].filter((id):id is string=>!!id))], intent: client ? resolution.requestedActions[0] || "unknown" : learningPlan.intent,
+      taskGeneration: client ? resolution.explicitConstraints.wantsFreshTask || resolution.requestedActions.includes("practice") : learningPlan.taskGeneration, modality: ["text","voice","image"].includes(body.inputModality) ? body.inputModality : imageDataUrl ? "image" : "text",
       sessionId: typeof body.sessionId === "string" ? body.sessionId : null });
-    let skillSignal = "";
-    if (client && academicContext && analysis.skillIds[0]) {
-      const state = await client.from("student_skill_state").select("status,independent_successes,hinted_successes")
-        .eq("child_id",academicContext.child.id).eq("skill_id",analysis.skillIds[0]).maybeSingle();
-      if (state.data) skillSignal = JSON.stringify(state.data) + " Если mastered и practice, предложи короткую проверку или transfer task вместо объяснения с нуля. После помощи проверь самостоятельность на новом похожем задании.";
-    }
+    let skillStatus:string|undefined;
+    if(client&&academicContext&&resolution.skillId){const result=await client.from('student_skill_state').select('status,independent_successes,hinted_successes,failures,last_seen_at').eq('child_id',academicContext.child.id).eq('skill_id',resolution.skillId).maybeSingle();skillStatus=result.data?.status;}
+    const decision=planPedagogy({request:resolution,state:lesson,analysis,skillStatus,rules:applicableRules,sttConfidence});
+    const skillSignal=skillStatus||'not_seen';
+    if(client)supportStage=decision.supportStage;
     const pedagogy = `
 ТЫ — ${learner.tutorName}, ПЕРСОНАЛЬНЫЙ РЕПЕТИТОР ${learner.displayName}, КЛАСС ${learner.grade}.
 Анализ попытки (не изменяй correctness): ${JSON.stringify(analysis)}
@@ -333,7 +356,7 @@ STRUCTURED MATH CONTRACT:
 ${subjectPrompt}
 
 ПЛАН ДВИЖКА ОБУЧЕНИЯ:
-${renderLearningPlan(learningPlan)}
+${client ? JSON.stringify(decision) : renderLearningPlan(learningPlan)}
 
 Не меняй намерение ребёнка на другое. Если выбран visualType не "none", верни visualBlock именно такого типа: точная учебная структура, а не декоративная картинка.
 Если taskGeneration=true, ответ обязан содержать само новое задание сразу, без предварительных просьб "назови первый шаг".
@@ -378,6 +401,7 @@ retrieval_practice, comparison, oral_practice, timeline, cause_effect,
 classification, story, experiment, map_logic, character_analysis.
 `;
 
+    const execution = client ? `You execute the deterministic pedagogy decision below. It overrides legacy mode/intent suggestions. Do not choose course, skill, phase, help level or correctness. Execute actions in order. Explanation belongs in answer; every fresh UNSOLVED exercise belongs ONLY in taskBlock {prompt,skillId:null}. At stage 0 taskBlock contains no hint, worked step or solution. Do not repeat the existing task when a fresh one is required. Use the selected teachingMethod. Preserve Russian support for English beginners. Do not infer mastery or show technical IDs/reason codes to the learner. If clarification or transcript confirmation is planned, ask that short question only. Learner analysis (read-only): ${JSON.stringify({correctness:analysis.correctness,errorClasses:analysis.errorClasses,uncertaintyReason:analysis.uncertaintyReason})}. Target title: ${candidates.find(s=>s.id===decision.target.skillId)?.title||"not catalogued"}. Current task: ${JSON.stringify(lesson.lastTask)}. Request: ${JSON.stringify(resolution)}. Decision: ${JSON.stringify(decision)}. Output JSON with answer, taskBlock (or null), visualBlock, visualLabel, teachingMethod, topic, previousMethodOutcome, previousMethodEvidence. Learner grade ${learner.grade}; ${subjectPrompt}; ${renderParentRules(applicableRules)}.` : pedagogy;
     const messages = [
       {
         role: "system",
@@ -385,7 +409,7 @@ classification, story, experiment, map_logic, character_analysis.
           buildTutorInstructions(subject, mode, learner) +
           "\n\n" + academicPrompt +
           "\n\n" +
-          pedagogy,
+          execution,
       },
       ...history.map((item) => ({
         role: item.role,
@@ -395,32 +419,39 @@ classification, story, experiment, map_logic, character_analysis.
     ];
 
     const criticContext = { grade: learner.grade, courseId: course?.id || null, stage: supportStage, sourceText: history.map(item=>item.text).join("\n") + "\n" + userText,
-      taskGeneration: learningPlan.taskGeneration, wantsVisual: learningPlan.visualType !== "none", english: subject === "english",
-      mustChangeMethod: learningPlan.mustChangeMethod, previousMethod, analysis, rules: applicableRules };
+      decision: client ? decision : undefined, requestResolution: client ? resolution : undefined, lastTask: lesson.lastTask?.text, taskGeneration: client ? decision.shouldGenerateTask : learningPlan.taskGeneration, wantsVisual: client ? decision.responseConstraints.requireVisual : learningPlan.visualType !== "none", english: subject === "english",
+      mustChangeMethod: client ? decision.actions.includes("change_representation") : learningPlan.mustChangeMethod, previousMethod, analysis, rules: client && decision.actions.some(a=>["clarify_target","confirm_transcript"].includes(a)) ? [] : applicableRules };
     const accepted = await acceptResponse(async flags => {
       const candidateMessages = flags ? messages.map((item,index)=> index === 0 ? { ...item, text: item.text + "\nRepair these response violations without changing the learner analysis: " + flags.join(",") } : item) : messages;
-      return parseModelJson(await llm.generate({ messages: candidateMessages, temperature: flags ? .2 : .35, maxTokens: 1300 }));
-    }, criticContext, llm);
-    const parsed = { ...accepted.result, correctness: analysis.correctness, needsReview: false };
+      if(client&&decision.actions.includes('clarify_target'))return parseModelJson(JSON.stringify({answer:resolution.clarificationQuestion||'Какую тему разбираем?',teachingMethod:decision.teachingMethod}));
+      if(client&&decision.actions.includes('confirm_transcript'))return parseModelJson(JSON.stringify({answer:'Проверь распознанный текст: это именно то, что ты хотела сказать?',teachingMethod:decision.teachingMethod}));
+      const result=parseModelJson(await llm.generate({ messages: candidateMessages, temperature: flags ? .2 : .35, maxTokens: 1300 }));
+      return client ? {...result,hintLevel:decision.supportStage,taskBlock:result.taskBlock?{...result.taskBlock,skillId:decision.target.skillId}:null}:result;
+    }, criticContext, client && decision.actions.some(a=>["clarify_target","confirm_transcript"].includes(a)) ? undefined : llm);
+    const parsed = { ...accepted.result, ...(client?{teachingMethod:decision.teachingMethod,hintLevel:decision.supportStage}:{}), correctness: analysis.correctness, needsReview: false };
     // Existing explicit hint requests may advance help without becoming a knowledge error.
     // Technical/analyzer uncertainty never advances the ladder; management turns remain unchanged.
     const technicalUncertainty = ["stt_uncertain","analyzer_unavailable","invalid_analysis","low_confidence","missing_evidence"].includes(analysis.uncertaintyReason || "");
-    const nextSupportStage = technicalUncertainty ? supportStage : computeNextSupportStage({
+    const nextSupportStage = client ? decision.supportStage : technicalUncertainty ? supportStage : computeNextSupportStage({
       currentStage: supportStage, message: userText, correctness: analysis.correctness });
     if (client && academicContext && typeof body.sessionId === "string") {
       try { const evidenceClient = client, childId = academicContext.child.id;
         await withFailover(signal => recordAcceptedEvidence(evidenceClient, { childId, sessionId: body.sessionId,
-        turnId: typeof body.turnId === "string" ? body.turnId : crypto.randomUUID(), analysis, supportStage, sttConfidence, signal }), undefined, 3000); }
+        turnId: typeof body.turnId === "string" ? body.turnId : crypto.randomUUID(), analysis, supportStage: lesson.supportStage, sttConfidence, signal }), undefined, 3000); }
       catch { console.error("evidence_write_unavailable"); }
     }
+    if(client&&academicContext&&sessionId){lesson=acceptedState(lesson,decision,parsed.taskBlock);if(decision.shouldGenerateTask&&!parsed.taskBlock){lesson.phase="clarify";lesson.expectedLearnerAction="clarify";}await persistLesson(client,sessionId,academicContext.child.id,lesson);}
     return Response.json({
       ...parsed,
+      lessonState:client?lesson:null,
+      requestResolution:client?resolution:null,
+      pedagogyDecision:client?decision:null,
       analysisMetadata: { confidence: analysis.confidence, source: "universal_analyzer", errorClasses: analysis.errorClasses, criticFlags: accepted.flags, evidenceEligible: analysis.learningEvidenceEligible, evidence: analysis.evidenceSummary },
-      intent: learningPlan.intent,
+      intent: client ? resolution.requestedActions[0] || 'unknown' : learningPlan.intent,
       goal: learningPlan.goal,
-      visualType: learningPlan.visualType,
+      visualType: client ? decision.responseConstraints.requireVisual ? "diagram" : "none" : learningPlan.visualType,
       requestedFormat: learningPlan.format,
-      methodChangeRequired: learningPlan.mustChangeMethod,
+      methodChangeRequired: client ? decision.actions.includes("change_representation") : learningPlan.mustChangeMethod,
       supportStageUsed: supportStage,
       nextSupportStage,
       recognizedImageText: imageText || null,

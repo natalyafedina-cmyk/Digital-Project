@@ -147,10 +147,8 @@ const generated = (prompt: string) =>
     teachingMethod: "dialogue",
     hintLevel: 0,
   });
-it("actual route persists auto course/skill/task and next turn analyzes that task without resolver", async () => {
-  m.generate
-    .mockResolvedValueOnce(JSON.stringify(raw))
-    .mockResolvedValueOnce(generated("Реши: 4x + 7 = 19."));
+it("exact catalog skill resolves without semantic resolver and persists course/skill/task", async () => {
+  m.generate.mockResolvedValueOnce(generated("Реши: 4x + 7 = 19."));
   const first = await POST(
     req(
       "Объясни мне простыми словами, что такое линейное уравнение, но не решай за меня. Потом дай один простой пример, который я попробую решить сама.",
@@ -166,7 +164,7 @@ it("actual route persists auto course/skill/task and next turn analyzes that tas
   ]);
   expect(m.session.course_id).toBe("math.algebra");
   expect(m.session.target_skill_id).toBe(skill);
-  expect(m.session.target_curriculum_unit_id).toBe(data.curriculum_units[0].id);
+  expect(m.session.target_curriculum_unit_id).toBe(null);
   expect(m.session.lesson_phase).toBe("await_attempt");
   expect(m.links).toContainEqual({
     session_id: "session",
@@ -174,7 +172,7 @@ it("actual route persists auto course/skill/task and next turn analyzes that tas
     role: "target",
   });
   expect(m.rpc).not.toHaveBeenCalled();
-  expect(m.generate).toHaveBeenCalledTimes(2);
+  expect(m.generate).toHaveBeenCalledTimes(1);
   m.generate
     .mockResolvedValueOnce(
       JSON.stringify({
@@ -193,7 +191,7 @@ it("actual route persists auto course/skill/task and next turn analyzes that tas
   const n = await next.json();
   expect(n.pedagogyDecision.actions).toEqual(["verify_independence"]);
   expect(n.lessonState.phase).toBe("verify_independence");
-  expect(m.generate.mock.calls[2][0].messages[1].text).toContain("4x + 7 = 19");
+  expect(m.generate.mock.calls[1][0].messages[1].text).toContain("4x + 7 = 19");
   expect(m.rpc).toHaveBeenCalledWith(
     "record_skill_evidence",
     expect.objectContaining({
@@ -202,7 +200,7 @@ it("actual route persists auto course/skill/task and next turn analyzes that tas
       p_correctness: "correct",
     }),
   );
-  expect(m.generate).toHaveBeenCalledTimes(4);
+  expect(m.generate).toHaveBeenCalledTimes(3);
 });
 it("ambiguous general math request asks clarification without generic generator", async () => {
   m.generate.mockResolvedValueOnce(
@@ -221,9 +219,9 @@ it("ambiguous general math request asks clarification without generic generator"
   expect(m.rpc).not.toHaveBeenCalled();
 });
 
-it("course clarification resumes the original goal instead of asking the same question again", async () => {
+it("course clarification resumes the original goal without a second semantic resolver call", async () => {
   const original =
-    "Объясни мне простыми словами, что такое линейное уравнение, но не решай за меня. Потом дай один простой пример, который я попробую решить сама.";
+    "Объясни мне эту тему простыми словами и потом дай один простой пример, который я попробую решить сама.";
 
   m.generate.mockResolvedValueOnce(
     JSON.stringify({
@@ -243,9 +241,7 @@ it("course clarification resumes the original goal instead of asking the same qu
     clarificationResponse.lessonState.pendingClarification.originalRequestText,
   ).toBe(original);
 
-  m.generate
-    .mockResolvedValueOnce(JSON.stringify(raw))
-    .mockResolvedValueOnce(generated("Реши: 4x + 7 = 19."));
+  m.generate.mockResolvedValueOnce(generated("Реши: 4x + 7 = 19."));
 
   const second = await POST(req("алгебра"));
   expect(second.status).toBe(200);
@@ -265,8 +261,8 @@ it("course clarification resumes the original goal instead of asking the same qu
   expect(resumed.lessonState.phase).toBe("await_attempt");
   expect(resumed.lessonState.pendingClarification).toBe(null);
   expect(m.session.course_id).toBe("math.algebra");
-  expect(m.session.target_skill_id).toBe(skill);
-  expect(m.generate).toHaveBeenCalledTimes(3);
+  expect(m.session.target_skill_id).toBe(null);
+  expect(m.generate).toHaveBeenCalledTimes(2);
 });
 function existingTask(stage = 0) {
   m.session = {

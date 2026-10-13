@@ -1,5 +1,5 @@
 import { requestCatalog } from '@/lib/learning-request/repository';
-import { matchCourseClarification,resolveLearningRequest,reuseResolution,validateResolution } from '@/lib/learning-request/resolver';
+import { matchCourseClarification,resolveFromCatalog,resolveLearningRequest,reuseResolution,validateResolution } from '@/lib/learning-request/resolver';
 import { planPedagogy } from '@/lib/pedagogy/planner';
 import { acceptedState } from '@/lib/pedagogy/lesson-state';
 import { loadLesson,persistLesson,initialState } from '@/lib/pedagogy/repository';
@@ -262,7 +262,9 @@ export async function POST(request: Request) {
       const clarifiedCourse=course?.id||matchCourseClarification(userText,broadCatalog.courses);
       if(clarifiedCourse){
         const clarifiedCatalog=await requestCatalog(client,subject,clarifiedCourse,academicContext?.program?.id,academicContext?.grade);
-        resolution=await resolveLearningRequest(llm,{text:pendingClarification,subjectId:subject,explicitCourse:clarifiedCourse,target:lesson.target,catalog:clarifiedCatalog,recentContext:userText});
+        resolution=
+          resolveFromCatalog(pendingClarification,subject,clarifiedCatalog,clarifiedCourse) ||
+          await resolveLearningRequest(llm,{text:pendingClarification,subjectId:subject,explicitCourse:clarifiedCourse,target:lesson.target,catalog:clarifiedCatalog,recentContext:userText});
       }else{
         resolution=await resolveLearningRequest(llm,{text:`${pendingClarification}\nУточнение ученика к выбору курса: ${userText}`,subjectId:subject,target:lesson.target,catalog:broadCatalog,recentContext:history.slice(-2).map(h=>h.text).join('\n')});
       }
@@ -270,7 +272,9 @@ export async function POST(request: Request) {
     }
     if(client&&!resumedClarification&&!reuse&&!(sttConfidence!=null&&sttConfidence<.65)){
       const catalog=await requestCatalog(client,subject,course?.id||null,academicContext?.program?.id,academicContext?.grade);
-      resolution=await resolveLearningRequest(llm,{text:userText,subjectId:subject,explicitCourse:course?.id||null,target:lesson.target,catalog,recentContext:history.slice(-2).map(h=>h.text).join('\n')});
+      resolution=
+        resolveFromCatalog(userText,subject,catalog,course?.id||null) ||
+        await resolveLearningRequest(llm,{text:userText,subjectId:subject,explicitCourse:course?.id||null,target:lesson.target,catalog,recentContext:history.slice(-2).map(h=>h.text).join('\n')});
     }
     if(!resolution.needsClarification&&resolution.turnKind!=='new_goal'&&resolution.courseId===lesson.target.courseId){resolution={...resolution,curriculumUnitId:resolution.curriculumUnitId??lesson.target.curriculumUnitId,skillId:resolution.skillId??lesson.target.skillId};}
     if(resolution.courseId){course=resolveCourse(subject,resolution.courseId);

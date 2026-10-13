@@ -44,6 +44,98 @@ export function matchCourseClarification(
 
   return matches.length === 1 ? matches[0].id : null;
 }
+
+function actionsFromPlan(text: string, subjectId: string): Resolution["requestedActions"] {
+  const plan = buildLearningPlan({
+    message: text,
+    subject: subjectId,
+    previousMethod: null,
+    currentIntent: null,
+    currentGoal: null,
+    supportStage: 0,
+  });
+  const actions: Resolution["requestedActions"] = [];
+  if (plan.intent === "explain") actions.push("explain");
+  else if (plan.intent === "practice") actions.push("practice");
+  else if (plan.intent === "check_homework") actions.push("check_homework");
+  else if (plan.intent === "exam_prep") actions.push("exam_prep");
+  else if (plan.intent === "memorize") actions.push("memorize");
+  else if (plan.intent === "short_answer") actions.push("short_answer");
+  else if (plan.intent === "visualize") actions.push("visualize");
+  else if (plan.intent === "solve") actions.push("solve_with_support");
+  if (plan.taskGeneration && !actions.includes("practice") && actions.length < 2) {
+    actions.push("practice");
+  }
+  return actions.slice(0, 2);
+}
+
+export function resolveFromCatalog(
+  text: string,
+  subjectId: string,
+  catalog: RequestCatalog,
+  explicitCourse?: string | null,
+): Resolution | null {
+  const input = normalizeChoice(text);
+  if (!input) return null;
+
+  const skillMatches = catalog.skills
+    .map((skill) => ({ skill, title: normalizeChoice(skill.title) }))
+    .filter(({ skill, title }) =>
+      title.length >= 4 &&
+      input.includes(title) &&
+      (!explicitCourse || !skill.course_id || skill.course_id === explicitCourse),
+    )
+    .sort((a, b) => b.title.length - a.title.length);
+
+  const topSkill = skillMatches[0]?.skill || null;
+  const uniqueSkill =
+    topSkill &&
+    (skillMatches.length === 1 ||
+      skillMatches[0].title.length > skillMatches[1].title.length)
+      ? topSkill
+      : null;
+
+  const mentionedCourse = matchCourseClarification(text, catalog.courses);
+  const courseId =
+    explicitCourse ||
+    uniqueSkill?.course_id ||
+    mentionedCourse ||
+    (catalog.courses.length === 1 ? catalog.courses[0].id : null);
+
+  if (!courseId) return null;
+  if (!catalog.courses.some((course) => course.id === courseId)) return null;
+
+  const plan = buildLearningPlan({
+    message: text,
+    subject: subjectId,
+    previousMethod: null,
+    currentIntent: null,
+    currentGoal: null,
+    supportStage: 0,
+  });
+  const requestedActions = actionsFromPlan(text, subjectId);
+  if (!requestedActions.length && !uniqueSkill && !explicitCourse && !mentionedCourse) {
+    return null;
+  }
+
+  return {
+    subjectId,
+    courseId,
+    curriculumUnitId: null,
+    skillId: uniqueSkill?.id || null,
+    turnKind: "new_goal",
+    requestedActions,
+    confidence: 1,
+    explicitConstraints: {
+      doNotRevealSolution: true,
+      wantsFreshTask: plan.taskGeneration,
+      wantsVisual: plan.visualType !== "none",
+      concise: null,
+    },
+    needsClarification: false,
+    clarificationQuestion: null,
+  };
+}
 export function clarification(
   subjectId: string,
   courses: RequestCatalog["courses"],

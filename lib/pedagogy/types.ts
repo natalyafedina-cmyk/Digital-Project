@@ -31,6 +31,9 @@ export type LessonState = {
   pendingIndependentVerification: boolean;
   resumeTargetSkillId: string | null;
   resumeTarget?: Target | null;
+  pendingClarification?: {
+    originalRequestText: string;
+  } | null;
 };
 export type Action =
   | "clarify_target"

@@ -8,7 +8,12 @@
     "start": "next start",
     "lint": "eslint .",
     "test": "vitest run",
-    "golden": "RUN_GOLDEN_EXTERNAL=1 vitest run tests/golden/external.test.ts"
+    "golden": "RUN_GOLDEN_EXTERNAL=1 vitest run tests/golden/external.test.ts",
+    "calibrate:offline": "node scripts/calibrate.mjs",
+    "calibrate:smoke": "node scripts/calibrate.mjs --external --smoke",
+    "calibrate:external": "node scripts/calibrate.mjs --external",
+    "calibrate:report": "node scripts/calibrate.mjs --report",
+    "calibrate:gate": "node scripts/calibrate.mjs --gate"
   },
   "dependencies": {
     "@supabase/ssr": "^0.7.0",

@@ -124,8 +124,12 @@ export function detectLearningIntent(message: string): LearningIntent {
   if (has(text, /контрольн|самостоятельн|экзамен|подготов/)) return "exam_prep";
   if (has(text, /запомн|выуч|мнемон|карточк/)) return "memorize";
 
-  // Запрос "дай/задай пример" — это начало практики. Слова "столбиком",
-  // "схемой" и т. п. описывают формат задания, а не заменяют намерение.
+  // Если ребёнок просит сначала объяснить тему, а потом дать пример,
+  // основной intent остаётся explain, а taskGeneration отдельно сохраняет просьбу о новом задании.
+  // Это не даёт второй части запроса ("дай пример") затереть первую ("объясни").
+  if (has(text, /объясн|не понимаю|помоги понять|что такое|как работает|почему/)) return "explain";
+
+  // Запрос только на новый пример/задачу — практика.
   if (isTaskGenerationRequest(message) || has(text, /тренир|практик|упражнен|проверь меня|тест/)) {
     return "practice";
   }
@@ -133,14 +137,17 @@ export function detectLearningIntent(message: string): LearningIntent {
   if (has(text, /покажи|схем|таблиц|карт[ауе]|диаграм|график|временн.*лини|столбик/)) return "visualize";
   if (has(text, /реши|задач|пример|уравнен|вычисл/)) return "solve";
   if (has(text, /кратк|коротк|одним предложен|ответь.*кратко/)) return "short_answer";
-  if (has(text, /объясн|не понимаю|помоги понять|что такое|как работает|почему/)) return "explain";
 
   return "unknown";
 }
 
 export function detectVisualType(message: string, subject: string): VisualType {
   const text = message.toLowerCase();
-  if (has(text, /столбик|формул|уравнен|вычисл/)) return "structured_math";
+
+  // Visual type describes an explicitly requested presentation format.
+  // A mathematical topic ("уравнение") or a request for an example does not by itself
+  // mean that a structured visual is required.
+  if (has(text, /столбик|(?:покажи|запиши|оформи).{0,30}(?:формул|вычисл|уравнен)/)) return "structured_math";
   if (has(text, /временн.*лини|хронолог/)) return "timeline";
   if (has(text, /карт[ауе]|регион|стран/)) return "map";
   if (has(text, /таблиц/)) return "table";
@@ -150,7 +157,7 @@ export function detectVisualType(message: string, subject: string): VisualType {
   if (has(text, /строени.*слов|приставк|суффикс|корн/)) return "word_structure";
   if (has(text, /процесс|этап|как происходит/)) return "process";
   if (has(text, /схем|покажи|визуал/)) return "diagram";
-  if (["math", "physics"].includes(subject) && has(text, /задач|пример/)) return "structured_math";
+  void subject;
   return "none";
 }
 

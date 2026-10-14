@@ -30,3 +30,57 @@ Scenario contracts assert goals, target/state/action/evidence; scripted offline 
 Existing 74 `tests/golden/scenarios.json` rows, stateful fixtures and integration tests remain intact. Canonical ladder 0–6 versus runtime 0–4 is informational. TTS independence is checked separately at the text route boundary; full browser rendering/speech and production SQL are outside this calibration harness.
 
 Reports also record the evaluated Git commit and a SHA-256 fingerprint of app/lib sources. The baseline field identifies the Sprint 5 seed baseline; use evaluatedCommit/runtimeFingerprint to compare later runs.
+
+## Sprint 5.1 GitHub Actions
+
+`.github/workflows/tutor-calibration.yml` runs secret-free offline checks on relevant
+PRs to main. Paid runs require owner-triggered `workflow_dispatch`, default
+`mode=smoke`, `candidate=A`. Full always runs an approximately 18-scenario smoke
+first. A healthy smoke can be pedagogically NOT_READY; configuration, missing
+independent Judge, zero completions, authentication or infrastructure failures
+stop full. The infrastructure cutoff is 20% failed logical calls, Judge errors or
+timeouts; at least one measured Judge result is required. No retries are added.
+Optional unconfigured B is NOT_RUN and does not block A.
+
+One-time repository configuration (Settings → Secrets and variables → Actions):
+
+- Secret `MWS_CALIBRATION_API_KEY` (evaluation-only MWS key).
+- Variable `MWS_CALIBRATION_BASE_URL`:
+  `https://gpt.mwsapis.ru/projects/project-kubysha55/openai/v1` (also fallback).
+- Variable `CALIBRATION_A_MODEL`: `qwen3-6-35b-a3b` (also fallback).
+- Variable `CALIBRATION_JUDGE_MODEL`: actual independent deployment ID, preferably
+  `gpt-5.4`. No Judge default; absent or identical ID stops paid execution.
+
+These settings never change Railway or production. Never paste keys into chat.
+Codex currently has no MWS credential binding; no external baseline was measured
+in Sprint 5.1. A GitHub secret is not automatically accessible inside Codex.
+
+Actions must know this workflow on the default branch before the UI can offer
+manual dispatch. This sprint only pushes the existing feature branch; activation
+through the repository's normal review/merge process remains a separate action.
+Once available, choose this evaluated branch/ref explicitly when dispatching.
+
+Artifacts retain JSON/Markdown for 90 days, named by candidate, mode, SHA and run
+attempt. Download accepted baselines for longer retention. Reports are uploaded
+before the final full A gate; exit 1 means measured NOT_READY, exit 2 means
+incomplete/unverified. Offline structural failures are recorded, not converted
+into a false passing release certificate.
+
+To compare a future run with an accepted external baseline, supply both
+`baseline_run_id` and the exact `baseline_artifact` from that same repository.
+It must contain one `ci-full/sprint5-baseline.json`. With no accepted run supplied,
+the committed Sprint 5 offline report is the initial reference. Comparisons
+require identical modes and scenario IDs; unavailable or incompatible values
+are NOT_COMPARABLE, never zero. Hard gate regressions remain visible regardless
+of improvements in clarity. No automatic baseline promotion is performed.
+
+Local saved-report utilities (no paid calls):
+
+```sh
+node scripts/calibration-preflight.mjs path/to/smoke/sprint5-baseline.json
+node scripts/compare-calibration.mjs previous.json current.json work/comparison A
+```
+
+The comparison writes Markdown/JSON and appends a compact summary to
+`GITHUB_STEP_SUMMARY` when set. Use `-` instead of previous.json if none exists.
+The helpers do not modify runtime behavior or report scores.

@@ -5,9 +5,11 @@ on:
     paths:
       - "app/api/tutor/**"
       - "lib/learning-*/**"
+      - "lib/learning-*.ts"
       - "lib/pedagogy/**"
       - "lib/response-critic/**"
       - "lib/parent-rule-engine/**"
+      - "lib/parent-rule-engine.ts"
       - "lib/evidence-engine/**"
       - "lib/curriculum/**"
       - "lib/providers/**"

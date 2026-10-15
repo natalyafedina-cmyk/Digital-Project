@@ -1,0 +1,151 @@
+name: Tutor calibration
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - "app/api/tutor/**"
+      - "lib/learning-*/**"
+      - "lib/learning-*.ts"
+      - "lib/pedagogy/**"
+      - "lib/response-critic/**"
+      - "lib/parent-rule-engine/**"
+      - "lib/parent-rule-engine.ts"
+      - "lib/evidence-engine/**"
+      - "lib/curriculum/**"
+      - "lib/providers/**"
+      - "calibration/**"
+      - "tests/calibration/**"
+      - "tests/golden/**"
+      - "scripts/*calibration*"
+      - "scripts/calibrate*"
+      - "scripts/release-gate*"
+      - "package.json"
+      - "package-lock.json"
+      - ".github/workflows/tutor-calibration.yml"
+  workflow_dispatch:
+    inputs:
+      mode:
+        type: choice
+        options: [smoke, full]
+        default: smoke
+      candidate:
+        type: choice
+        options: [A, "A,B"]
+        default: A
+      baseline_run_id:
+        description: "Optional accepted external Actions run ID (same repository)"
+        type: string
+      baseline_artifact:
+        description: "Exact artifact name from accepted run, required with baseline_run_id"
+        type: string
+permissions:
+  contents: read
+jobs:
+  offline:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm test
+        env:
+          RUN_CALIBRATION_EXTERNAL: "0"
+          RUN_GOLDEN_EXTERNAL: "0"
+      - run: node --test tests/calibration/automation.test.mjs
+      - run: npm run calibrate:offline -- --output artifacts/calibration/ci-offline
+      - name: Summary and comparison
+        if: always()
+        run: node scripts/compare-calibration.mjs artifacts/calibration/sprint5-baseline.json artifacts/calibration/ci-offline/sprint5-baseline.json artifacts/calibration/ci-offline/comparison OFFLINE
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: sofia-calibration-OFFLINE-offline-${{ github.sha }}-${{ github.run_attempt }}
+          path: artifacts/calibration/**
+          retention-days: 90
+  external:
+    if: github.event_name == 'workflow_dispatch' && github.actor == github.repository_owner && github.repository == 'natalyafedina-cmyk/Digital-Project'
+    needs: offline
+    runs-on: ubuntu-latest
+    timeout-minutes: 150
+    permissions:
+      contents: read
+      actions: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - name: Previous accepted external baseline
+        if: inputs.baseline_run_id != '' && inputs.baseline_artifact != ''
+        uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ github.token }}
+          run-id: ${{ inputs.baseline_run_id }}
+          name: ${{ inputs.baseline_artifact }}
+          path: work/previous
+      - name: Smoke then optional full (evaluation credentials only)
+        id: evaluation
+        env:
+          MODE: ${{ inputs.mode }}
+          CANDIDATE: ${{ inputs.candidate }}
+          RUN_CALIBRATION_EXTERNAL: "1"
+          LLM_PROVIDER: openai-compatible
+          LLM_BASE_URL: ${{ vars.MWS_CALIBRATION_BASE_URL || 'https://gpt.mwsapis.ru/projects/project-kubysha55/openai/v1' }}
+          LLM_MODEL: ${{ vars.CALIBRATION_A_MODEL || 'qwen3-6-35b-a3b' }}
+          LLM_API_KEY: ${{ secrets.MWS_CALIBRATION_API_KEY }}
+          CALIBRATION_JUDGE_PROVIDER: openai-compatible
+          CALIBRATION_JUDGE_BASE_URL: ${{ vars.MWS_CALIBRATION_BASE_URL || 'https://gpt.mwsapis.ru/projects/project-kubysha55/openai/v1' }}
+          CALIBRATION_JUDGE_MODEL: ${{ vars.CALIBRATION_JUDGE_MODEL }}
+          CALIBRATION_JUDGE_API_KEY: ${{ secrets.MWS_CALIBRATION_API_KEY }}
+          CALIBRATION_B_PROVIDER: ${{ vars.CALIBRATION_B_PROVIDER }}
+          CALIBRATION_B_BASE_URL: ${{ vars.CALIBRATION_B_BASE_URL }}
+          CALIBRATION_B_MODEL: ${{ vars.CALIBRATION_B_MODEL }}
+          CALIBRATION_B_API_KEY: ${{ secrets.CALIBRATION_B_API_KEY }}
+        shell: bash
+        run: |
+          if [[ -z "$LLM_API_KEY" || -z "$CALIBRATION_JUDGE_MODEL" || "$CALIBRATION_JUDGE_MODEL" == "$LLM_MODEL" ]]; then
+            echo 'Candidate A / independent Judge UNCONFIGURED; external run stopped.' >> "$GITHUB_STEP_SUMMARY"
+            exit 2
+          fi
+          npm run calibrate:smoke -- --candidate "$CANDIDATE" --concurrency 2 --repeats 1 --output artifacts/calibration/ci-smoke
+          node scripts/calibration-preflight.mjs artifacts/calibration/ci-smoke/sprint5-baseline.json
+          if [[ "$MODE" == full ]]; then
+            npm run calibrate:external -- --candidate "$CANDIDATE" --concurrency 2 --repeats 1 --output artifacts/calibration/ci-full
+            npm run calibrate:report -- --output artifacts/calibration/ci-full
+          fi
+      - name: Summarize and compare saved reports
+        if: always()
+        env:
+          CANDIDATE: ${{ inputs.candidate }}
+        shell: bash
+        run: |
+          previous=artifacts/calibration/sprint5-baseline.json
+          if [[ -d work/previous ]]; then
+            mapfile -t baselines < <(find work/previous -path '*/ci-full/sprint5-baseline.json')
+            if [[ ${#baselines[@]} != 1 ]]; then
+              echo 'Accepted baseline must contain exactly one ci-full report.' >&2
+              exit 2
+            fi
+            previous="${baselines[0]}"
+          fi
+          for mode in smoke full; do
+            current="artifacts/calibration/ci-$mode/sprint5-baseline.json"
+            if [[ -f "$current" ]]; then
+              node scripts/compare-calibration.mjs "$previous" "$current" "artifacts/calibration/ci-$mode/comparison" A
+            fi
+          done
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: sofia-calibration-${{ inputs.candidate }}-${{ inputs.mode }}-${{ github.sha }}-${{ github.run_attempt }}
+          path: artifacts/calibration/**
+          retention-days: 90
+      - name: Candidate A full release gate
+        if: always() && inputs.mode == 'full'
+        run: npm run calibrate:gate -- --candidate A --output artifacts/calibration/ci-full
